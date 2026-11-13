@@ -1,7 +1,7 @@
 /* Load the same ordered classic scripts from losslessly compressed static assets. */
 (async()=>{
  const manifest=document.getElementById('atlas-scripts');
- const notice=document.createElement('div');notice.setAttribute('role','status');notice.textContent='Loading atlas…';notice.style.cssText='position:fixed;top:70px;left:24px;color:#e7e9df;background:#10272e;padding:12px;z-index:9999';document.body.append(notice);
+ const notice=document.getElementById('atlasStartup');
  try {
   const files=JSON.parse(manifest.textContent);
   const sources=await Promise.all(files.map(async file=>{
@@ -15,6 +15,7 @@
    const script=document.createElement('script');script.textContent=sources[i]+'\n//# sourceURL='+files[i];document.body.append(script);window.removeEventListener('error',capture);
    if(failure)throw failure;
   }
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
   notice.remove();manifest.remove();
  }catch(error){console.error('Atlas loading failed',error);notice.textContent='The atlas could not finish loading. ';const retry=document.createElement('button');retry.textContent='Retry';retry.onclick=()=>location.reload();notice.append(retry);}
 })();
