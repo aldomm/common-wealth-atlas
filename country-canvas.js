@@ -55,14 +55,14 @@ for(const [key,meta] of Object.entries(ExtendedData.indicators)){names[key]??=me
 const categoryKeys=['production','distribution','baskets','all_indicators'];
 names.baskets='Basic-needs baskets';
 const primary=['gdp','pop','total_gdp','hdi','life'];
-function observationFor(c,key){return key==='total_gdp'?totalGDP(c):AtlasObservations.resolve(c,key,year());}
+function observationFor(c,key,targetYear=year()){return key==='total_gdp'?totalGDP(c,targetYear):AtlasObservations.resolve(c,key,targetYear);}
 function metricKeys(c){return [...new Set([...primary,...Object.keys(ExtendedData.indicators)])].filter(key=>!c||!ExtendedData.indicators[key]?.applicableCountries||ExtendedData.indicators[key].applicableCountries.includes(c.id));}
-function totalGDP(c){
- const a=AtlasObservations.resolve(c,'gdp',year()),b=AtlasObservations.resolve(c,'pop',year());
- const ay=a.status==='last'?a.sourceYear:year(),by=b.status==='last'?b.sourceYear:year();
- if(a.value==null||b.value==null||ay!==by||a.sourceUrl!==b.sourceUrl||a.unit!==WorldData.units.gdp||b.unit!==WorldData.units.pop)return {value:null,status:'unavailable',targetYear:year(),method:'Total GDP requires GDP/person and population from the same compatible source year and series.',sourceUrl:WorldData.source};
- const estimated=a.status==='interpolated'||b.status==='interpolated',last=ay!==year();
- return {value:a.value*b.value*1000,status:last?'last':estimated?'interpolated':'exact',targetYear:year(),sourceYear:ay,periodStart:ay,periodEnd:ay,derived:true,estimateKind:a.estimateKind==='extrapolated'||b.estimateKind==='extrapolated'?'extrapolated':estimated?'interpolated':null,from:estimated?Math.min(a.from??year(),b.from??year()):null,to:estimated?Math.max(a.to??year(),b.to??year()):null,sourceUrl:a.sourceUrl,sourceRows:[...a.sourceRows,...b.sourceRows],method:`Derived: GDP/person × population in thousands × 1,000, both for ${ay}. Not an independently reported national total.`,components:[a,b],unit:'2011 international dollars'};
+function totalGDP(c,targetYear=year()){
+ const a=AtlasObservations.resolve(c,'gdp',targetYear),b=AtlasObservations.resolve(c,'pop',targetYear);
+ const ay=a.status==='last'?a.sourceYear:targetYear,by=b.status==='last'?b.sourceYear:targetYear;
+ if(a.value==null||b.value==null||ay!==by||a.sourceUrl!==b.sourceUrl||a.unit!==WorldData.units.gdp||b.unit!==WorldData.units.pop)return {value:null,status:'unavailable',targetYear:targetYear,method:'Total GDP requires GDP/person and population from the same compatible source year and series.',sourceUrl:WorldData.source};
+ const estimated=a.status==='interpolated'||b.status==='interpolated',last=ay!==targetYear;
+ return {value:a.value*b.value*1000,status:last?'last':estimated?'interpolated':'exact',targetYear:targetYear,sourceYear:ay,periodStart:ay,periodEnd:ay,derived:true,estimateKind:a.estimateKind==='extrapolated'||b.estimateKind==='extrapolated'?'extrapolated':estimated?'interpolated':null,from:estimated?Math.min(a.from??targetYear,b.from??targetYear):null,to:estimated?Math.max(a.to??targetYear,b.to??targetYear):null,sourceUrl:a.sourceUrl,sourceRows:[...a.sourceRows,...b.sourceRows],method:`Derived: GDP/person × population in thousands × 1,000, both for ${ay}. Not an independently reported national total.`,components:[a,b],unit:'2011 international dollars'};
 }
 function observations(c){return metricKeys(c).map(key=>({key,o:observationFor(c,key)}));}
 function shortValue(key,o){
@@ -180,18 +180,28 @@ function compareMetric(key){
  draw();render();
 }
 let comparisonScaleCache=null;
+const comparisonRanges=new Map();
+function comparisonValue(c,key,targetYear){
+ const o=observationFor(c,key,targetYear);let value=o.value;if(!Number.isFinite(value))return null;
+ if(key==='pop')value*=1000;
+ const fx=window.AtlasCurrency?.observation(o,key,targetYear);
+ if(fx){const constant=AtlasCurrency.state.mode==='constant';if(fx.currency!=='USD'||constant&&fx.inflationStatus!=='adjusted')return null;value=fx.value;}
+ return Number.isFinite(value)?value:null;
+}
 function comparisonScale(){
- const key=state.comparison,cacheKey=key+'|'+year()+'|'+window.AtlasCurrency?.state.mode;
+ const key=state.comparison,rangeKey=key+'|'+window.AtlasCurrency?.state.mode,cacheKey=rangeKey+'|'+year();
  if(comparisonScaleCache?.cacheKey===cacheKey)return comparisonScaleCache;
- const entries=new Map();let unit=key==='pop'?'people':key==='gdp'||key==='total_gdp'?'2011 international dollars':ExtendedData.indicators[key]?.unit||compactUnits[key]||'';
- for(const c of countries){const o=observationFor(c,key);let v=o.value;if(!Number.isFinite(v))continue;
-  if(key==='pop')v*=1000;
-  const fx=window.AtlasCurrency?.observation(o,key,year());
-  if(fx){const constant=AtlasCurrency.state.mode==='constant';unit=constant?'2024 USD':'nominal USD';if(fx.currency!=='USD'||constant&&fx.inflationStatus!=='adjusted')continue;v=fx.value;}
-  if(Number.isFinite(v))entries.set(c.id,v);
+ // Resolve every selectable year, including supported estimates and derived totals.
+ // Cache only the bounds: changing years must update values without changing colors' meaning.
+ if(!comparisonRanges.has(rangeKey)){
+  let min=Infinity,max=-Infinity;
+  for(const targetYear of years)for(const c of countries){const value=comparisonValue(c,key,targetYear);if(value==null)continue;min=Math.min(min,value);max=Math.max(max,value);}
+  comparisonRanges.set(rangeKey,{min:Number.isFinite(min)?min:null,max:Number.isFinite(max)?max:null});
  }
- const values=[...entries.values()],min=values.length?Math.min(...values):null,max=values.length?Math.max(...values):null;
- comparisonScaleCache={cacheKey,entries,min,max,unit};return comparisonScaleCache;
+ const entries=new Map();for(const c of countries){const value=comparisonValue(c,key,year());if(value!=null)entries.set(c.id,value);}
+ let unit=key==='pop'?'people':key==='gdp'||key==='total_gdp'?'2011 international dollars':ExtendedData.indicators[key]?.unit||compactUnits[key]||'';
+ if(key==='defence_spending_eur')unit=window.AtlasCurrency?.state.mode==='constant'?'2024 USD':'nominal USD';
+ comparisonScaleCache={cacheKey,entries,...comparisonRanges.get(rangeKey),unit};return comparisonScaleCache;
 }
 function comparisonColor(value,scale){
  if(!Number.isFinite(value)||scale.min==null)return '#637078';
@@ -208,11 +218,12 @@ function shadeComparison(){
  let legend=comparisonBar.querySelector('.comparison-legend');if(!legend){legend=document.createElement('div');legend.className='comparison-legend';comparisonBar.insertBefore(legend,comparisonBar.lastChild);}
  const signature=scale.cacheKey+'|'+scale.min+'|'+scale.max;if(legend.dataset.signature===signature)return;legend.dataset.signature=signature;legend.replaceChildren();
  const unit=document.createElement('div');unit.textContent=scale.unit+' · '+year();legend.append(unit);
+ const fixed=document.createElement('div');fixed.textContent='Fixed scale · '+years[0]+'–'+years[years.length-1];legend.append(fixed);
  const ramp=document.createElement('div');ramp.className='comparison-ramp';ramp.style.background=scale.min===scale.max&&scale.min!=null?comparisonColor(scale.min,scale):'linear-gradient(to right,rgb(68,38,103),rgb(41,121,142),rgb(108,194,104),rgb(253,231,82))';legend.append(ramp);
  const ends=document.createElement('div');ends.className='comparison-range';const format=n=>n.toLocaleString('en-US',{maximumSignificantDigits:4});
  if(scale.min==null)ends.textContent='No comparable values loaded';else if(scale.min===scale.max)ends.textContent='All available values: '+format(scale.min);else{for(const text of ['Lower '+format(scale.min),'Higher '+format(scale.max)]){const label=document.createElement('b');label.textContent=text;ends.append(label);}}legend.append(ends);
  const missing=document.createElement('div');missing.className='comparison-missing';missing.textContent='■ Gray: not recorded / no compatible conversion';legend.append(missing);
- const notes=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Scale, dates & geography';notes.append(summary);const note=document.createElement('div');note.className='comparison-scale-note';note.textContent='Linear scale across all loaded countries for this year; unchanged by panning. Uses displayed values, including dated earlier records and labeled estimates. Colors use present-day reference areas, not historical sovereignty. Higher does not necessarily mean better.';notes.append(note);legend.append(notes);
+ const notes=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Scale, dates & geography';notes.append(summary);const note=document.createElement('div');note.className='comparison-scale-note';note.textContent='Linear scale across all loaded countries and all selectable years. The same numeric value keeps the same color when you pan or change years. Each measure and monetary unit has its own fixed range. Uses displayed values, including dated earlier records and labeled estimates. Colors use present-day reference areas, not historical sovereignty. Higher does not necessarily mean better.';notes.append(note);legend.append(notes);
 }
 function drawComparison(c,mask,occupied){
  const key=state.comparison,o=observationFor(c,key),value=shortValue(key,o),points=candidates(mask),mobile=phoneLayout();
