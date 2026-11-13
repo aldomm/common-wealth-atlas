@@ -15,7 +15,7 @@
     <ol class="welcome-steps">
       <li><strong>Choose a year</strong><span>Move the timeline at the bottom. Countries, indicators and connections follow the selected year.</span></li>
       <li><strong>Move closer</strong><span>Drag to explore. Pinch with two fingers on a phone, or scroll or use + / − to zoom. More country labels and measures appear as there is room. Switch between Globe and Map at any time.</span></li>
-      <li><strong>Click to discover</strong><span>Click a country or indicator for values, explanations and sources. Explore trade partners and war opponents through their map connections.</span></li>
+      <li><strong>Click to discover</strong><span>Click a country or indicator for values, explanations and sources. Choose “Compare this measure across countries” to show just that measure as you pan. Explore trade partners and war opponents through their map connections.</span></li>
       <li><strong>Return to the map</strong><span>Close an explanation with ×. Click the map background or press Escape to leave a connection view and bring back the country labels.</span></li>
     </ol>
     <div class="welcome-evidence"><strong>Read the evidence, not just the number.</strong><p>Coverage varies by place and year. Estimates, interpolations, calculated values and older records are labeled; “not recorded” does not mean zero. Clicking a missing measure can jump the whole atlas to its next available record, with a notice showing the year change.</p><p>Check the explanation for dates, units and territory. Inflation-adjusted US dollars and purchasing-power international dollars are different measures.</p></div>

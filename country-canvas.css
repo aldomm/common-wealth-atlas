@@ -24,3 +24,8 @@
 
 /* Readable map labels in both desktop and phone layouts. */
 #countrySemanticCanvas .country-name-access>rect,#countrySemanticCanvas .contained-country-label>rect{fill:#102b34;fill-opacity:.9;rx:6;stroke:#6c8c88;stroke-width:.6px}
+
+#atlasComparison{position:fixed;top:68px;left:16px;z-index:14;max-width:min(460px,calc(100vw - 32px));padding:12px 14px;border:1px solid #75918b;border-radius:10px;background:#102b34;color:#eff3df;display:flex;flex-wrap:wrap;gap:8px;box-shadow:0 4px 16px #0005}
+#atlasComparison[hidden]{display:none}#atlasComparison strong{font-size:15px}#atlasComparison span{font-size:12px;color:#c6dcd5;width:100%}#atlasComparison button,.compare-measure{min-height:44px;padding:8px 12px;font-size:14px;background:#285253;color:#f5e3af}.compare-measure{display:block;margin:0 0 12px;width:100%}
+.atlas-comparing .economic-marker{display:none!important}
+@media(max-width:600px){#atlasComparison{top:120px;left:8px;max-width:calc(100vw - 16px);padding:8px 10px}#atlasComparison span{font-size:11px}#atlasComparison strong{font-size:14px}}
