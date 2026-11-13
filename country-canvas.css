@@ -21,3 +21,6 @@
 #countrySemanticCanvas{touch-action:none}
 
 .country-category-actions .category-gini-value{display:block;margin-top:4px;font-size:inherit;color:#ffe2a0}
+
+/* Readable map labels in both desktop and phone layouts. */
+#countrySemanticCanvas .country-name-access>rect,#countrySemanticCanvas .contained-country-label>rect{fill:#102b34;fill-opacity:.9;rx:6;stroke:#6c8c88;stroke-width:.6px}

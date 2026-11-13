@@ -150,8 +150,8 @@ function appendCatalog(body,label,keys){
 }
 function drawCountry(c,mask,occupied){
  const points=candidates(mask);if(!points.length)return;
- hit.font=phoneLayout()?'650 16px system-ui':'650 12px system-ui';const nameW=Math.ceil(hit.measureText(c.name).width+(phoneLayout()?16:6)),title=place(mask,points,nameW,phoneLayout()?44:16,occupied);
- if(title){const label={c,key:'all_indicators',o:null,rect:title},name=node('g',{class:'country-name-access',tabindex:'0',role:'button','aria-label':c.name+' · open all indicators'});name.append(node('rect',{x:title.x,y:title.y,width:title.w,height:title.h,fill:'transparent'}));text(name,title.x+(phoneLayout()?8:0),title.y+(phoneLayout()?28:13),c.name,'contained-country-name');name.addEventListener('click',()=>showHover(label));name.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();showHover(label);}});overlay.append(name);countryTitles.set(c.id,title);occupied.push(title);}
+ hit.font=phoneLayout()?'650 16px system-ui':'650 12px system-ui';const nameW=Math.ceil(hit.measureText(c.name).width+(phoneLayout()?16:6)),title=place(mask,points,nameW,phoneLayout()?44:24,occupied);
+ if(title){const label={c,key:'all_indicators',o:null,rect:title},name=node('g',{class:'country-name-access',tabindex:'0',role:'button','aria-label':c.name+' · open all indicators'});name.append(node('rect',{x:title.x,y:title.y,width:title.w,height:title.h,fill:'transparent'}));text(name,title.x+(phoneLayout()?8:3),title.y+(phoneLayout()?28:17),c.name,'contained-country-name');name.addEventListener('click',()=>showHover(label));name.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();showHover(label);}});overlay.append(name);countryTitles.set(c.id,title);occupied.push(title);}
  const ratio=getZoom()/fitZoom(c),count=budget(mask.area,ratio);if(!count)return;
  const rows=observations(c),available=rows.filter(r=>r.o.value!=null),missing=rows.filter(r=>r.o.value==null);
  const extras=[],missingSpecial=[];
