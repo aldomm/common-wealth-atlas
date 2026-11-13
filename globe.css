@@ -1,0 +1,6 @@
+#atlasGlobe{position:fixed;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;background:radial-gradient(ellipse at 54% 44%,#183c48 0,#0a202c 66%,#071720 100%)}
+#atlasGlobe[hidden]{display:none}#atlasGlobe:active{cursor:grabbing}#atlasGlobe:focus-visible{outline:2px solid #e7c791;outline-offset:-3px}
+#atlasGlobe .atlas-globe-label{font:11px system-ui;fill:#e6eeea;paint-order:stroke;stroke:#102833;stroke-width:3px;stroke-linejoin:round}
+.atlas-view-toggle{position:fixed;right:20px;top:22px;z-index:8;display:flex;gap:3px;padding:5px}.atlas-view-toggle button{border:0;background:transparent;padding:7px 12px}.atlas-view-toggle button[aria-pressed=true]{background:#365e61;color:#f5dea4}.atlas-view-toggle button:focus-visible{outline:2px solid #f5dea4}
+.atlas-globe-hint{position:fixed;left:50%;transform:translateX(-50%);bottom:140px;pointer-events:none;font-size:11px;color:#a6c3c6;background:#0b2028b3;border-radius:12px;padding:5px 12px;white-space:nowrap}.atlas-globe-hint[hidden]{display:none}
+@media(max-width:800px){.atlas-view-toggle{top:83px;right:12px}.atlas-globe-hint{bottom:145px;font-size:10px}}

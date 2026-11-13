@@ -1,0 +1,7 @@
+.war-country-label,.war-status-text{font-family:system-ui;fill:#f4d9c5;stroke:#152e36;stroke-width:4;paint-order:stroke;stroke-linejoin:round}.war-status-text[role=button]{fill:#ffe6a5;cursor:pointer}#warConnections [role=button]:focus-visible{outline:2px solid #ffe6a5}.war-evidence{overflow-wrap:anywhere}.war-evidence #closeWarEvidence{float:right;font-size:21px}.war-evidence article{border-top:1px solid #718487;padding:8px 0}.war-evidence h3{margin:0 30px 12px 0}.war-evidence h4{color:#f5d6b9}.war-evidence a{color:#bce8de}.war-evidence button{margin:3px;padding:6px}.war-evidence :focus-visible{outline:2px solid #ffe6a5;outline-offset:3px}
+
+.war-status-text[role="button"]{pointer-events:all}
+
+.war-year-entries{display:flex;flex-direction:column;gap:5px}.war-year-entries button{text-align:left;white-space:normal;line-height:1.4}
+
+.war-deaths{margin:14px 0;padding-top:5px;border-top:1px solid #6d8585}.war-death-side{margin:12px 0}.war-death-side h5{margin:7px 0;font:600 14px system-ui;color:#ffe6bb}.war-death-record{margin:8px 0 13px;padding-left:10px;border-left:2px solid #beaaa0}.war-death-record p{margin:5px 0}.war-death-scope{font-size:12px;color:#c4d8d4}

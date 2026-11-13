@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "records": [
+    {
+      "evidenceId": "gb-saltaire-export-markets-1914",
+      "fromYear": 1914,
+      "toYear": 1914,
+      "links": [
+        {
+          "destinationLabel": "Germany",
+          "lon": 9.678348,
+          "lat": 50.961733,
+          "kind": "documented-export-market",
+          "summary": "Germany was one of the two principal destinations for exported Salts Mill yarn immediately before wartime cancellations.",
+          "source": {
+            "title": "Saltaire Collection — World connections",
+            "url": "https://www.explore.saltairecollection.org/s/p/page/exhibition-world-connections",
+            "locator": "1910s: James Roberts’ interests in Russia; paragraph on cancelled contracts at outbreak of war in 1914"
+          },
+          "coordinateCaveat": "Natural Earth country reference label point, not consignee location, historical market boundary or shipping route.",
+          "coordinateSource": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+          "status": "contracts cancelled at outbreak of war, not continuous full-year exports"
+        },
+        {
+          "destinationLabel": "Russia",
+          "lon": 44.686469,
+          "lat": 58.249357,
+          "kind": "documented-export-market",
+          "summary": "Russia was one of the two principal destinations for exported Salts Mill yarn; the source describes cancelled contracts and later resumed Russian exports without a precise resumption date.",
+          "source": {
+            "title": "Saltaire Collection — World connections",
+            "url": "https://www.explore.saltairecollection.org/s/p/page/exhibition-world-connections",
+            "locator": "1910s: James Roberts’ interests in Russia; paragraph on cancelled contracts at outbreak of war in 1914"
+          },
+          "coordinateCaveat": "Natural Earth country reference label point, not consignee location, historical market boundary or shipping route.",
+          "coordinateSource": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+          "status": "contracts cancelled at outbreak of war, not continuous full-year exports"
+        }
+      ],
+      "caveat": "The collection gives 90% for Germany and Russia COMBINED, not 90% each and not a split or trade value. This is a 1914 disruption record; do not depict uninterrupted deliveries through 1914 or extend links to the 1853 mill-opening record."
+    },
+    {
+      "evidenceId": "gb-liverpool-port",
+      "fromYear": 1840,
+      "toYear": 1840,
+      "links": [
+        {
+          "destinationLabel": "New York — passenger voyage destination",
+          "lon": -74.0,
+          "lat": 40.7,
+          "kind": "documented-passenger-service",
+          "summary": "The ship North America departed Liverpool on 8 September 1840 and reached New York on 12 October 1840. The university voyage catalogue links passenger accounts and archival references.",
+          "source": {
+            "title": "Brigham Young University — Saints by Sea, North America voyage",
+            "url": "https://saintsbysea.byu.edu/mii/voyage/304",
+            "locator": "Voyage heading; departure/arrival; Customs #779 (FHL #002,289); diary references"
+          },
+          "coordinateCaveat": "Rounded New York city reference point, not a verified berth, shipping track or merchandise-market location.",
+          "departureDate": "1840-09-08",
+          "arrivalDate": "1840-10-12"
+        }
+      ],
+      "caveat": "One documented passenger voyage, not merchandise exports, factory sales, annual service frequency or trade value. A connector may show endpoints only, never the actual sailed route."
+    },
+    {
+      "evidenceId": "gb-new-lanark-cotton",
+      "fromYear": 1818,
+      "toYear": 1818,
+      "status": "archive-only-outside-existing-evidence-period",
+      "links": [
+        {
+          "destinationLabel": "Russia — yarn export label",
+          "lon": 44.686469,
+          "lat": 58.249357,
+          "kind": "documented-export-market",
+          "summary": "New Lanark’s collection contains an 1818 label used for cotton-yarn exports to Russia.",
+          "source": {
+            "title": "Go Industrial / New Lanark collection — A good yarn and a 200-year old export label",
+            "url": "https://www.goindustrial.co.uk/our-blog/blog-post/a-good-yarn-and-a-200-year-ole-export-label",
+            "locator": "Opening statement identifying original 1818 export label"
+          },
+          "coordinateCaveat": "Modern country reference point only; the label does not establish a specific port or shipping route.",
+          "verification": "Indexed institutional article text verified; direct page returned 403 in this session."
+        }
+      ],
+      "caveat": "1818 is earlier than the existing New Lanark record and atlas start of 1820. Archive only; do not carry forward this export connection into 1820 or later without further evidence."
+    },
+    {
+      "evidenceId": "nld-van-nelle-1920s",
+      "fromYear": null,
+      "toYear": null,
+      "status": "undated-regional-context-only",
+      "links": [
+        {
+          "destinationLabel": "Europe — broad market region",
+          "lon": null,
+          "lat": null,
+          "kind": "broad-regional-marketing-context",
+          "summary": "UNESCO describes processing imported coffee, tea and tobacco for marketing in Europe.",
+          "source": {
+            "title": "UNESCO World Heritage Centre — Van Nellefabriek",
+            "url": "https://whc.unesco.org/en/list/1441/",
+            "locator": "Description; Outstanding Universal Value, brief synthesis"
+          },
+          "coordinateCaveat": "No point assigned: source names a region, not any particular destination country or customer."
+        }
+      ],
+      "caveat": "The source dates construction to the 1920s but does not date individual shipments or name country markets. Do not turn construction dates into a delivery interval, pick a country endpoint, or treat Europe as a single measured destination."
+    }
+  ],
+  "additionalEvidence": [
+    {
+      "id": "gb-saltaire-export-markets-1914",
+      "title": "Saltaire · export contracts disrupted by war",
+      "place": "Saltaire",
+      "lon": -1.788333,
+      "lat": 53.839167,
+      "startYear": 1914,
+      "endYear": 1914,
+      "category": "production",
+      "summary": "At the outbreak of war, Germany and Russia cancelled outstanding yarn contracts with Salts Mill. The collection reports that these two markets together had accounted for 90% of exported yarn; the mill moved to short-time working.",
+      "evidenceType": "source-supported descriptive account",
+      "source": {
+        "title": "Saltaire Collection — World connections",
+        "url": "https://www.explore.saltairecollection.org/s/p/page/exhibition-world-connections",
+        "locator": "1910s: James Roberts’ interests in Russia; paragraph on cancelled contracts at outbreak of war in 1914"
+      },
+      "timeCaveat": "1914 wartime-disruption episode, not a full-year export-flow observation. Later Russian exports resumed, but the source provides no precise resumption date.",
+      "spatialCaveat": "UNESCO Saltaire property representative point; no factory footprint or shipping route implied.",
+      "coordinateSource": {
+        "url": "https://whc.unesco.org/en/list/1028/",
+        "locator": "Property geographic coordinate"
+      },
+      "referenceCountryId": "GBR",
+      "referenceCountryCaveat": "Modern national reference lookup only, not factory sales or historical sovereignty.",
+      "reviewStatus": "Collection exhibition inspected; underlying Roberts letter-book not independently audited.",
+      "reuse": {
+        "status": "Original concise paraphrase with attribution; blanket source reproduction licence not established."
+      },
+      "marketLinks": [
+        {
+          "destinationLabel": "Germany",
+          "lon": 9.678348,
+          "lat": 50.961733,
+          "kind": "documented-export-market",
+          "summary": "Germany was one of the two principal destinations for exported Salts Mill yarn immediately before wartime cancellations.",
+          "source": {
+            "title": "Saltaire Collection — World connections",
+            "url": "https://www.explore.saltairecollection.org/s/p/page/exhibition-world-connections",
+            "locator": "1910s: James Roberts’ interests in Russia; paragraph on cancelled contracts at outbreak of war in 1914"
+          },
+          "coordinateCaveat": "Natural Earth country reference label point, not consignee location, historical market boundary or shipping route.",
+          "coordinateSource": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+          "status": "contracts cancelled at outbreak of war, not continuous full-year exports",
+          "fromYear": 1914,
+          "toYear": 1914,
+          "caveat": "The collection gives 90% for Germany and Russia COMBINED, not 90% each and not a split or trade value. This is a 1914 disruption record; do not depict uninterrupted deliveries through 1914 or extend links to the 1853 mill-opening record."
+        },
+        {
+          "destinationLabel": "Russia",
+          "lon": 44.686469,
+          "lat": 58.249357,
+          "kind": "documented-export-market",
+          "summary": "Russia was one of the two principal destinations for exported Salts Mill yarn; the source describes cancelled contracts and later resumed Russian exports without a precise resumption date.",
+          "source": {
+            "title": "Saltaire Collection — World connections",
+            "url": "https://www.explore.saltairecollection.org/s/p/page/exhibition-world-connections",
+            "locator": "1910s: James Roberts’ interests in Russia; paragraph on cancelled contracts at outbreak of war in 1914"
+          },
+          "coordinateCaveat": "Natural Earth country reference label point, not consignee location, historical market boundary or shipping route.",
+          "coordinateSource": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+          "status": "contracts cancelled at outbreak of war, not continuous full-year exports",
+          "fromYear": 1914,
+          "toYear": 1914,
+          "caveat": "The collection gives 90% for Germany and Russia COMBINED, not 90% each and not a split or trade value. This is a 1914 disruption record; do not depict uninterrupted deliveries through 1914 or extend links to the 1853 mill-opening record."
+        }
+      ]
+    }
+  ],
+  "renderPolicy": "Only render dated links when their own date matches. Respect kind: passenger services are not merchandise exports. Null coordinates mean unmapped regional context. Source connections show reference endpoints, not actual routes; no inferred factory-to-national-flow joins.",
+  "coverage": "Two usable mapped examples: Liverpool 1840 passenger voyage and new Saltaire 1914 textile-market episode. New Lanark 1818 archive only; Van Nelle undated regional context.",
+  "retrieved": "2026-11-13"
+}
