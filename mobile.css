@@ -1,0 +1,41 @@
+/* Phone controls reserve their own space; geographic label sizes match the
+   renderer's placement rectangles, so larger text cannot collide unnoticed. */
+@media(max-width:600px){
+  .atlas-semantic-canvas header{top:env(safe-area-inset-top,0px);left:8px;right:8px;height:58px;padding:5px 0;gap:6px;box-shadow:none}
+  .atlas-semantic-canvas header .brand{font-size:12px;letter-spacing:.2px;flex:1;white-space:nowrap}
+  .atlas-semantic-canvas header>a:not(.brand),.atlas-semantic-canvas header #exploreIberia{display:none}
+  .atlas-semantic-canvas header button,.atlas-semantic-canvas header #atlasHelp{font-size:13px;min-height:44px;padding:8px 10px;background:#173c48;border:1px solid #71918e}
+  .atlas-semantic-canvas .atlas-view-toggle{top:calc(62px + env(safe-area-inset-top,0px));right:8px;padding:3px;background:#102c37;gap:4px}
+  .atlas-semantic-canvas .atlas-view-toggle button{font-size:14px;min-height:44px;min-width:76px;padding:9px 12px}
+  .atlas-semantic-canvas .zoom{right:8px;top:auto;bottom:calc(152px + env(safe-area-inset-bottom,0px));padding:3px;background:#102c37;display:flex;gap:4px}
+  .atlas-semantic-canvas .zoom button{min-width:44px;min-height:44px;font-size:26px;padding:4px}
+  .atlas-semantic-canvas footer{left:8px;right:8px;bottom:env(safe-area-inset-bottom,0px);padding:6px 12px 8px;background:#102c37;border:1px solid #688b8c}
+  .atlas-semantic-canvas footer>div:first-child{gap:12px;justify-content:center}
+  .atlas-semantic-canvas footer #year{font-size:25px;min-width:70px;text-align:center}
+  .atlas-semantic-canvas footer button{min-width:44px;min-height:44px;font-size:24px;padding:2px 8px}
+  .atlas-semantic-canvas footer .ticks{font-size:11px;color:#d7e5df}
+  #time{height:36px;margin:0;touch-action:pan-x;cursor:pointer}
+  #time::-webkit-slider-thumb{min-width:26px;min-height:26px}
+  #countrySemanticCanvas .contained-country-name{font-size:16px;fill:#fff6db;font-weight:650}
+  #countrySemanticCanvas .contained-metric-name{font-size:13px;fill:#e1f0e8}
+  #countrySemanticCanvas .contained-metric-value{font-size:15px;fill:#ffe2a0;font-weight:550}
+  #countrySemanticCanvas .country-name-access>rect,#countrySemanticCanvas .contained-country-label>rect{fill:#102b34;fill-opacity:.9;rx:6;stroke:#6c8c88;stroke-width:.6px}
+  #countrySemanticCanvas .country-reference-caption{display:none}
+  .country-readable-explanation{font-size:16px;line-height:1.55;padding:16px}
+  .country-readable-explanation strong{font-size:18px;padding-right:44px}
+  .country-explanation-close{width:44px;height:44px;font-size:28px;right:8px;top:8px}
+  .country-category-actions{gap:8px}
+  .country-category-actions button,.country-catalog-row button.country-catalog-first{min-height:44px;font-size:15px;padding:10px}
+  .country-catalog-inspect{font-size:16px;min-height:48px;padding:10px 0}
+  .country-catalog-inspect small,.country-catalog-first{font-size:14px}
+  .country-catalog-search,.trade-products input{font-size:16px;min-height:44px}
+  .country-readable-explanation a,.trade-products a,.war-evidence a{padding:10px 0;min-height:44px;overflow-wrap:anywhere}
+  .trade-products,.war-evidence{font-size:16px;line-height:1.5}
+  .trade-products button,.war-evidence button{min-width:44px;min-height:44px;font-size:15px;padding:10px}
+  #atlasWelcome .welcome-close{width:44px;height:44px}
+  #atlasWelcome .welcome-start{min-height:48px;font-size:16px}
+}
+@media(max-width:360px){
+  .atlas-semantic-canvas header .brand{font-size:10px}
+  .atlas-semantic-canvas header button,.atlas-semantic-canvas header #atlasHelp{font-size:12px;padding:8px}
+}

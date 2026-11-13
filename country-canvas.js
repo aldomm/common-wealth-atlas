@@ -95,14 +95,15 @@ function place(mask,points,w,h,occupied){for(const p of points){const rect={x:Ma
 function budget(area,ratio=1){if(area<4500)return 0;const cap=ratio>3?26:ratio>2?17:12;return Math.min(cap,Math.max(1,Math.floor(area/18000)));}
 let currentLabels=[],localLabels=[],hoverNode=null;const countryTitles=new Map();
 function dispatch(c,action,evidenceId){state.country=c.id;window.dispatchEvent(new CustomEvent('atlas:country-action',{detail:{countryId:c.id,action,...(evidenceId?{evidenceId}:{})}}));}
+const phoneLayout=()=>innerWidth<=600;
 function makeLabel(c,key,o,rect){
  const special=['government','trade','wars','events','development','reference',...categoryKeys].includes(key),label={c,key,o,rect};
  const g=node('g',{transform:`translate(${rect.x} ${rect.y})`,class:'contained-country-label '+(o?.value==null&&firstRecord(c,key)!=null?'country-missing-action ':'')+(o?.status==='last'?'country-last':o?.status==='interpolated'?'country-estimate':''),tabindex:'0',role:'button','data-country-id':c.id,'data-country-metric':key,'aria-label':c.name+' · '+(names[key]||key)+' · '+(o?shortValue(key,o):'Explore evidence')});
  g.append(node('rect',{x:0,y:0,width:rect.w,height:rect.h,fill:'transparent',stroke:'none'}));
- const icon=node('g',{transform:'translate(1 5) scale(.56)'});icon.append(node('path',{d:paths[glyph(key==='total_gdp'?'gdp':key)],fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linecap':'round','stroke-linejoin':'round'}));g.append(icon);
- text(g,19,10,names[key]||ExtendedData.indicators[key]?.name||key,'contained-metric-name');
+ const icon=node('g',{transform:phoneLayout()?'translate(5 13) scale(.7)':'translate(1 5) scale(.56)'});icon.append(node('path',{d:paths[glyph(key==='total_gdp'?'gdp':key)],fill:'none',stroke:'currentColor','stroke-width':'1.7','stroke-linecap':'round','stroke-linejoin':'round'}));g.append(icon);
+ text(g,phoneLayout()?27:19,phoneLayout()?17:10,names[key]||ExtendedData.indicators[key]?.name||key,'contained-metric-name');
  const value=categoryKeys.includes(key)?categorySubtitle(key):key==='wars'?((window.AtlasWars?.records(c.id,year()).length||0)+' source records →'):key==='trade'?(tradeCoverage(c)?'coverage →':'check sources →'):o?shortValue(key,o):key==='trade'?'coverage →':key==='events'?`${eventsFor(c,false).length} documented`:key==='government'?government(c).type:'source context';
- text(g,19,25,value.length>31?value.slice(0,29)+'…':value,'contained-metric-value');
+ text(g,phoneLayout()?27:19,phoneLayout()?37:25,value.length>31?value.slice(0,29)+'…':value,'contained-metric-value');
  const hover=()=>{state.hover={countryId:c.id,key};showHover(label);};
  
  g.addEventListener('click',()=>{if(o?.value==null&&firstRecord(c,key)!=null)jumpToFirst(c,key);else if(key==='trade'||key==='wars')dispatch(c,key);else hover();});
@@ -142,8 +143,8 @@ function appendCatalog(body,label,keys){
 }
 function drawCountry(c,mask,occupied){
  const points=candidates(mask);if(!points.length)return;
- hit.font='650 12px system-ui';const nameW=Math.ceil(hit.measureText(c.name).width+6),title=place(mask,points,nameW,16,occupied);
- if(title){const label={c,key:'all_indicators',o:null,rect:title},name=node('g',{class:'country-name-access',tabindex:'0',role:'button','aria-label':c.name+' · open all indicators'});name.append(node('rect',{x:title.x,y:title.y,width:title.w,height:title.h,fill:'transparent'}));text(name,title.x,title.y+13,c.name,'contained-country-name');name.addEventListener('click',()=>showHover(label));name.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();showHover(label);}});overlay.append(name);countryTitles.set(c.id,title);occupied.push(title);}
+ hit.font=phoneLayout()?'650 16px system-ui':'650 12px system-ui';const nameW=Math.ceil(hit.measureText(c.name).width+(phoneLayout()?16:6)),title=place(mask,points,nameW,phoneLayout()?44:16,occupied);
+ if(title){const label={c,key:'all_indicators',o:null,rect:title},name=node('g',{class:'country-name-access',tabindex:'0',role:'button','aria-label':c.name+' · open all indicators'});name.append(node('rect',{x:title.x,y:title.y,width:title.w,height:title.h,fill:'transparent'}));text(name,title.x+(phoneLayout()?8:0),title.y+(phoneLayout()?28:13),c.name,'contained-country-name');name.addEventListener('click',()=>showHover(label));name.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();showHover(label);}});overlay.append(name);countryTitles.set(c.id,title);occupied.push(title);}
  const ratio=getZoom()/fitZoom(c),count=budget(mask.area,ratio);if(!count)return;
  const rows=observations(c),available=rows.filter(r=>r.o.value!=null),missing=rows.filter(r=>r.o.value==null);
  const extras=[],missingSpecial=[];
@@ -154,7 +155,7 @@ function drawCountry(c,mask,occupied){
  const dev=developmentFor(c);if(dev)extras.unshift({key:'development',o:{value:dev.value,status:dev.year===year()?'exact':'last',sourceYear:dev.year,periodStart:dev.year,periodEnd:dev.year,sourceUrl:HistoricalDevelopment.sourceUrl}});else missingSpecial.push({key:'development',o:{value:null,status:'unavailable'}});
  const ordered=orderedRows(c,available,missing,extras,missingSpecial,count,mask.area,ratio);let placed=0;
  for(const {key,o}of ordered){if(placed>=count)break;const val=categoryKeys.includes(key)?categorySubtitle(key):key==='wars'?((window.AtlasWars?.records(c.id,year()).length||0)+' source records →'):key==='trade'?(tradeCoverage(c)?'coverage →':'check sources →'):o?shortValue(key,o):key==='government'?government(c).type:key==='trade'?'coverage →':`${eventsFor(c,false).length} documented`;
-  const w=Math.max(76,Math.min(190,Math.max(textWidth(names[key]||ExtendedData.indicators[key]?.name||key,'10px system-ui'),textWidth(val.length>31?val.slice(0,29)+'…':val,'550 12px system-ui'))+24)),rect=place(mask,points,w,29,occupied);if(!rect)continue;
+  const mobile=phoneLayout(),w=Math.max(76,Math.min(mobile?290:190,Math.max(textWidth(names[key]||ExtendedData.indicators[key]?.name||key,mobile?'13px system-ui':'10px system-ui'),textWidth(val.length>31?val.slice(0,29)+'…':val,mobile?'550 15px system-ui':'550 12px system-ui'))+(mobile?36:24))),rect=place(mask,points,w,mobile?48:29,occupied);if(!rect)continue;
   occupied.push(rect);makeLabel(c,key,o,rect);placed++;
  }
 }
@@ -249,7 +250,7 @@ function render(){
  for(const {c,mask}of visible)drawCountry(c,mask,occupied);
  drawLocalPoints(locals);
  missingOutlinePoints(occupied);drawJumpFlag();
- text(overlay,innerWidth/2,innerHeight-106,'National values · present-day reference areas · ≈ estimate · dated values remain dated · * derived','country-reference-caption');
+ text(overlay,innerWidth/2,innerHeight-(phoneLayout()?155:106),'National values · present-day reference areas · ≈ estimate · dated values remain dated · * derived','country-reference-caption');
  if(previous){let label=[...currentLabels,...localLabels].find(l=>l.c.id===previous.countryId&&l.key===previous.key);const saved=state.openLabel,anchor=countryTitles.get(previous.countryId)||currentLabels.find(l=>l.c.id===previous.countryId)?.rect;if(!label&&saved&&anchor)label={...saved,rect:anchor,o:metricKeys().includes(saved.key)?observationFor(saved.c,saved.key):saved.o};if(label)showHover(label);else{state.hover=null;state.openLabel=null;}}
 }
 function schedule(){if(!state.frame)state.frame=requestAnimationFrame(render);}
