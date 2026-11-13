@@ -24,7 +24,7 @@ const paths={
  development:'M3 21V3M3 21h18M6 17l5-6 4 2 6-9',
  factory:'M3 22V9l6 4V8l6 5V3h4v19H3M6 17h2M11 17h2M16 17h2'
 };
-function glyph(key){return ({gdp:'income',pop:'people',life:'health',happiness:'happiness',hdi:'development',school_mean:'school',school_expected:'school',water:'water',sanitation:'sanitation',electricity:'power',internet:'network',poverty:'income',poverty_lower_middle:'income',poverty_upper_middle:'income',gini:'inequality',infant_mortality:'infant',under5_mortality:'infant',birth_rate:'infant',death_rate:'health',exports:'trade',imports:'trade',trade:'trade',wars:'wars',events:'events',production:'factory',distribution:'inequality',all_indicators:'network'})[key]||'development';}
+function glyph(key){return ({gdp:'income',pop:'people',life:'health',happiness:'happiness',hdi:'development',school_mean:'school',school_expected:'school',water:'water',sanitation:'sanitation',electricity:'power',internet:'network',poverty:'income',poverty_lower_middle:'income',poverty_upper_middle:'income',gini:'inequality',infant_mortality:'infant',under5_mortality:'infant',birth_rate:'infant',death_rate:'health',exports:'trade',imports:'trade',trade:'trade',wars:'wars',events:'events',production:'factory',distribution:'inequality',baskets:'income',all_indicators:'network'})[key]||'development';}
 function node(tag,attrs={},text){const n=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);if(text!=null)n.textContent=text;return n;}
 function text(group,x,y,value,cls='country-label-text'){group.append(node('text',{x,y,class:cls},value));}
 function shape(c){
@@ -52,7 +52,8 @@ const names={gdp:'GDP/person',pop:'Population',total_gdp:'Total GDP*',hdi:'HDI',
 names.defence_spending_eur='Defence spending';names.defence_spending_gdp='Defence / GDP';
 const compactUnits={defence_spending_eur:' EUR',defence_spending_gdp:'% GDP',agriculture_share:'% GDP',industry_share:'% GDP',manufacturing_share:'% GDP',services_share:'% GDP',gdp:' int.$',total_gdp:' int.$',life:' y',school_mean:' y',school_expected:' y',water:'%',sanitation:'%',electricity:'%',internet:'%',poverty:'%',poverty_lower_middle:'%',poverty_upper_middle:'%',exports:'% GDP',imports:'% GDP',infant_mortality:'/1k',under5_mortality:'/1k',birth_rate:'/1k',death_rate:'/1k'};
 for(const [key,meta] of Object.entries(ExtendedData.indicators)){names[key]??=meta.compactName||meta.name;compactUnits[key]??=meta.compactUnit||(key.startsWith('wealth_')?'%':'');}
-const categoryKeys=['production','distribution','all_indicators'];
+const categoryKeys=['production','distribution','baskets','all_indicators'];
+names.baskets='Basic-needs baskets';
 const primary=['gdp','pop','total_gdp','hdi','life'];
 function observationFor(c,key){return key==='total_gdp'?totalGDP(c):AtlasObservations.resolve(c,key,year());}
 function metricKeys(c){return [...new Set([...primary,...Object.keys(ExtendedData.indicators)])].filter(key=>!c||!ExtendedData.indicators[key]?.applicableCountries||ExtendedData.indicators[key].applicableCountries.includes(c.id));}
@@ -121,6 +122,7 @@ function categoryPrimary(c,key){
  return null;
 }
 function categorySubtitle(key,c){
+ if(key==='baskets')return AtlasBaskets.summary(c.id,year());
  const primary=categoryPrimary(c,key);
  if(primary)return (primary.key==='gini'?'Gini':names[primary.key]||primary.key)+' '+shortValue(primary.key,primary.o);
  if(key==='government')return government(c).type;
@@ -130,6 +132,7 @@ function categorySubtitle(key,c){
  return key==='trade'&&tradeCoverage(c)?'Explore trade records →':'Not recorded';
 }
 function openCategoryEvidence(label){
+ if(label.key==='baskets'&&!AtlasBaskets.record(label.c.id,year())&&AtlasBaskets.next(label.c.id,year())!=null)jumpToFirst(label.c,'baskets');
  const primary=categoryPrimary(label.c,label.key);
  if(primary)return showHover({...label,...primary,categoryOrigin:label.key});
  if(label.key==='trade'||label.key==='wars'){hideHover();return dispatch(label.c,label.key);}
@@ -144,8 +147,8 @@ function categoryInfo(c,key){
  const sectors=[...['agriculture_share','industry_share','manufacturing_share','services_share'].filter(k=>ExtendedData.indicators[k]),...metricKeys(c).filter(k=>k.startsWith('hna_'))],wealth=metricKeys(c).filter(k=>/wealth|networth|asset/i.test(k));
  const income=['gini','poverty','poverty_lower_middle','poverty_upper_middle'].filter(k=>ExtendedData.indicators[k]);
  if(key==='production')return {title:c.name+' · production & sectors',lines:['Modern WDI value-added shares and separately labeled historical reconstructions. Historical volume indexes measure sector growth (1913 = 100), not GDP shares. Each value retains its own source year.','Manufacturing is already a subset of industry. Do not add it again to agriculture + industry + services. The broad sectors need not sum to 100% because of taxes, subsidies and other accounting differences.','Do not multiply these shares by the atlas’s reconstructed PPP GDP total without reconciling source definitions and years.',sectors.length?'Choose a sector below for its definition, date and source.':'Sector shares are not loaded in this build. No composition has been inferred.'],catalog:sectors,actions:['all_indicators','trade'],source:{url:'global-sources.html',title:'Indicator sources'}};
- if(key==='distribution')return {title:c.name+' · wealth & income distribution',lines:['Income inequality, poverty and wealth ownership are different measurements. GDP/person is an average output measure and says nothing by itself about how income or assets are distributed.',wealth.length?'Wealth measures below use their own source population, units and dates; they are not income shares.':'Wealth shares are not yet published in this atlas. Income Gini and poverty below must not be presented as wealth distribution.','Gini may describe income or consumption according to the survey. Poverty measures report population below the stated PPP poverty line. Select each series to inspect its definition and source.'],catalog:[...income,...wealth],actions:['all_indicators','production'],source:{url:'wealth-sources.html',title:'OECD wealth sources & coverage'}};
- return {title:c.name+' · all indicators',lines:[`Every loaded numeric series is accessible here for ${year()}, including those omitted from the map for space.`,`Values marked last are dated earlier references. Calculated estimates remain labeled. A missing series can move the entire timeline to its next available loaded value; it does not alter only that indicator.`],catalog:metricKeys(c),actions:['trade','wars','production','distribution','government','events','development'],source:{url:'sources.html#'+c.id,title:'Country bibliography'}};
+ if(key==='distribution')return {title:c.name+' · wealth & income distribution',lines:['Income inequality, poverty and wealth ownership are different measurements. GDP/person is an average output measure and says nothing by itself about how income or assets are distributed.',wealth.length?'Wealth measures below use their own source population, units and dates; they are not income shares.':'Wealth shares are not yet published in this atlas. Income Gini and poverty below must not be presented as wealth distribution.','Gini may describe income or consumption according to the survey. Poverty measures report population below the stated PPP poverty line. Select each series to inspect its definition and source.'],catalog:[...income,...wealth],actions:['all_indicators','production','baskets'],source:{url:'wealth-sources.html',title:'OECD wealth sources & coverage'}};
+ return {title:c.name+' · all indicators',lines:[`Every loaded numeric series is accessible here for ${year()}, including those omitted from the map for space.`,`Values marked last are dated earlier references. Calculated estimates remain labeled. A missing series can move the entire timeline to its next available loaded value; it does not alter only that indicator.`],catalog:metricKeys(c),actions:['trade','wars','production','distribution','baskets','government','events','development'],source:{url:'sources.html#'+c.id,title:'Country bibliography'}};
 }
 function appendCategoryActions(body,label,keys){
  const actions=document.createElement('div');actions.className='country-category-actions';
@@ -209,6 +212,7 @@ function missingOutlinePoints(occupied){
  }
 }
 function firstRecord(c,key){
+ if(key==='baskets')return AtlasBaskets.record(c.id,year())?null:AtlasBaskets.next(c.id,year());
  if(['government','trade','wars','events','development','reference',...categoryKeys].includes(key))return null;
  if(key==='total_gdp'){const a=AtlasObservations.availableYears(c,'gdp'),b=new Set(AtlasObservations.availableYears(c,'pop'));return a.filter(y=>y>year()).find(y=>b.has(y))??null;}
  return AtlasObservations.availableYears(c,key).find(y=>y>year())??null;
@@ -230,6 +234,7 @@ function drawJumpFlag(){
 function detailFor(label){
  if(label.records){const records=label.records,source=records[0].sources?.[0]||records[0].source;return {title:records.length>1?records.length+' documented records here':records[0].title,lines:records.flatMap(r=>[`${r.startYear}–${r.endYear}: ${r.title}.`,r.summary||'',r.marketLinks?.some(l=>(l.fromYear??-Infinity)<=year()&&year()<=(l.toYear??Infinity))?'Activate this point to trace its documented connections.':'']).filter(Boolean).concat(['Point uses the source-linked locality, not a national indicator position.']),source};}
  const {c,key,o}=label;
+ if(key==='baskets')return AtlasBaskets.detail(c.id,year());
  if(categoryKeys.includes(key))return categoryInfo(c,key);
  const ref='National series placed in present-day reference geography, not the historical polity or local economy beneath it.';
  if(key==='reference')return {title:c.name+' · reference point',lines:['No country outline is loaded here. No bounded country area or contained placement is inferred.',ref],actions:['all_indicators','trade','production','distribution'],source:{url:'sources.html#'+c.id,title:'Country sources'}};
@@ -263,7 +268,9 @@ function showHover(label){
  if(info.currencyDisplay)window.AtlasCurrency?.control(body);
  if(info.cpiSource?.url){const a=document.createElement('a');a.href=info.cpiSource.url;a.target='_blank';a.rel='noopener';a.textContent='US CPI adjustment source ↗';body.append(a);}
  if(info.fxSource?.url){const a=document.createElement('a');a.href=info.fxSource.url;a.target='_blank';a.rel='noopener';a.textContent='Exchange-rate source ↗';body.append(a);}
+ for(const source of info.additionalSources||[]){const a=document.createElement('a');a.href=source.url;a.target='_blank';a.rel='noopener';a.textContent=source.title+' ↗';body.append(a);}
  if(info.source?.url){const a=document.createElement('a');a.href=info.source.url;a.target='_blank';a.rel='noopener';a.textContent=(info.source.title||'Original source')+' ↗';body.append(a);}
+ if(info.auditNotes?.length){const notes=document.createElement('details'),heading=document.createElement('summary');heading.textContent='Source notes: places, occupations and estimates';notes.append(heading);for(const line of info.auditNotes){const p=document.createElement('p');p.textContent=line;notes.append(p);}body.append(notes);}
  foreign.append(body);g.append(foreign);
  g.addEventListener('keydown',e=>{if(e.key==='Escape')hideHover();});overlay.append(g);hoverNode=g;state.hover={countryId:label.c.id,key:label.key};state.openLabel=label;
 }
