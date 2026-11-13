@@ -29,3 +29,6 @@
 #atlasComparison[hidden]{display:none}#atlasComparison strong{font-size:15px}#atlasComparison span{font-size:12px;color:#c6dcd5;width:100%}#atlasComparison button,.compare-measure{min-height:44px;padding:8px 12px;font-size:14px;background:#285253;color:#f5e3af}.compare-measure{display:block;margin:0 0 12px;width:100%}
 .atlas-comparing .economic-marker{display:none!important}
 @media(max-width:600px){#atlasComparison{top:120px;left:8px;max-width:calc(100vw - 16px);padding:8px 10px}#atlasComparison span{font-size:11px}#atlasComparison strong{font-size:14px}}
+
+.comparison-legend{width:100%;font-size:12px;color:#e0ece4}.comparison-ramp{height:12px;border:1px solid #adc4bd;border-radius:3px;margin:7px 0}.comparison-range{display:flex;justify-content:space-between;gap:12px}.comparison-range b{font-weight:500}.comparison-missing{margin-top:6px;color:#c3cccf}.comparison-scale-note{font-size:11px;line-height:1.35;margin-top:6px;color:#b4cbc4}
+@media(max-width:600px){#atlasComparison{max-width:calc(100vw - 16px)}.comparison-scale-note{max-height:42px;overflow:auto}.comparison-legend{font-size:11px}}

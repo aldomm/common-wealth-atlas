@@ -179,6 +179,41 @@ function compareMetric(key){
  const exit=document.createElement('button');exit.textContent='Show all indicators';exit.onclick=()=>compareMetric(null);comparisonBar.append(exit);}
  draw();render();
 }
+let comparisonScaleCache=null;
+function comparisonScale(){
+ const key=state.comparison,cacheKey=key+'|'+year()+'|'+window.AtlasCurrency?.state.mode;
+ if(comparisonScaleCache?.cacheKey===cacheKey)return comparisonScaleCache;
+ const entries=new Map();let unit=key==='pop'?'people':key==='gdp'||key==='total_gdp'?'2011 international dollars':ExtendedData.indicators[key]?.unit||compactUnits[key]||'';
+ for(const c of countries){const o=observationFor(c,key);let v=o.value;if(!Number.isFinite(v))continue;
+  if(key==='pop')v*=1000;
+  const fx=window.AtlasCurrency?.observation(o,key,year());
+  if(fx){const constant=AtlasCurrency.state.mode==='constant';unit=constant?'2024 USD':'nominal USD';if(fx.currency!=='USD'||constant&&fx.inflationStatus!=='adjusted')continue;v=fx.value;}
+  if(Number.isFinite(v))entries.set(c.id,v);
+ }
+ const values=[...entries.values()],min=values.length?Math.min(...values):null,max=values.length?Math.max(...values):null;
+ comparisonScaleCache={cacheKey,entries,min,max,unit};return comparisonScaleCache;
+}
+function comparisonColor(value,scale){
+ if(!Number.isFinite(value)||scale.min==null)return '#637078';
+ const t=scale.max===scale.min ? 0.5 :Math.max(0,Math.min(1,(value-scale.min)/(scale.max-scale.min))),stops=[[68,38,103],[41,121,142],[108,194,104],[253,231,82]],p=t*(stops.length-1),i=Math.min(stops.length-2,Math.floor(p)),f=p-i;
+ return 'rgb('+stops[i].map((v,j)=>Math.round(v+(stops[i+1][j]-v)*f)).join(',')+')';
+}
+function shadeComparison(){
+ for(const surface of [map,window.AtlasGlobe?.svg].filter(Boolean))surface.querySelector('#comparisonChoropleth')?.remove();
+ if(!state.comparison)return;
+ const scale=comparisonScale(),surface=globe()?AtlasGlobe.svg:map,group=node('g',{id:'comparisonChoropleth','pointer-events':'none','aria-hidden':'true'}),k=globe()?1:innerWidth/map.viewBox.baseVal.width;
+ for(const b of D.boundaries){const path=surface.querySelector(`path[data-id="ref:${b.id}"],path[data-id="${b.id}"]`);if(!path)continue;
+  group.append(node('path',{d:path.getAttribute('d'),fill:comparisonColor(scale.entries.get(b.id),scale),stroke:'#b7c9c7','stroke-width':.65/k,'fill-rule':'evenodd','data-comparison-country':b.id}));}
+ surface.append(group);
+ let legend=comparisonBar.querySelector('.comparison-legend');if(!legend){legend=document.createElement('div');legend.className='comparison-legend';comparisonBar.insertBefore(legend,comparisonBar.lastChild);}
+ const signature=scale.cacheKey+'|'+scale.min+'|'+scale.max;if(legend.dataset.signature===signature)return;legend.dataset.signature=signature;legend.replaceChildren();
+ const unit=document.createElement('div');unit.textContent=scale.unit+' · '+year();legend.append(unit);
+ const ramp=document.createElement('div');ramp.className='comparison-ramp';ramp.style.background=scale.min===scale.max&&scale.min!=null?comparisonColor(scale.min,scale):'linear-gradient(to right,rgb(68,38,103),rgb(41,121,142),rgb(108,194,104),rgb(253,231,82))';legend.append(ramp);
+ const ends=document.createElement('div');ends.className='comparison-range';const format=n=>n.toLocaleString('en-US',{maximumSignificantDigits:4});
+ if(scale.min==null)ends.textContent='No comparable values loaded';else if(scale.min===scale.max)ends.textContent='All available values: '+format(scale.min);else{for(const text of ['Lower '+format(scale.min),'Higher '+format(scale.max)]){const label=document.createElement('b');label.textContent=text;ends.append(label);}}legend.append(ends);
+ const missing=document.createElement('div');missing.className='comparison-missing';missing.textContent='■ Gray: not recorded / no compatible conversion';legend.append(missing);
+ const notes=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Scale, dates & geography';notes.append(summary);const note=document.createElement('div');note.className='comparison-scale-note';note.textContent='Linear scale across all loaded countries for this year; unchanged by panning. Uses displayed values, including dated earlier records and labeled estimates. Colors use present-day reference areas, not historical sovereignty. Higher does not necessarily mean better.';notes.append(note);legend.append(notes);
+}
 function drawComparison(c,mask,occupied){
  const key=state.comparison,o=observationFor(c,key),value=shortValue(key,o),points=candidates(mask),mobile=phoneLayout();
  const w=Math.max(textWidth(c.name,mobile?'13px system-ui':'10px system-ui'),textWidth(value,mobile?'550 15px system-ui':'550 12px system-ui'))+(mobile?36:24);
@@ -295,7 +330,7 @@ for(const line of info.lines){const p=document.createElement('p');p.textContent=
  g.addEventListener('keydown',e=>{if(e.key==='Escape')hideHover();});overlay.append(g);hoverNode=g;state.hover={countryId:label.c.id,key:label.key};state.openLabel=label;
 }
 function render(){
- state.frame=0;const previous=state.hover;hoverNode=null;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);overlay.replaceChildren();currentLabels=[];localLabels=[];countryTitles.clear();
+ state.frame=0;shadeComparison();const previous=state.hover;hoverNode=null;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);overlay.replaceChildren();currentLabels=[];localLabels=[];countryTitles.clear();
  if(window.AtlasWars?.state.active||window.AtlasTrade?.state.active||window.AtlasIndustryMarkets?.isActive?.())return;
  const occupied=[...document.querySelectorAll('header,footer,.atlas-view-toggle,.zoom,#atlasComparison')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};}).filter(b=>b.w&&b.h);
  const visible=countries.map(c=>({c,mask:projectedMask(c)})).filter(x=>x.mask?.area>500).sort((a,b)=>b.mask.area-a.mask.area);
