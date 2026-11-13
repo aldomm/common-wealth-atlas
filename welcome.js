@@ -14,7 +14,7 @@
     <p class="welcome-lead">Explore how economies, living conditions, governments and conflicts changed across the world—through a map and a shared timeline.</p>
     <ol class="welcome-steps">
       <li><strong>Choose a year</strong><span>Move the timeline at the bottom. Countries, indicators and connections follow the selected year.</span></li>
-      <li><strong>Move closer</strong><span>Drag to explore and scroll or use + / − to zoom. More country labels and measures appear as there is room. Switch between Globe and Map at any time.</span></li>
+      <li><strong>Move closer</strong><span>Drag to explore. Pinch with two fingers on a phone, or scroll or use + / − to zoom. More country labels and measures appear as there is room. Switch between Globe and Map at any time.</span></li>
       <li><strong>Click to discover</strong><span>Click a country or indicator for values, explanations and sources. Explore trade partners and war opponents through their map connections.</span></li>
       <li><strong>Return to the map</strong><span>Close an explanation with ×. Click the map background or press Escape to leave a connection view and bring back the country labels.</span></li>
     </ol>
