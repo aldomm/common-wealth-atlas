@@ -1,0 +1,22 @@
+#atlasWelcome{box-sizing:border-box;width:min(680px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow:auto;padding:36px 40px 22px;border:1px solid #597879;border-radius:20px;background:#102b34;color:#e7f2ec;box-shadow:0 28px 100px #0009;font:15px/1.5 system-ui,sans-serif}
+#atlasWelcome::backdrop{background:#04131cc7;backdrop-filter:blur(5px)}
+#atlasWelcome h1{font-size:clamp(30px,5vw,42px);line-height:1.08;letter-spacing:-1.5px;margin:10px 0 16px;color:#f5edce}
+#atlasWelcome .welcome-eyebrow{font-size:11px;letter-spacing:2px;color:#9ccabc;margin:0}
+#atlasWelcome .welcome-lead{font-size:16px;color:#c9ded7;margin:0 0 22px;max-width:540px}
+#atlasWelcome button{font:inherit;cursor:pointer}
+#atlasWelcome .welcome-close{position:absolute;right:16px;top:12px;background:transparent;border:0;color:#d9ece5;font-size:28px;width:36px;height:36px;padding:0}
+#atlasWelcome .welcome-steps{list-style:none;counter-reset:steps;padding:0;margin:0;display:grid;gap:15px}
+#atlasWelcome .welcome-steps li{counter-increment:steps;position:relative;padding-left:39px}
+#atlasWelcome .welcome-steps li:before{content:counter(steps);position:absolute;left:0;top:0;border:1px solid #628b83;border-radius:50%;width:25px;height:25px;text-align:center;color:#d4e7bd;font-size:13px;line-height:25px}
+#atlasWelcome .welcome-steps strong{display:block;color:#f3f1dc}
+#atlasWelcome .welcome-steps span{display:block;font-size:13px;color:#bed5cf}
+#atlasWelcome .welcome-evidence{border-top:1px solid #3c5b60;margin-top:23px;padding-top:17px;font-size:12px;color:#b7ccc8}
+#atlasWelcome .welcome-evidence strong{color:#dce9d8;font-size:13px}
+#atlasWelcome .welcome-evidence p{margin:7px 0}
+#atlasWelcome .welcome-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px}
+#atlasWelcome .welcome-footer label{font-size:11px;display:flex;align-items:center;gap:7px;color:#bdd3ce}
+#atlasWelcome input{accent-color:#dbe8af}
+#atlasWelcome .welcome-start{background:#e0e9b7;color:#153339;border:0;border-radius:8px;padding:12px 17px;font-size:14px;font-weight:650;white-space:nowrap}
+#atlasWelcome .welcome-reminder{font-size:11px;text-align:right;color:#91b5ac;margin:10px 0 0}
+#atlasWelcome :focus-visible,#atlasHelp:focus-visible{outline:2px solid #f7d987;outline-offset:4px}
+@media(max-width:600px){#atlasWelcome{padding:28px 22px 18px;max-height:calc(100dvh - 20px)}#atlasWelcome .welcome-footer{align-items:stretch;flex-direction:column-reverse;gap:12px}#atlasWelcome .welcome-reminder{text-align:left}.atlas-semantic-canvas header{gap:6px;left:4px}.atlas-semantic-canvas header .brand{font-size:10px}.atlas-semantic-canvas header #atlasHelp{font-size:10px;padding:5px}}
