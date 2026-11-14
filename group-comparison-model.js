@@ -86,8 +86,23 @@ function create(env){
   const kind=individual?'individual':meta?.kind==='weighted'||meta?.kind==='mean'?'average':'total';
   return {result,parts,kind,excluded:result.members.filter(m=>!used.has(m.id))};
  }
+ function conflictPeriods(ids,start,end){
+  const selected=new Set(ids),buckets=new Map();if(!Number.isInteger(start)||!Number.isInteger(end)||start>end)return [];
+  for(const r of env.wars||[]){
+   if(!['interstate_war','interstate_armed_conflict'].includes(r.type)||!Number.isInteger(r.startYear)||!Number.isInteger(r.endYear)||r.endYear<r.startYear)continue;
+   const involved=[...new Set([...(r.affectedCountryIds||[]),...(r.referenceCountryIds||[]),...(r.sides||[]).flatMap(s=>[...(s.countryIds||[]),...(s.referenceCountryIds||[])])].filter(id=>selected.has(id)))];
+   if(!involved.length||r.endYear<start||r.startYear>end)continue;
+   const name=r.source?.dyadId!=null?r.name:r.name.split(' · ')[0],key=r.source?.dyadId!=null?'dyad:'+r.source.dyadId:'historical:'+name;
+   if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push({r,involved,name});
+  }
+  const periods=[];for(const [key,rows]of buckets){let run=null;for(const {r,involved,name}of rows.sort((a,b)=>a.r.startYear-b.r.startYear||a.r.endYear-b.r.endYear)){
+   if(!run||r.startYear>run.endYear+1){run={id:key+':'+r.startYear,name,startYear:r.startYear,endYear:r.endYear,countryIds:[],records:[]};periods.push(run);}
+   run.endYear=Math.max(run.endYear,r.endYear);run.countryIds=[...new Set([...run.countryIds,...involved])];run.records.push(r);
+  }}
+  return periods.map(p=>({...p,visibleStart:Math.max(start,p.startYear),visibleEnd:Math.min(end,p.endYear)})).sort((a,b)=>a.visibleStart-b.visibleStart||a.name.localeCompare(b.name));
+ }
  function series(ids,key,start,end){const out=[];for(let year=start;year<=end;year++){const {members,weights,missing,...summary}=aggregate(ids,key,year,{start,end});out.push(summary);}return out;}
- return {catalogue,metrics,countries,read,hasData,aggregate,breakdown,series};
+ return {catalogue,metrics,countries,read,hasData,aggregate,breakdown,conflictPeriods,series};
 }
 window.AtlasGroupComparisonModel={create};
 })();

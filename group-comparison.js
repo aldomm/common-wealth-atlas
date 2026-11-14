@@ -1,7 +1,7 @@
 /* Up to five named country groups, three independently scaled measures, and
    source-only year/interval charts synchronized with the shared timeline. */
 (()=>{'use strict';
- const model=AtlasGroupComparisonModel.create({countries:D.countries,indicators:ExtendedData.indicators,units:D.units,series:AtlasObservations.series,source:AtlasObservations.source,convert:AtlasCurrency.convert,cpi:AtlasCPI});
+ const model=AtlasGroupComparisonModel.create({countries:D.countries,indicators:ExtendedData.indicators,units:D.units,series:AtlasObservations.series,source:AtlasObservations.source,convert:AtlasCurrency.convert,cpi:AtlasCPI,wars:window.AtlasWarData?.records||[]});
  const countries=[...model.countries.values()].filter(c=>!['SUN','YUG','CSK'].includes(c.id)).sort((a,b)=>a.name.localeCompare(b.name));
  const colors=['#7ce1c4','#ffc879','#98baff','#ed9dd0','#c4db78'],storage='atlas-country-groups-v1';
  const defaultName=i=>'Group '+String.fromCharCode(65+i);
@@ -134,13 +134,14 @@
  }
  function pointCountry(i,point){return point?.id||(groups[i].ids.length===1?groups[i].ids[0]:null);}
  function pointColor(i,point){const id=pointCountry(i,point);return id?countryColor(id):colors[i];}
- function paintCharts(data,keys,span,y){for(const key of keys){
+ function paintCharts(data,keys,span,y){const conflictRange=mode==='interval'?span:{start:y,end:y},conflicts=model.conflictPeriods(groups.flatMap(g=>g.ids),conflictRange.start,conflictRange.end);for(const key of keys){
   const meta=model.metrics.get(key),card=el('article',{class:'gc-chart','data-comparison-property':key});card.append(el('h3',{},meta.name),el('small',{},meta.unit+' · '+meta.method));
   const graph=svg('svg',{viewBox:'0 0 600 225',role:'group','aria-label':meta.name+' comparison graph',tabindex:'0'});
   const all=data[key].flatMap(series=>series.flatMap(o=>o.value!=null?[o]:o.fallback||[])),low=all.length?all.reduce((v,o)=>Math.min(v,o.value),Infinity):0,high=all.length?all.reduce((v,o)=>Math.max(v,o.value),-Infinity):1,pad=(high-low||Math.abs(high)||1)*.05;
   const min=mode==='interval'?low-pad:Math.min(0,low),max=mode==='interval'?high+pad:Math.max(0,high),range=max-min||1;
   const py=v=>180-(v-min)/range*145,x=year=>94+(year-span.start)/Math.max(1,span.end-span.start)*490;
-  for(let i=0;i<=3;i++){const v=min+range*i/3,yy=py(v);graph.append(svg('line',{x1:94,x2:584,y1:yy,y2:yy,stroke:'#38565e'}),svg('text',{x:88,y:yy+4,'text-anchor':'end'},fmt(v)));}
+  addConflictBands(graph,conflicts,conflictRange,mode==='interval');
+  for(let i=0;all.length&&i<=3;i++){const v=min+range*i/3,yy=py(v);graph.append(svg('line',{x1:94,x2:584,y1:yy,y2:yy,stroke:'#38565e'}),svg('text',{x:88,y:yy+4,'text-anchor':'end'},fmt(v)));}
   const legend=el('div',{class:'gc-plot-legend','aria-label':meta.name+' group coverage'});
   data[key].forEach((series,i)=>{const plotted=series.filter(o=>o.value!=null||o.fallback?.length);if(!plotted.length)return;const partial=series.filter(o=>o.value!=null&&o.partial),individual=series.filter(o=>o.fallback?.length);const item=el('div',focusAttrs(plotted.flatMap(o=>pointMembers(i,o))));item.style.setProperty('--group-color',pointColor(i));item.append(el('strong',{},groups[i].name),el('small',{},plotted.length?`${plotted.length}/${series.length} dates shown${partial.length?' · '+partial.length+' partial':''}${individual.length?' · individual country values included':''}`:'No usable data in this selection — see evidence below'));legend.append(item);});card.append(legend);
   const countryIds=[...new Set(data[key].flatMap((series,i)=>series.flatMap(o=>o.value!=null?pointMembers(i,o):(o.fallback||[]).map(m=>m.id))))].sort();
@@ -179,7 +180,8 @@
     if(points.length)graph.append(svg('text',{x:xx,y:207,'text-anchor':'middle'},String.fromCharCode(65+i)));
    });
   }
-  if(all.length)card.append(graph);
+  if(all.length||conflicts.length)card.append(graph);
+  addConflictKey(card,conflicts,conflictRange);
   if(!all.length)card.append(el('p',{class:'gc-muted'},'No usable records for this selection. See the exclusions below; missing data is not zero.'));
   if(all.length&&mode==='interval')card.append(el('p',{class:'gc-muted'},'Hover or tap a dot for its country breakdown. Dots are available records. Dashed connections span missing years or changed coverage/basis; they do not create values. Dotted rings indicate partial groups. Click the graph to move the shared year.'));
   if(meta.kind==='mean')card.append(el('p',{class:'gc-muted'},'Equal weight per country — not a pooled population measure.'));
@@ -218,10 +220,10 @@
  function queuePopupClose(){clearTimeout(popupTimer);if(!popupPinned)popupTimer=setTimeout(closePopup,220);}
  popup.addEventListener('pointerenter',()=>clearTimeout(popupTimer));popup.addEventListener('pointerleave',queuePopupClose);
  popup.addEventListener('focusin',()=>clearTimeout(popupTimer));popup.addEventListener('focusout',e=>{if(!popup.contains(e.relatedTarget))queuePopupClose();});
- document.addEventListener('pointerdown',e=>{if(!popup.hidden&&!popup.contains(e.target)&&!e.target.closest('.gc-point,[data-country-toggle]'))closePopup();});
+ document.addEventListener('pointerdown',e=>{if(!popup.hidden&&!popup.contains(e.target)&&!e.target.closest('.gc-point,.gc-war-band,.gc-war-label,[data-country-toggle]'))closePopup();});
  panel.addEventListener('scroll',closePopup,{passive:true});window.addEventListener('resize',closePopup);
  function showBreakdown(anchor,selection,pin){
-  clearTimeout(popupTimer);popupPinned=pin;const g=groups[selection.i],meta=model.metrics.get(selection.key);
+  clearTimeout(popupTimer);popup.setAttribute('aria-label','Country contributions');popupPinned=pin;const g=groups[selection.i],meta=model.metrics.get(selection.key);
   const detail=model.breakdown(g.ids,selection.key,selection.year,selection.span),parts=detail.parts.slice().sort((a,b)=>(model.countries.get(a.id)?.name||a.id).localeCompare(model.countries.get(b.id)?.name||b.id));
   popup.replaceChildren();const head=el('div',{class:'gc-mini-heading'});head.append(el('strong',{},`${g.name} · ${selection.year}`),button('×',()=>{closePopup();anchor.focus({preventScroll:true});closePopup();},{'aria-label':'Close country contributions'}));popup.append(head,el('strong',{},meta.name));
   popup.append(el('p',{},detail.kind==='total'?'Country shares of the plotted total':detail.kind==='average'?'Each country’s contribution to the plotted average':'Individual country values — no combined group value'));
@@ -236,7 +238,50 @@
   if(detail.result.partial)popup.append(el('p',{},`Partial coverage: ${detail.result.covered}/${detail.result.total} countries contribute.`));
   if(detail.excluded.length){const missing=el('details');missing.append(el('summary',{},`${detail.excluded.length} ${detail.excluded.length===1?'country':'countries'} excluded at this date`),el('p',{},detail.excluded.map(m=>`${model.countries.get(m.id)?.name||m.id}: ${m.exclusionReason||m.reason||'not combined'}`).join('; ')));popup.append(missing);}
   popup.append(el('small',{},pin?'Click outside or × to close.':'Click a point to keep this breakdown open.'));
-  applyCountryFocus();popup.hidden=false;popup.style.maxHeight='';popup.style.left='8px';popup.style.top='8px';const r=anchor.getBoundingClientRect(),box=popup.getBoundingClientRect();let left=r.right+12;if(left+box.width>innerWidth-8)left=r.left-box.width-12;popup.style.left=Math.max(8,Math.min(left,innerWidth-box.width-8))+'px';const top=Math.max(8,Math.min(r.top-30,innerHeight-box.height-8));popup.style.top=top+'px';popup.style.maxHeight=Math.min(560,innerHeight-top-8)+'px';
+  applyCountryFocus();placePopup(anchor);
+ }
+ function placePopup(anchor){
+  popup.hidden=false;popup.style.maxHeight='';popup.style.left='8px';popup.style.top='8px';const r=anchor.getBoundingClientRect(),box=popup.getBoundingClientRect();let left=r.right+12;if(left+box.width>innerWidth-8)left=r.left-box.width-12;popup.style.left=Math.max(8,Math.min(left,innerWidth-box.width-8))+'px';const top=Math.max(8,Math.min(r.top-30,innerHeight-box.height-8));popup.style.top=top+'px';popup.style.maxHeight=Math.min(560,innerHeight-top-8)+'px';
+ }
+ function conflictAction(node,event,range){
+  node.setAttribute('tabindex','0');node.setAttribute('role','button');node.setAttribute('aria-label',`${event.name} · ${event.startYear}–${event.endYear} · conflict evidence`);
+  node.addEventListener('click',e=>{e.stopPropagation();showConflict(node,event,range,true);});
+  node.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch'&&!popupPinned)showConflict(node,event,range,false);});node.addEventListener('pointerleave',queuePopupClose);
+  node.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();e.stopPropagation();showConflict(node,event,range,true);}if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closePopup();}});return node;
+ }
+ function addConflictBands(graph,events,range,isInterval){
+  isInterval=isInterval&&range.end>range.start;
+  const px=year=>94+(year-range.start)/Math.max(1,range.end-range.start)*490,half=isInterval?Math.min(10,245/Math.max(1,range.end-range.start)):0;
+  // Merge background coverage so overlapping wars do not become darker.
+  const spans=[];for(const event of events){const left=isInterval?Math.max(94,px(event.visibleStart)-half):94,right=isInterval?Math.min(584,px(event.visibleEnd)+half):584;const last=spans.at(-1);if(last&&left<=last.right)last.right=Math.max(last.right,right);else spans.push({left,right});}
+  for(const band of spans)graph.append(svg('rect',{x:band.left,y:20,width:Math.max(2,band.right-band.left),height:165,fill:'#e4a08d','fill-opacity':'.1','pointer-events':'none',class:'gc-conflict-shade'}));
+  const lanes=[-Infinity,-Infinity,-Infinity];events.forEach((event,i)=>{const left=isInterval?Math.max(94,px(event.visibleStart)-half):94,right=isInterval?Math.min(584,px(event.visibleEnd)+half):584;
+   const lane=lanes.findIndex(end=>left>end+5);if(lane<0)return;lanes[lane]=Math.max(right,left+24);
+   const mark=svg('g',{class:'gc-war-band'});mark.append(svg('line',{x1:left,x2:Math.max(left+3,right),y1:24+lane*13,y2:24+lane*13,stroke:'#daa18f','stroke-width':2}),svg('rect',{x:left,y:16+lane*13,width:25,height:13,rx:3,fill:'#463e3b'}),svg('text',{x:left+3,y:26+lane*13,'font-size':9},'W'+(i+1)));graph.append(conflictAction(mark,event,range));});
+ }
+ function addConflictKey(card,events,range){
+  const box=el('div',{class:'gc-war-key'});box.append(el('small',{},events.length?'Shaded periods: documented conflicts involving selected countries. Context does not establish that a war caused a change in this measure.':'No conflict record loaded for these countries and dates. This is not evidence of peace.'));
+  for(const [i,event] of events.entries()){const label=button(`W${i+1} · ${event.name} · ${event.visibleStart}–${event.visibleEnd}`,()=>{},{class:'gc-war-label'});conflictAction(label,event,range);box.append(label);}
+  box.append(el('small',{},'Coverage is selective before 1946; the modern source covers interstate armed conflicts, including lower-intensity fighting. Other conflicts may be missing.'));card.append(box);
+ }
+ function yearRuns(values){const ys=[...new Set(values)].sort((a,b)=>a-b),runs=[];for(const y of ys){const r=runs.at(-1);if(r&&r[1]===y-1)r[1]=y;else runs.push([y,y]);}return runs.map(([a,b])=>a===b?String(a):a+'–'+b).join(', ');}
+ function showConflict(anchor,event,range,pin){
+  clearTimeout(popupTimer);popupPinned=pin;popup.setAttribute('aria-label','Conflict context');popup.replaceChildren();const head=el('div',{class:'gc-mini-heading'});head.append(el('strong',{},event.name),button('×',()=>{closePopup();anchor.focus({preventScroll:true});closePopup();},{'aria-label':'Close conflict context'}));popup.append(head);
+  popup.append(el('p',{},`Recorded participation: ${event.startYear}–${event.endYear}. Shown in this selection: ${event.visibleStart}–${event.visibleEnd}.`),el('p',{},'Selected countries: '+event.countryIds.map(id=>model.countries.get(id)?.name||id).join(', ')));
+  const sides=new Map();for(const r of event.records)for(const side of r.sides||[]){const name=side.name||(side.countryIds||[]).join(', ');if(!sides.has(name))sides.set(name,[]);for(let y=r.startYear;y<=r.endYear;y++)sides.get(name).push(y);}
+  const list=el('ul');for(const [name,years]of sides)list.append(el('li',{},`${name} · ${yearRuns(years)}`));popup.append(el('strong',{},'Participants in the loaded records'),list);
+  const opposing=el('details'),pairs=new Map();opposing.append(el('summary',{},'Recorded opposing sides'));
+  for(const r of event.records){const pair=(r.sides||[]).map(side=>side.name||(side.countryIds||[]).join(', ')).join(' ↔ ');if(!pairs.has(pair))pairs.set(pair,[]);for(let y=r.startYear;y<=r.endYear;y++)pairs.get(pair).push(y);}
+  for(const [pair,ys]of pairs)opposing.append(el('p',{},pair+' · '+yearRuns(ys)));opposing.append(el('small',{},'Source sides may include coalitions or historical reference identities; no additional bilateral combat ties are inferred.'));popup.append(opposing);
+  for(const text of [...new Set(event.records.map(r=>r.intensityLabel||r.type.replaceAll('_',' ')))])popup.append(el('small',{},text));
+  const deathRecords=event.records.filter(r=>r.deaths?.length);if(deathRecords.length&&window.AtlasWars?.deathsHTML){for(const r of deathRecords){const block=el('div');block.innerHTML=AtlasWars.deathsHTML(r);popup.append(block);}}else popup.append(el('p',{},'Deaths by side: not recorded in the loaded evidence.'));
+  popup.append(el('strong',{},'Spending'),el('p',{},'Cost of this war: not recorded. Annual national defence spending below is not a war-specific cost.'));
+  for(const id of event.countryIds){const sourceYears=new Set();for(const r of event.records){const belongs=[...(r.affectedCountryIds||[]),...(r.referenceCountryIds||[]),...(r.sides||[]).flatMap(s=>[...(s.countryIds||[]),...(s.referenceCountryIds||[])])].includes(id);if(belongs)for(let y=Math.max(range.start,r.startYear);y<=Math.min(range.end,r.endYear);y++)sourceYears.add(y);}
+   const rows=[...sourceYears].sort((a,b)=>a-b).map(y=>model.read(id,'defence_spending_eur',y)).filter(r=>r.value!=null),name=model.countries.get(id)?.name||id;
+   if(!rows.length)popup.append(el('p',{},name+': national defence spending not recorded for these conflict years.'));
+   else{const d=el('details');d.append(el('summary',{},`${name} · annual defence spending · ${AtlasCPI.baseYear} USD`));for(const r of rows){const line=el('p',{},`${r.year}: ${fmt(r.value)} ${r.unit}.`);if(r.url)line.append(el('a',{href:r.url,target:'_blank',rel:'noopener'},' Source ↗'));d.append(line);}d.append(el('small',{},'Converted using each record’s own-year exchange rate and US CPI; no missing years are filled.'));popup.append(d);}}
+  const sources=new Map(event.records.filter(r=>r.source?.url).map(r=>[r.source.url,r.source]));for(const source of sources.values())popup.append(el('a',{href:source.url,target:'_blank',rel:'noopener',class:'gc-war-source'},(source.title||'Conflict source')+' ↗'));
+  const caveats=el('details');caveats.append(el('summary',{},'Dates, scope and limitations'));for(const note of [...new Set(event.records.map(r=>r.caveat).filter(Boolean))])caveats.append(el('p',{},note));caveats.append(el('p',{},'Shading marks recorded active years, not continuous daily fighting or battle locations. Whole-war deaths are not annual deaths. Reference-country matches do not establish historical sovereignty. Gaps in these selective records do not establish peace.'));popup.append(caveats);placePopup(anchor);
  }
  // Group colors are geographic outlines, not a value choropleth. Multiple
  // memberships get alternating colored strokes rather than overwriting one.
