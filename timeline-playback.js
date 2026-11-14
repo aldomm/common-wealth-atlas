@@ -11,7 +11,7 @@ for(const [input,id,title,value] of [[start,'timelineStart','From',years[0]],[en
  input.id=id;input.type='number';input.min=String(years[0]);input.max=String(years[years.length-1]);input.step='1';input.value=String(value);input.required=true;input.setAttribute('aria-label',title+' year');
  const label=document.createElement('label');label.textContent=title;label.append(input);fields.append(label);
 }
-const hint=document.createElement('span');hint.textContent='Set the years, then press Play. Playback stops at the end year.';fields.append(hint);
+const hint=document.createElement('span');hint.textContent='Set the years, then press Play. Playback stops at the end year. Your valid interval is remembered on this browser.';fields.append(hint);
 range.append(summary,fields);row.after(range);
 function bounds(){
  const first=Number(start.value),last=Number(end.value);
@@ -23,8 +23,11 @@ function bounds(){
  if(lo<0||hi<lo){end.setCustomValidity('No selectable year falls within this interval.');return null;}
  return {lo,hi};
 }
+const storageKey='atlas-timeline-interval-v1';
+try{const saved=JSON.parse(localStorage.getItem(storageKey));if(saved&&Number.isInteger(saved.start)&&Number.isInteger(saved.end)){start.value=String(saved.start);end.value=String(saved.end);if(!bounds()){start.value=String(years[0]);end.value=String(years.at(-1));bounds();}}}catch{}
+function saveInterval(){if(bounds())try{localStorage.setItem(storageKey,JSON.stringify({start:Number(start.value),end:Number(end.value)}));}catch{}}
 function rangeLabel(){summary.textContent='Interval: '+start.value+'–'+end.value;}
-for(const input of [start,end])input.addEventListener('input',()=>{pause();bounds();rangeLabel();});
+for(const input of [start,end])input.addEventListener('input',()=>{pause();saveInterval();rangeLabel();});
 rangeLabel();
 // Keep navigation reachable when the interval editor expands or wraps on phones.
 if(window.ResizeObserver){

@@ -5,3 +5,7 @@
 .war-year-entries{display:flex;flex-direction:column;gap:5px}.war-year-entries button{text-align:left;white-space:normal;line-height:1.4}
 
 .war-deaths{margin:14px 0;padding-top:5px;border-top:1px solid #6d8585}.war-death-side{margin:12px 0}.war-death-side h5{margin:7px 0;font:600 14px system-ui;color:#ffe6bb}.war-death-record{margin:8px 0 13px;padding-left:10px;border-left:2px solid #beaaa0}.war-death-record p{margin:5px 0}.war-death-scope{font-size:12px;color:#c4d8d4}
+
+.war-country-totals{margin:14px 0;border-top:1px solid #6d8585;padding-top:8px}.war-country-deaths{border-left:2px solid #beaaa0;padding:5px 10px;margin:12px 0}.war-country-deaths h5{font-size:14px;margin:0 0 6px;color:#ffe6bb}.war-country-deaths p{margin:5px 0}.war-country-totals summary{cursor:pointer;padding:10px 0}.war-country-deaths small{font-size:12px;color:#c4d8d4}
+
+#atlasGroupBreakdown:has(.war-country-totals){width:min(460px,calc(100vw - 24px))}
