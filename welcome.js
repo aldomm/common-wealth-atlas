@@ -44,5 +44,11 @@
   dialog.addEventListener('keydown', event => event.stopPropagation());
   let seen = false;
   try { seen = localStorage.getItem(key) === 'seen'; } catch (_) {}
-  if (!seen) open();
+  if (!seen) {
+    if(window.AtlasEarlyMap)window.addEventListener('atlas:ready',event=>{
+      // Do not interrupt someone who already started exploring the early map.
+      if(!event.detail?.explored)open();
+    },{once:true});
+    else open();
+  }
 })();

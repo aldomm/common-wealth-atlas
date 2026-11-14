@@ -14,6 +14,7 @@
  let files=[];
  const stats={mode:capacity>1?'adaptive':'low-memory',files:0,bytes:0,maxBufferedBytes:0,maxRequests:0};
  function status(){
+  if(window.AtlasEarlyMap){window.AtlasEarlyMap.progress();return;}
   notice.textContent='Opening atlas…';
   const detail=document.createElement('small');
   detail.style.cssText='font-size:13px;opacity:.8;text-align:center;padding:0 20px';
@@ -85,13 +86,18 @@
    if(elapsed>120){concurrency=1;fastSamples=0;}
    else if(elapsed<30&&++fastSamples>=3)concurrency=capacity;
    stats.files=i+1;status();fill();
+   // Give navigation and painting a turn between dataset evaluations. Large
+   // source strings still unpack one at a time on memory-constrained phones.
+   if(window.AtlasEarlyMap)await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
   }
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  window.AtlasEarlyMap?.finish();
   notice.remove();manifest.remove();
   console.info('Atlas startup complete',JSON.stringify({...stats,milliseconds:Math.round(performance.now()-started)}));
  }catch(error){
   controller.abort();pending.clear();
   console.error('Atlas loading failed',currentFile,error);
+  if(window.AtlasEarlyMap){window.AtlasEarlyMap.fail();return;}
   notice.textContent='The atlas could not finish loading.';
   const detail=document.createElement('p');detail.style.cssText='max-width:36em;padding:0 20px;text-align:center;overflow-wrap:anywhere';
   detail.textContent=(error?.message||String(error))+' (File: '+currentFile+')';notice.append(detail);
