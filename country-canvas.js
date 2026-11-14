@@ -43,7 +43,7 @@ function fitZoom(c){const s=shape(c),b=s.bounds;if(!b)return getZoom();const spa
  const base=Math.min(innerWidth/1140,innerHeight/660);return Math.max(.03,Math.min(5000,Math.min(innerWidth*.78/(spanX*3),innerHeight*.64/(spanY*3))/base));
 }
 function pointFor(c){const s=shape(c);if(globe())return AtlasGlobe.project(s.lon,s.lat);const vb=map.viewBox.baseVal,k=innerWidth/vb.width;return [((s.lon+180)*3-vb.x)*k,((90-s.lat)*3-vb.y)*k];}
-function getCountry(){return state.country?countries.find(c=>c.id===state.country):null;}
+function getCountry(id=state.country){return id?countries.find(c=>c.id===id):null;}
 function focusCountry(id,options={}){window.AtlasTerritoryUI?.reference();const c=countries.find(c=>c.id===id);if(!c)return false;state.country=id;state.hover=id;state.metric=null;state.contentFocus=null;state.lock=true;const s=shape(c);window.AtlasEvidence?.closeMenu();if(options.fit!==false){if(globe())AtlasGlobe.focus(s.lon,s.lat,fitZoom(c));else{cx=(s.lon+180)*3;cy=(90-s.lat)*3;z=fitZoom(c);draw();}}render();return true;}
 function eventsFor(c,current){return (window.AtlasEvents?.records()||[]).filter(r=>(r.referenceCountryId===c.id||r.countryIds?.includes(c.id))&&(!current||r.startYear<=year()&&year()<=r.endYear));}
 function developmentFor(c){return window.HistoricalDevelopment?.series.find(s=>s.mapReference?.id===c.id)?.values.filter(v=>v.year<=year()).sort((a,b)=>b.year-a.year)[0];}
@@ -148,7 +148,7 @@ function categoryInfo(c,key){
  const income=['gini','poverty','poverty_lower_middle','poverty_upper_middle'].filter(k=>ExtendedData.indicators[k]);
  if(key==='production')return {title:c.name+' · production & sectors',lines:['Modern WDI value-added shares and separately labeled historical reconstructions. Historical volume indexes measure sector growth (1913 = 100), not GDP shares. Each value retains its own source year.','Manufacturing is already a subset of industry. Do not add it again to agriculture + industry + services. The broad sectors need not sum to 100% because of taxes, subsidies and other accounting differences.','Do not multiply these shares by the atlas’s reconstructed PPP GDP total without reconciling source definitions and years.',sectors.length?'Choose a sector below for its definition, date and source.':'Sector shares are not loaded in this build. No composition has been inferred.'],catalog:sectors,actions:['all_indicators','trade'],source:{url:'global-sources.html',title:'Indicator sources'}};
  if(key==='distribution')return {title:c.name+' · wealth & income distribution',lines:['Income inequality, poverty and wealth ownership are different measurements. GDP/person is an average output measure and says nothing by itself about how income or assets are distributed.',wealth.length?'Wealth measures below use their own source population, units and dates; they are not income shares.':'Wealth shares are not yet published in this atlas. Income Gini and poverty below must not be presented as wealth distribution.','Gini may describe income or consumption according to the survey. Poverty measures report population below the stated PPP poverty line. Select each series to inspect its definition and source.'],catalog:[...income,...wealth],actions:['all_indicators','production','baskets'],source:{url:'wealth-sources.html',title:'OECD wealth sources & coverage'}};
- return {title:c.name+' · all indicators',lines:[`Every loaded numeric series is accessible here for ${year()}, including those omitted from the map for space.`,`Values marked last are dated earlier references. Calculated estimates remain labeled. A missing series can move the entire timeline to its next available loaded value; it does not alter only that indicator.`],catalog:metricKeys(c),actions:['trade','wars','production','distribution','baskets','government','events','development'],source:{url:'sources.html#'+c.id,title:'Country bibliography'}};
+ return {title:c.name+' · all indicators',lines:[`All loaded indicators for ${year()}, including those hidden on the map for space.`,`Select a measure for its value, dates and sources. Estimates and older records stay labeled; date jumps update the whole map.`],catalog:metricKeys(c),actions:['trade','wars','production','distribution','baskets','government','events','development'],source:{url:'sources.html#'+c.id,title:'Country bibliography'}};
 }
 function appendCategoryActions(body,label,keys){
  const actions=document.createElement('div');actions.className='country-category-actions';
@@ -316,9 +316,9 @@ let hoverTimer;
 function hideHover(){clearTimeout(hoverTimer);hoverNode?.remove();hoverNode=null;state.hover=null;state.openLabel=null;}
 function scheduleHoverClose(){}
 function showHover(label){
- clearTimeout(hoverTimer);hoverNode?.remove();const info=detailFor(label),width=Math.min(380,innerWidth-40),maxHeight=Math.max(100,innerHeight-230);
+ window.AtlasTerritoryUI?.reference();window.AtlasPublications?.close();clearTimeout(hoverTimer);hoverNode?.remove();const info=detailFor(label),width=Math.min(380,innerWidth-40),maxHeight=Math.max(100,innerHeight-230);
  const estimatedLines=info.lines.reduce((n,line)=>n+Math.ceil(String(line).length/Math.max(20,(width-32)/7)),0);
- const height=info.catalog||info.actions?maxHeight:Math.min(maxHeight,94+estimatedLines*19+info.lines.length*8);
+ const height=info.catalog||info.actions||window.AtlasTerritoryUI?maxHeight:Math.min(maxHeight,94+estimatedLines*19+info.lines.length*8);
  let x=label.rect.x+label.rect.w+18;if(x+width>innerWidth-16)x=label.rect.x-width-18;x=Math.max(16,Math.min(innerWidth-width-16,x));const y=Math.max(70,Math.min(innerHeight-125-height,label.rect.y));
  const g=node('g',{class:'country-hover-explanation',transform:`translate(${x} ${y})`,role:'note','aria-label':info.title});
  g.append(node('rect',{x:0,y:0,width,height,rx:10,fill:'#102a33',stroke:'#68878b','stroke-width':1}));
@@ -330,6 +330,7 @@ function showHover(label){
   if(state.comparison&&label.o?.value==null){const next=firstRecord(label.c,label.key);if(next!=null){const jump=document.createElement('button');jump.className='compare-measure';jump.textContent='Move whole map to '+next;jump.onclick=()=>{jumpToFirst(label.c,label.key);hideHover();};body.append(jump);}}
  }
 for(const line of info.lines){const p=document.createElement('p');p.textContent=line;body.append(p);}
+ window.AtlasTerritoryUI?.appendContext(body,label.c,label.key);
  if(info.actions)appendCategoryActions(body,label,info.actions);
  if(info.catalog)appendCatalog(body,label,info.catalog);
  if(info.currencyDisplay)window.AtlasCurrency?.control(body);
@@ -344,14 +345,14 @@ for(const line of info.lines){const p=document.createElement('p');p.textContent=
 function render(){
  state.frame=0;shadeComparison();const previous=state.hover;hoverNode=null;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);overlay.replaceChildren();currentLabels=[];localLabels=[];countryTitles.clear();
  if(window.AtlasTerritoryUI?.isActive()||window.AtlasWars?.state.active||window.AtlasTrade?.state.active||window.AtlasIndustryMarkets?.isActive?.())return;
- const occupied=[...document.querySelectorAll('header,footer,.atlas-view-toggle,.zoom,#atlasComparison,#atlasGroupPanel,#atlasGroupPicker')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};}).filter(b=>b.w&&b.h);
+ const occupied=[...document.querySelectorAll('header,footer,.atlas-view-toggle,.zoom,#atlasComparison,#atlasGroupPanel,#atlasGroupPicker,#territoryToolbar')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};}).filter(b=>b.w&&b.h);
  const visible=countries.map(c=>({c,mask:projectedMask(c)})).filter(x=>x.mask?.area>500).sort((a,b)=>b.mask.area-a.mask.area);
  const locals=state.comparison?[]:localPoints(visible,occupied);
  for(const {c,mask}of visible)drawCountry(c,mask,occupied);
  drawLocalPoints(locals);
  if(!state.comparison)missingOutlinePoints(occupied);drawJumpFlag();
  text(overlay,innerWidth/2,innerHeight-(phoneLayout()?155:106),'National values · present-day reference areas · ≈ estimate · dated values remain dated · * derived','country-reference-caption');
- if(previous){let label=[...currentLabels,...localLabels].find(l=>l.c.id===previous.countryId&&l.key===previous.key);const saved=state.openLabel,anchor=countryTitles.get(previous.countryId)||currentLabels.find(l=>l.c.id===previous.countryId)?.rect;if(!label&&saved&&anchor)label={...saved,rect:anchor,o:metricKeys().includes(saved.key)?observationFor(saved.c,saved.key):saved.o};if(label)showHover(label);else{state.hover=null;state.openLabel=null;}}
+ if(previous){let label=[...currentLabels,...localLabels].find(l=>l.c.id===previous.countryId&&l.key===previous.key);const saved=state.openLabel,anchor=countryTitles.get(previous.countryId)||currentLabels.find(l=>l.c.id===previous.countryId)?.rect;if(!label&&saved&&(anchor||saved.fixedAnchor))label={...saved,rect:anchor||saved.rect,o:metricKeys().includes(saved.key)?observationFor(saved.c,saved.key):saved.o};if(label)showHover(label);else{state.hover=null;state.openLabel=null;}}
 }
 function schedule(){if(!state.frame)state.frame=requestAnimationFrame(render);}
 function countryAt(ev){const ll=globe()?AtlasGlobe.invert(ev.clientX,ev.clientY):(()=>{const v=map.viewBox.baseVal,k=innerWidth/v.width;return [(v.x+ev.clientX/k)/3-180,90-(v.y+ev.clientY/k)/3];})();if(!ll)return null;const x=(ll[0]+180)*3,y=(90-ll[1])*3;return countries.find(c=>shape(c).path&&hit.isPointInPath(shape(c).path,x,y,'evenodd'))||null;}
@@ -364,7 +365,8 @@ overlay.addEventListener('pointermove',ev=>{if(!pan)return;const dx=ev.clientX-p
 overlay.addEventListener('pointerup',()=>{pan=null;});overlay.addEventListener('pointercancel',()=>{pan=null;});overlay.addEventListener('click',ev=>{if(dragged){ev.preventDefault();ev.stopImmediatePropagation();dragged=false;}},true);
 overlay.addEventListener('wheel',ev=>{if(ev.target.closest('.country-hover-explanation'))return;ev.preventDefault();hideHover();const factor=Math.exp(-ev.deltaY*.0015);if(globe())AtlasGlobe.setZoom(Math.max(.7,Math.min(5000,getZoom()*factor)));else{const base=Math.min(innerWidth/1140,innerHeight/660),old=base*z;z=Math.max(.03,Math.min(5000,z*factor));const px=ev.clientX-innerWidth/2,py=ev.clientY-innerHeight/2;cx+=px/old-px/(base*z);cy+=py/old-py/(base*z);draw();}},{passive:false});
 const oldDraw=draw;draw=function(){oldDraw();schedule();};window.addEventListener('atlas:globe-render',schedule);window.addEventListener('atlas:view-change',()=>{if(state.lock&&state.country&&!window.AtlasWars?.state.active&&!window.AtlasTrade?.state.active&&!window.AtlasIndustryMarkets?.isActive?.())focusCountry(state.country);else schedule();});window.addEventListener('resize',schedule);
-window.AtlasCountryCanvas={projectedMask,candidates,place,compareMetric,active:()=>true,getCountry,getCountryId:()=>state.country,getZoom,focusCountry,render,schedule,state,metricKeys,categoryInfo,orderedRows,firstRecord,jumpToFirst,hitTest:(x,y)=>countryAt({clientX:x,clientY:y})?.id,totalGDP,contained,budget,getLabels:()=>currentLabels.map(l=>({countryId:l.c.id,key:l.key,rect:l.rect})),verifyContainment:()=>currentLabels.every(l=>contained(projectedMask(l.c),l.rect))};
+function openCountry(id){const c=getCountry(id);if(!c)return false;state.country=id;state.lock=false;const rect=countryTitles.get(id)||{x:innerWidth/2,y:innerHeight/3,w:0,h:0};showHover({c,key:'all_indicators',o:null,rect,fixedAnchor:true});return true;}
+window.AtlasCountryCanvas={openCountry,closeDetails:hideHover,projectedMask,candidates,place,compareMetric,active:()=>true,getCountry,getCountryId:()=>state.country,getZoom,focusCountry,render,schedule,state,metricKeys,categoryInfo,orderedRows,firstRecord,jumpToFirst,hitTest:(x,y)=>countryAt({clientX:x,clientY:y})?.id,totalGDP,contained,budget,getLabels:()=>currentLabels.map(l=>({countryId:l.c.id,key:l.key,rect:l.rect})),verifyContainment:()=>currentLabels.every(l=>contained(projectedMask(l.c),l.rect))};
 for(const id of ['time','boundaryDate','prev','next']){$(id)?.addEventListener(id==='time'?'input':id==='boundaryDate'?'change':'click',()=>{state.jump=null;schedule();});}
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('.country-hover-explanation'))hideHover();},true);
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape')hideHover();});
