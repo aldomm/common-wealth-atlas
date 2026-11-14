@@ -21,7 +21,7 @@
     </ol>
     <div class="welcome-evidence"><strong>Read the evidence, not just the number.</strong><p>Coverage varies by place and year. Estimates, interpolations, calculated values and older records are labeled; “not recorded” does not mean zero. Clicking a missing measure can jump the whole atlas to its next available record, with a notice showing the year change.</p><p>Check the explanation for dates, units and territory. Inflation-adjusted US dollars and purchasing-power international dollars are different measures.</p></div>
     <div class="welcome-footer"><label><input id="welcomeRemember" type="checkbox" checked> Don’t show this introduction again</label><button class="welcome-start">Explore the atlas <span aria-hidden="true">→</span></button></div>
-    <p class="welcome-reminder">You can reopen this guide with About & help.</p>`;
+    <p class="welcome-reminder">You can reopen this guide with About & help.</p><p class="welcome-reminder">A project by <a href="https://ammteclab.com/">AMM Tec Lab</a> · Aldo Mendes Martins. <a href="mailto:support@ammteclab.com">Contact support</a>.</p>`;
   document.body.append(dialog);
   let previousFocus;
   function open() {
