@@ -343,7 +343,7 @@ for(const line of info.lines){const p=document.createElement('p');p.textContent=
 function render(){
  state.frame=0;shadeComparison();const previous=state.hover;hoverNode=null;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);overlay.replaceChildren();currentLabels=[];localLabels=[];countryTitles.clear();
  if(window.AtlasWars?.state.active||window.AtlasTrade?.state.active||window.AtlasIndustryMarkets?.isActive?.())return;
- const occupied=[...document.querySelectorAll('header,footer,.atlas-view-toggle,.zoom,#atlasComparison')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};}).filter(b=>b.w&&b.h);
+ const occupied=[...document.querySelectorAll('header,footer,.atlas-view-toggle,.zoom,#atlasComparison,#atlasGroupPanel,#atlasGroupPicker')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};}).filter(b=>b.w&&b.h);
  const visible=countries.map(c=>({c,mask:projectedMask(c)})).filter(x=>x.mask?.area>500).sort((a,b)=>b.mask.area-a.mask.area);
  const locals=state.comparison?[]:localPoints(visible,occupied);
  for(const {c,mask}of visible)drawCountry(c,mask,occupied);
