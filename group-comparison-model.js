@@ -75,8 +75,19 @@ function create(env){
   const partial=usable.length<ids.length;
   return finish({value,source:a.source,periodStart:a.periodStart,periodEnd:a.periodEnd,reason:partial?'Partial coverage: '+usable.length+'/'+ids.length+' countries; not the full group':'',method:(partial?'PARTIAL · available countries only · ':'')+(ids.length===1&&key!=='total_gdp'?'Individual-country source value':meta.method)});
  }
+ function breakdown(ids,key,year,interval){
+  const result=aggregate(ids,key,year,interval),meta=metrics.get(key);
+  const individual=result.value==null||meta?.kind==='single',used=new Set(result.value==null?(result.fallback||[]).map(m=>m.id):result.includedIds);
+  const members=result.members.filter(m=>used.has(m.id));
+  const weighted=!individual&&meta?.kind==='weighted'&&result.total>1;
+  const population=weighted?members.reduce((sum,m)=>sum+(result.weights.find(w=>w.id===m.id)?.value||0),0):0;
+  const parts=members.map(m=>{const weight=individual?null:weighted?result.weights.find(w=>w.id===m.id).value/population:meta?.kind==='mean'?1/members.length:1;
+   return {id:m.id,value:m.value,weight,contribution:individual?m.value:m.value*weight,unit:m.unit};});
+  const kind=individual?'individual':meta?.kind==='weighted'||meta?.kind==='mean'?'average':'total';
+  return {result,parts,kind,excluded:result.members.filter(m=>!used.has(m.id))};
+ }
  function series(ids,key,start,end){const out=[];for(let year=start;year<=end;year++){const {members,weights,missing,...summary}=aggregate(ids,key,year,{start,end});out.push(summary);}return out;}
- return {catalogue,metrics,countries,read,hasData,aggregate,series};
+ return {catalogue,metrics,countries,read,hasData,aggregate,breakdown,series};
 }
 window.AtlasGroupComparisonModel={create};
 })();

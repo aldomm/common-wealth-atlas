@@ -89,7 +89,7 @@
  function interval(){const a=document.getElementById('timelineStart'),b=document.getElementById('timelineEnd'),lo=Number(a.value),hi=Number(b.value);return a.value&&b.value&&Number.isInteger(lo)&&Number.isInteger(hi)&&lo>=years[0]&&hi<=years.at(-1)&&lo<=hi?{start:lo,end:hi}:null;}
  function keepYearInInterval(){const span=interval();if(span&&(years[idx]<span.start||years[idx]>span.end))goYear(span.start);}
  for(const [local,id]of [[start,'timelineStart'],[end,'timelineEnd']])local.addEventListener('input',()=>{const target=document.getElementById(id);target.value=local.value;target.dispatchEvent(new Event('input',{bubbles:true}));keepYearInInterval();});
- function show(value){open=value;picking=false;panel.hidden=!open;picker.hidden=true;entry.setAttribute('aria-expanded',String(open));
+ function show(value){closePopup();open=value;picking=false;panel.hidden=!open;picker.hidden=true;entry.setAttribute('aria-expanded',String(open));
   if(open){if(groups.length===1&&!groups[0].ids.length){const id=AtlasCountryCanvas.getCountryId();if(id){groups[0].ids=[id];save();}}renderTabs();renderEditor();renderMeasures();refresh();}
   else{serial++;outlines.replaceChildren();entry.focus();}AtlasCountryCanvas.schedule();scheduleOutlines();}
  function renderPicker(){picker.replaceChildren(el('span',{},`Adding to ${groups[active].name} · ${groups[active].ids.length} selected. Tap countries to add/remove; drag to pan.`),button('Done',()=>setPicking(false)));}
@@ -98,7 +98,7 @@
  function fmt(value,compact=true){return value==null?'No usable value':value.toLocaleString('en-US',{notation:compact&&Math.abs(value)>=10000?'compact':'standard',maximumSignificantDigits:compact?4:9});}
  function refresh(){if(!open)return;if(frame)cancelAnimationFrame(frame);frame=requestAnimationFrame(render);}
  function render(){
-  frame=0;const ready=ensureAvailability(),y=years[idx],span=interval();start.value=document.getElementById('timelineStart').value;end.value=document.getElementById('timelineEnd').value;
+  closePopup();frame=0;const ready=ensureAvailability(),y=years[idx],span=interval();start.value=document.getElementById('timelineStart').value;end.value=document.getElementById('timelineEnd').value;
   yearButton.setAttribute('aria-pressed',String(mode==='year'));intervalButton.setAttribute('aria-pressed',String(mode==='interval'));intervalRow.hidden=mode!=='interval';const playing=document.getElementById('timelinePlay').getAttribute('aria-pressed')==='true';play.textContent=playing?'Ⅱ Pause':'▶ Play';play.setAttribute('aria-label',playing?'Pause interval':'Play this interval');play.disabled=!span;
   intro.textContent=chartsMode?`${groups.length} groups · ${properties.filter(Boolean).length} measures · Select a group value for evidence.`:'Build up to 5 groups of any size. Choose up to 3 measures. Each country can belong to more than one group.';
   const keys=properties.filter(Boolean);if(document.activeElement?.matches('.gc-chart svg'))graphFocus=document.activeElement.closest('.gc-chart').dataset.comparisonProperty;charts.replaceChildren();
@@ -122,7 +122,7 @@
  }
  function paintCharts(data,keys,span,y){for(const key of keys){
   const meta=model.metrics.get(key),card=el('article',{class:'gc-chart','data-comparison-property':key});card.append(el('h3',{},meta.name),el('small',{},meta.unit+' · '+meta.method));
-  const graph=svg('svg',{viewBox:'0 0 600 225',role:'img','aria-label':meta.name+' comparison graph',tabindex:'0'});
+  const graph=svg('svg',{viewBox:'0 0 600 225',role:'group','aria-label':meta.name+' comparison graph',tabindex:'0'});
   const all=data[key].flatMap(series=>series.flatMap(o=>o.value!=null?[o]:o.fallback||[])),low=all.length?all.reduce((v,o)=>Math.min(v,o.value),Infinity):0,high=all.length?all.reduce((v,o)=>Math.max(v,o.value),-Infinity):1,pad=(high-low||Math.abs(high)||1)*.05;
   const min=mode==='interval'?low-pad:Math.min(0,low),max=mode==='interval'?high+pad:Math.max(0,high),range=max-min||1;
   const py=v=>180-(v-min)/range*145,x=year=>94+(year-span.start)/Math.max(1,span.end-span.start)*490;
@@ -130,8 +130,16 @@
   const legend=el('div',{class:'gc-plot-legend','aria-label':meta.name+' group coverage'});
   data[key].forEach((series,i)=>{const plotted=series.filter(o=>o.value!=null||o.fallback?.length);if(!plotted.length)return;const partial=series.filter(o=>o.value!=null&&o.partial),individual=series.filter(o=>o.fallback?.length);const item=el('div');item.style.setProperty('--group-color',colors[i]);item.append(el('strong',{},groups[i].name),el('small',{},plotted.length?`${plotted.length}/${series.length} dates shown${partial.length?' · '+partial.length+' partial':''}${individual.length?' · individual country values included':''}`:'No usable data in this selection — see evidence below'));legend.append(item);});card.append(legend);
   function dot(o,i,xx,label){
-   const mark=svg('circle',{cx:xx,cy:py(o.value),r:4+i*1.1,fill:'none',stroke:colors[i],'stroke-width':2,'stroke-dasharray':o.partial?'2 2':''});
-   mark.append(svg('title',{},`${label}: ${fmt(o.value,false)} · ${o.periodStart}–${o.periodEnd}${o.partial?' · PARTIAL '+o.covered+'/'+o.total+' countries':''}`));graph.append(mark);
+   const pointYear=o.year??y,pointLabel=`Breakdown for ${label}, ${meta.name}, ${pointYear}`;
+   const mark=svg('g',{role:'button',tabindex:'0','aria-label':pointLabel,'aria-haspopup':'dialog',class:'gc-point'});
+   mark.append(svg('circle',{cx:xx,cy:py(o.value),r:9+i,fill:'transparent'}),svg('circle',{cx:xx,cy:py(o.value),r:4+i*1.1,fill:'none',stroke:colors[i],'stroke-width':2,'stroke-dasharray':o.partial?'2 2':'','pointer-events':'none'}));
+   const show=pin=>showBreakdown(mark,{key,i,year:pointYear,span:mode==='interval'?span:null,individualId:o.id},pin);
+   mark.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch'&&!popupPinned)show(false);});
+   mark.addEventListener('pointerleave',queuePopupClose);
+   mark.addEventListener('focus',()=>{if(!popupPinned)show(false);});mark.addEventListener('blur',queuePopupClose);
+   mark.addEventListener('click',e=>{e.stopPropagation();show(true);});
+   mark.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();e.stopPropagation();show(true);}if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closePopup();}});
+   graph.append(mark);
   }
   if(mode==='interval'){
    graph.append(svg('text',{x:94,y:207},span.start),svg('text',{x:584,y:207,'text-anchor':'end'},span.end));
@@ -156,7 +164,7 @@
   }
   if(all.length)card.append(graph);
   if(!all.length)card.append(el('p',{class:'gc-muted'},'No usable records for this selection. See the exclusions below; missing data is not zero.'));
-  if(all.length&&mode==='interval')card.append(el('p',{class:'gc-muted'},'Dots are available records. Dashed connections span missing years or changed coverage/basis; they do not create values. Dotted rings indicate partial groups. Click the graph to move the shared year.'));
+  if(all.length&&mode==='interval')card.append(el('p',{class:'gc-muted'},'Hover or tap a dot for its country breakdown. Dots are available records. Dashed connections span missing years or changed coverage/basis; they do not create values. Dotted rings indicate partial groups. Click the graph to move the shared year.'));
   if(meta.kind==='mean')card.append(el('p',{class:'gc-muted'},'Equal weight per country — not a pooled population measure.'));
   if(all.length&&meta.kind==='single')card.append(el('p',{class:'gc-muted'},'Country values are shown individually within each group; no combined distribution is invented.'));
   const values=el('div',{class:'gc-values'});data[key].forEach((series,i)=>{
@@ -180,6 +188,38 @@
    if(m.derived)li.append(el('small',{},' · '+m.method+': '+m.components.map(c=>fmt(c.value,false)+' '+c.unit+' (row '+(c.row??'not supplied')+')').join(' × ')));if(m.exclusionReason)li.append(el('small',{},' · '+m.exclusionReason));if(m.sourceNote)li.append(el('small',{},' · '+m.sourceNote));list.append(li);
   }box.append(list);const meta=model.metrics.get(which.key);if(meta.definition)box.append(el('p',{},meta.definition));if(meta.caveat)box.append(el('p',{},meta.caveat));card.append(box);
  }
+ // A point is computed on demand; do not retain every country's evidence for
+ // every year. Stable colors and country codes avoid names on the mini chart.
+ const popup=el('div',{id:'atlasGroupBreakdown',role:'dialog','aria-label':'Country contributions',hidden:''});document.body.append(popup);
+ let popupPinned=false,popupTimer=0;
+ // Two-letter economy codes from the bundled World Bank country reference.
+ const countryCodes={"ABW":"AW","AFG":"AF","AGO":"AO","ALB":"AL","AND":"AD","ARE":"AE","ARG":"AR","ARM":"AM","ASM":"AS","ATG":"AG","AUS":"AU","AUT":"AT","AZE":"AZ","BDI":"BI","BEL":"BE","BEN":"BJ","BFA":"BF","BGD":"BD","BGR":"BG","BHR":"BH","BHS":"BS","BIH":"BA","BLR":"BY","BLZ":"BZ","BMU":"BM","BOL":"BO","BRA":"BR","BRB":"BB","BRN":"BN","BTN":"BT","BWA":"BW","CAF":"CF","CAN":"CA","CHE":"CH","CHI":"JG","CHL":"CL","CHN":"CN","CIV":"CI","CMR":"CM","COD":"CD","COG":"CG","COL":"CO","COM":"KM","CPV":"CV","CRI":"CR","CUB":"CU","CUW":"CW","CYM":"KY","CYP":"CY","CZE":"CZ","DEU":"DE","DJI":"DJ","DMA":"DM","DNK":"DK","DOM":"DO","DZA":"DZ","ECU":"EC","EGY":"EG","ERI":"ER","ESP":"ES","EST":"EE","ETH":"ET","FIN":"FI","FJI":"FJ","FRA":"FR","FRO":"FO","FSM":"FM","GAB":"GA","GBR":"GB","GEO":"GE","GHA":"GH","GIB":"GI","GIN":"GN","GMB":"GM","GNB":"GW","GNQ":"GQ","GRC":"GR","GRD":"GD","GRL":"GL","GTM":"GT","GUM":"GU","GUY":"GY","HKG":"HK","HND":"HN","HRV":"HR","HTI":"HT","HUN":"HU","IDN":"ID","IMN":"IM","IND":"IN","IRL":"IE","IRN":"IR","IRQ":"IQ","ISL":"IS","ISR":"IL","ITA":"IT","JAM":"JM","JOR":"JO","JPN":"JP","KAZ":"KZ","KEN":"KE","KGZ":"KG","KHM":"KH","KIR":"KI","KNA":"KN","KOR":"KR","KWT":"KW","LAO":"LA","LBN":"LB","LBR":"LR","LBY":"LY","LCA":"LC","LIE":"LI","LKA":"LK","LSO":"LS","LTU":"LT","LUX":"LU","LVA":"LV","MAC":"MO","MAF":"MF","MAR":"MA","MCO":"MC","MDA":"MD","MDG":"MG","MDV":"MV","MEX":"MX","MHL":"MH","MKD":"MK","MLI":"ML","MLT":"MT","MMR":"MM","MNE":"ME","MNG":"MN","MNP":"MP","MOZ":"MZ","MRT":"MR","MUS":"MU","MWI":"MW","MYS":"MY","NAM":"NA","NCL":"NC","NER":"NE","NGA":"NG","NIC":"NI","NLD":"NL","NOR":"NO","NPL":"NP","NRU":"NR","NZL":"NZ","OMN":"OM","PAK":"PK","PAN":"PA","PER":"PE","PHL":"PH","PLW":"PW","PNG":"PG","POL":"PL","PRI":"PR","PRK":"KP","PRT":"PT","PRY":"PY","PSE":"PS","PYF":"PF","QAT":"QA","ROU":"RO","RUS":"RU","RWA":"RW","SAU":"SA","SDN":"SD","SEN":"SN","SGP":"SG","SLB":"SB","SLE":"SL","SLV":"SV","SMR":"SM","SOM":"SO","SRB":"RS","SSD":"SS","STP":"ST","SUR":"SR","SVK":"SK","SVN":"SI","SWE":"SE","SWZ":"SZ","SXM":"SX","SYC":"SC","SYR":"SY","TCA":"TC","TCD":"TD","TGO":"TG","THA":"TH","TJK":"TJ","TKM":"TM","TLS":"TL","TON":"TO","TTO":"TT","TUN":"TN","TUR":"TR","TUV":"TV","TZA":"TZ","UGA":"UG","UKR":"UA","URY":"UY","USA":"US","UZB":"UZ","VCT":"VC","VEN":"VE","VGB":"VG","VIR":"VI","VNM":"VN","VUT":"VU","WSM":"WS","XKX":"XK","YEM":"YE","ZAF":"ZA","ZMB":"ZM","ZWE":"ZW"};
+ const countryCode=(id,index)=>countryCodes[id]||String(index+1);
+ const countryColor=id=>{let n=0;for(const ch of id)n=(n*31+ch.charCodeAt(0))>>>0;return `hsl(${n*137.508%360} 65% 67%)`;};
+ function closePopup(){clearTimeout(popupTimer);popup.hidden=true;popupPinned=false;}
+ function queuePopupClose(){clearTimeout(popupTimer);if(!popupPinned)popupTimer=setTimeout(closePopup,220);}
+ popup.addEventListener('pointerenter',()=>clearTimeout(popupTimer));popup.addEventListener('pointerleave',queuePopupClose);
+ popup.addEventListener('focusin',()=>clearTimeout(popupTimer));popup.addEventListener('focusout',e=>{if(!popup.contains(e.relatedTarget))queuePopupClose();});
+ document.addEventListener('pointerdown',e=>{if(!popup.hidden&&!popup.contains(e.target)&&!e.target.closest('.gc-point'))closePopup();});
+ panel.addEventListener('scroll',closePopup,{passive:true});window.addEventListener('resize',closePopup);
+ function showBreakdown(anchor,selection,pin){
+  clearTimeout(popupTimer);popupPinned=pin;const g=groups[selection.i],meta=model.metrics.get(selection.key);
+  const detail=model.breakdown(g.ids,selection.key,selection.year,selection.span),parts=detail.parts.slice().sort((a,b)=>(model.countries.get(a.id)?.name||a.id).localeCompare(model.countries.get(b.id)?.name||b.id));
+  popup.replaceChildren();const head=el('div',{class:'gc-mini-heading'});head.append(el('strong',{},`${g.name} · ${selection.year}`),button('×',()=>{closePopup();anchor.focus({preventScroll:true});closePopup();},{'aria-label':'Close country contributions'}));popup.append(head,el('strong',{},meta.name));
+  popup.append(el('p',{},detail.kind==='total'?'Country shares of the plotted total':detail.kind==='average'?'Each country’s contribution to the plotted average':'Individual country values — no combined group value'));
+  const total=parts.reduce((sum,p)=>sum+p.contribution,0),pie=detail.kind==='total'&&parts.length<=6&&parts.length>0&&total>0&&parts.every(p=>p.contribution>=0);
+  const chart=svg('svg',{viewBox:pie?'0 0 300 150':`0 0 300 ${Math.max(64,parts.length*24+12)}`,role:'img','aria-label':pie?'Country contribution pie chart':'Country contribution bar chart'}),chartBox=el('div',{class:'gc-mini-chart'});
+  if(pie){let angle=-Math.PI/2;for(const [j,p] of parts.entries()){const end=angle+p.contribution/total*Math.PI*2,color=countryColor(p.id);if(p.contribution===total)chart.append(svg('circle',{cx:150,cy:75,r:68,fill:color}));else if(p.contribution>0)chart.append(svg('path',{d:`M150 75 L${150+68*Math.cos(angle)} ${75+68*Math.sin(angle)} A68 68 0 ${end-angle>Math.PI?1:0} 1 ${150+68*Math.cos(end)} ${75+68*Math.sin(end)} Z`,fill:color,stroke:'#102b34','stroke-width':1}));if(p.contribution/total>=.05){const mid=(angle+end)/2,radius=p.contribution===total?0:44;chart.append(svg('text',{x:150+radius*Math.cos(mid),y:79+radius*Math.sin(mid),'text-anchor':'middle',fill:'#102b34','font-size':12,'font-weight':700},countryCode(p.id,j)));}angle=end;}}
+  else{const low=parts.reduce((n,p)=>Math.min(n,p.contribution),0),high=parts.reduce((n,p)=>Math.max(n,p.contribution),0),scale=v=>32+(v-low)/(high-low||1)*256,zero=scale(0);
+   chart.append(svg('line',{x1:zero,x2:zero,y1:2,y2:parts.length*24+6,stroke:'#759398'}));parts.forEach((p,j)=>{const x=scale(p.contribution);chart.append(svg('text',{x:3,y:j*24+19,fill:'#d7e9e6','font-size':10},countryCode(p.id,j)),svg('rect',{x:Math.min(zero,x),y:j*24+5,width:Math.max(1,Math.abs(x-zero)),height:15,fill:countryColor(p.id)}));});}
+  chartBox.append(chart);popup.append(chartBox,el('small',{},meta.unit));
+  const key=el('ol',{class:'gc-mini-key'});parts.forEach((p,j)=>{const row=el('li'),swatch=el('span',{class:'gc-mini-swatch'});swatch.style.background=countryColor(p.id);row.append(swatch,el('span',{},`${countryCode(p.id,j)} · ${model.countries.get(p.id)?.name||p.id}${selection.individualId===p.id?' (selected)':''}`));
+   row.append(el('strong',{},fmt(p.value)),el('small',{},detail.kind==='total'&&total>0&&parts.every(p=>p.contribution>=0)?`${(p.contribution/total*100).toFixed(1)}% of shown total`:detail.kind==='average'?`${(p.weight*100).toFixed(1)}% weight · ${fmt(p.contribution)} contribution`:'Individual source value'));key.append(row);});popup.append(key);
+  if(detail.result.partial)popup.append(el('p',{},`Partial coverage: ${detail.result.covered}/${detail.result.total} countries contribute.`));
+  if(detail.excluded.length){const missing=el('details');missing.append(el('summary',{},`${detail.excluded.length} ${detail.excluded.length===1?'country':'countries'} excluded at this date`),el('p',{},detail.excluded.map(m=>`${model.countries.get(m.id)?.name||m.id}: ${m.exclusionReason||m.reason||'not combined'}`).join('; ')));popup.append(missing);}
+  popup.append(el('small',{},pin?'Click outside or × to close.':'Click a point to keep this breakdown open.'));
+  popup.hidden=false;popup.style.maxHeight='';popup.style.left='8px';popup.style.top='8px';const r=anchor.getBoundingClientRect(),box=popup.getBoundingClientRect();let left=r.right+12;if(left+box.width>innerWidth-8)left=r.left-box.width-12;popup.style.left=Math.max(8,Math.min(left,innerWidth-box.width-8))+'px';const top=Math.max(8,Math.min(r.top-30,innerHeight-box.height-8));popup.style.top=top+'px';popup.style.maxHeight=Math.min(560,innerHeight-top-8)+'px';
+ }
  // Group colors are geographic outlines, not a value choropleth. Multiple
  // memberships get alternating colored strokes rather than overwriting one.
  function scheduleOutlines(){if(highlightFrame)return;highlightFrame=requestAnimationFrame(paintOutlines);}
@@ -200,7 +240,7 @@
  document.addEventListener('click',e=>{if(!picking||!surfaceFor(e))return;e.preventDefault();e.stopImmediatePropagation();if(e.detail!==0||Date.now()-lastPick<500)return;const id=e.target.closest('[data-country-id]')?.dataset.countryId;if(id)toggleCountry(id);},true);
  document.addEventListener('dblclick',e=>{if(picking&&surfaceFor(e)){e.preventDefault();e.stopImmediatePropagation();}},true);
  document.addEventListener('keydown',e=>{if(picking&&['Enter',' '].includes(e.key)&&surfaceFor(e)){const id=e.target.closest('[data-country-id]')?.dataset.countryId;if(id){e.preventDefault();e.stopImmediatePropagation();toggleCountry(id);}}},true);
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&open){e.preventDefault();if(picking)setPicking(false);else show(false);}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&open){e.preventDefault();if(picking)setPicking(false);else if(!popup.hidden)closePopup();else show(false);}});
  const oldDraw=draw;draw=function(){oldDraw();refresh();scheduleOutlines();};
  for(const id of ['timelineStart','timelineEnd'])document.getElementById(id).addEventListener('input',()=>{cache=null;serial++;evidence=null;refresh();});
  document.getElementById('timelinePlay').addEventListener('click',refresh);
