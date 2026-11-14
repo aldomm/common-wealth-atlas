@@ -44,7 +44,7 @@ function fitZoom(c){const s=shape(c),b=s.bounds;if(!b)return getZoom();const spa
 }
 function pointFor(c){const s=shape(c);if(globe())return AtlasGlobe.project(s.lon,s.lat);const vb=map.viewBox.baseVal,k=innerWidth/vb.width;return [((s.lon+180)*3-vb.x)*k,((90-s.lat)*3-vb.y)*k];}
 function getCountry(){return state.country?countries.find(c=>c.id===state.country):null;}
-function focusCountry(id,options={}){const c=countries.find(c=>c.id===id);if(!c)return false;state.country=id;state.hover=id;state.metric=null;state.contentFocus=null;state.lock=true;const s=shape(c);window.AtlasEvidence?.closeMenu();if(options.fit!==false){if(globe())AtlasGlobe.focus(s.lon,s.lat,fitZoom(c));else{cx=(s.lon+180)*3;cy=(90-s.lat)*3;z=fitZoom(c);draw();}}render();return true;}
+function focusCountry(id,options={}){window.AtlasTerritoryUI?.reference();const c=countries.find(c=>c.id===id);if(!c)return false;state.country=id;state.hover=id;state.metric=null;state.contentFocus=null;state.lock=true;const s=shape(c);window.AtlasEvidence?.closeMenu();if(options.fit!==false){if(globe())AtlasGlobe.focus(s.lon,s.lat,fitZoom(c));else{cx=(s.lon+180)*3;cy=(90-s.lat)*3;z=fitZoom(c);draw();}}render();return true;}
 function eventsFor(c,current){return (window.AtlasEvents?.records()||[]).filter(r=>(r.referenceCountryId===c.id||r.countryIds?.includes(c.id))&&(!current||r.startYear<=year()&&year()<=r.endYear));}
 function developmentFor(c){return window.HistoricalDevelopment?.series.find(s=>s.mapReference?.id===c.id)?.values.filter(v=>v.year<=year()).sort((a,b)=>b.year-a.year)[0];}
 function government(c){const m=resolveGovernment(null,year(),c),o=m.observation,types=['Closed autocracy','Electoral autocracy','Electoral democracy','Liberal democracy'];return {match:m,o,type:GovernmentTypes.countries[m.id]?.[year()]?.type||(o?.v2x_regime!=null?types[+o.v2x_regime]:'Not recorded')};}
@@ -70,7 +70,7 @@ function shortValue(key,o){
  const fx=window.AtlasCurrency?.observation(o,key,year());
  const compact=['gdp','total_gdp','pop','defence_spending_eur'].includes(key),v=value.toLocaleString('en-US',{notation:compact?'compact':'standard',maximumFractionDigits:['hdi','development'].includes(key)?3:1});
  const period=o.periodStart!=null&&o.periodStart!==o.periodEnd?`${o.periodStart}–${o.periodEnd}`:o.sourceYear;
- return (o.status==='interpolated'?'≈ ':'')+(fx?AtlasCurrency.format(fx):v+(compactUnits[key]||''))+(o.status==='interpolated'?(o.estimateKind==='extrapolated'?' · extrapolated':' · interpolated'):(o.derived||o.raw?.status?.startsWith('calculated'))?' · calculated':'')+(o.status==='last'?` · ${period}`:o.periodStart!=null&&o.periodStart!==o.periodEnd?` · ${period}`:'');
+ return (o.regional?'Regional ≈ ':o.publicationEstimate?'Period ≈ ':o.status==='interpolated'?'≈ ':'')+(fx?AtlasCurrency.format(fx):v+(compactUnits[key]||''))+(o.status==='interpolated'?(o.estimateKind==='extrapolated'?' · extrapolated':' · interpolated'):(o.derived||o.raw?.status?.startsWith('calculated'))?' · calculated':'')+(o.status==='last'?` · ${period}`:o.periodStart!=null&&o.periodStart!==o.periodEnd?` · ${period}`:'');
 }
 function textWidth(value,font){hit.font=font;return hit.measureText(value).width;}
 function collision(a,b,pad=16){return a.x<b.x+b.w+pad&&a.x+a.w+pad>b.x&&a.y<b.y+b.h+pad&&a.y+a.h+pad>b.y;}
@@ -172,6 +172,7 @@ function appendCatalog(body,label,keys){
 }
 const comparisonBar=document.createElement('div');comparisonBar.id='atlasComparison';comparisonBar.hidden=true;comparisonBar.setAttribute('role','region');comparisonBar.setAttribute('aria-label','Map comparison');document.body.append(comparisonBar);
 function compareMetric(key){
+ window.AtlasTerritoryUI?.reference();
  state.comparison=key;state.lock=false;hideHover();window.AtlasWars?.deactivate();window.AtlasTrade?.deactivate();window.AtlasIndustryMarkets?.clear();
  document.body.classList.toggle('atlas-comparing',!!key);comparisonBar.hidden=!key;comparisonBar.replaceChildren();
  if(key){const title=document.createElement('strong');title.textContent='Comparing: '+(names[key]||key);comparisonBar.append(title);
@@ -304,7 +305,7 @@ function detailFor(label){
  if(key==='events'){const all=eventsFor(c,false).sort((a,b)=>Math.abs(a.startYear-year())-Math.abs(b.startYear-year()));return {title:c.name+' · wars & crises',lines:all.slice(0,3).map(r=>`${r.startYear}–${r.endYear}: ${r.title}. ${r.summary}`).concat(['Dated context, not a measured causal effect.']),source:{url:'economic-events-data.json',title:'All event sources'}};}
  if(key==='trade')return {title:c.name+' · trade connections',lines:[(tradeCoverage(c)?'Mapped trade-source coverage exists at or before this year; individual flows load on demand. ':'No mapped coverage is loaded for this year; available source years can be explored. ')+'Activate this symbol to trace documented national trade partners. Values retain their source year and currency.','These are country connections, not observed shipping routes or industry buyers.'],source:{url:'trade-sources.html',title:'Trade sources'}};
  if(key==='development'){const d=developmentFor(c);if(!d)return {title:c.name+' · historical AHDI',lines:['Not recorded at or before '+year()+'. No later benchmark is substituted.'],source:{url:HistoricalDevelopment.sourceUrl,title:'Published reconstruction'}};return {title:c.name+' · historical AHDI',lines:[`${d?.year}: ${d?.value.toFixed(3)}. Published augmented human development benchmark; distinct from UNDP HDI.`,...Object.entries(d?.components||{}).map(([k,v])=>`${k}: ${v.value.toLocaleString('en-US',{maximumFractionDigits:2})} ${v.unit}.`),ref],source:{url:HistoricalDevelopment.sourceUrl,title:'Published reconstruction'}};}
- const source=key==='total_gdp'?{url:WorldData.source,title:'GDP and population source'}:AtlasObservations.source(c,key);
+ const source=o.publicationEstimate?{url:o.sourceUrl,title:o.publicationTitle,unit:o.unit}:key==='total_gdp'?{url:WorldData.source,title:'GDP and population source'}:AtlasObservations.source(c,key);
  const fx=window.AtlasCurrency?.observation(o,key,year());
  const outputYear=o.status==='last'?o.sourceYear:year();
  const definition=['gdp','total_gdp'].includes(key)?`Annual economic output for ${outputYear}${key==='gdp'?' per person':''}, expressed in 2011 purchasing-power-parity international dollars. 2011 is the price/comparison benchmark, not the year the output occurred. This is neither a wage, household income nor a stock of wealth.${o.status==='last'?` The displayed value is a dated ${outputYear} reference, not output measured in ${year()}.`:''}${key==='total_gdp'?' '+o.method:''}`:ExtendedData.indicators[key]?.definition||'National population series; source territorial coverage may change.';
@@ -342,7 +343,7 @@ for(const line of info.lines){const p=document.createElement('p');p.textContent=
 }
 function render(){
  state.frame=0;shadeComparison();const previous=state.hover;hoverNode=null;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);overlay.replaceChildren();currentLabels=[];localLabels=[];countryTitles.clear();
- if(window.AtlasWars?.state.active||window.AtlasTrade?.state.active||window.AtlasIndustryMarkets?.isActive?.())return;
+ if(window.AtlasTerritoryUI?.isActive()||window.AtlasWars?.state.active||window.AtlasTrade?.state.active||window.AtlasIndustryMarkets?.isActive?.())return;
  const occupied=[...document.querySelectorAll('header,footer,.atlas-view-toggle,.zoom,#atlasComparison,#atlasGroupPanel,#atlasGroupPicker')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};}).filter(b=>b.w&&b.h);
  const visible=countries.map(c=>({c,mask:projectedMask(c)})).filter(x=>x.mask?.area>500).sort((a,b)=>b.mask.area-a.mask.area);
  const locals=state.comparison?[]:localPoints(visible,occupied);
@@ -363,7 +364,7 @@ overlay.addEventListener('pointermove',ev=>{if(!pan)return;const dx=ev.clientX-p
 overlay.addEventListener('pointerup',()=>{pan=null;});overlay.addEventListener('pointercancel',()=>{pan=null;});overlay.addEventListener('click',ev=>{if(dragged){ev.preventDefault();ev.stopImmediatePropagation();dragged=false;}},true);
 overlay.addEventListener('wheel',ev=>{if(ev.target.closest('.country-hover-explanation'))return;ev.preventDefault();hideHover();const factor=Math.exp(-ev.deltaY*.0015);if(globe())AtlasGlobe.setZoom(Math.max(.7,Math.min(5000,getZoom()*factor)));else{const base=Math.min(innerWidth/1140,innerHeight/660),old=base*z;z=Math.max(.03,Math.min(5000,z*factor));const px=ev.clientX-innerWidth/2,py=ev.clientY-innerHeight/2;cx+=px/old-px/(base*z);cy+=py/old-py/(base*z);draw();}},{passive:false});
 const oldDraw=draw;draw=function(){oldDraw();schedule();};window.addEventListener('atlas:globe-render',schedule);window.addEventListener('atlas:view-change',()=>{if(state.lock&&state.country&&!window.AtlasWars?.state.active&&!window.AtlasTrade?.state.active&&!window.AtlasIndustryMarkets?.isActive?.())focusCountry(state.country);else schedule();});window.addEventListener('resize',schedule);
-window.AtlasCountryCanvas={compareMetric,active:()=>true,getCountry,getCountryId:()=>state.country,getZoom,focusCountry,render,schedule,state,metricKeys,categoryInfo,orderedRows,firstRecord,jumpToFirst,hitTest:(x,y)=>countryAt({clientX:x,clientY:y})?.id,totalGDP,contained,budget,getLabels:()=>currentLabels.map(l=>({countryId:l.c.id,key:l.key,rect:l.rect})),verifyContainment:()=>currentLabels.every(l=>contained(projectedMask(l.c),l.rect))};
+window.AtlasCountryCanvas={projectedMask,candidates,place,compareMetric,active:()=>true,getCountry,getCountryId:()=>state.country,getZoom,focusCountry,render,schedule,state,metricKeys,categoryInfo,orderedRows,firstRecord,jumpToFirst,hitTest:(x,y)=>countryAt({clientX:x,clientY:y})?.id,totalGDP,contained,budget,getLabels:()=>currentLabels.map(l=>({countryId:l.c.id,key:l.key,rect:l.rect})),verifyContainment:()=>currentLabels.every(l=>contained(projectedMask(l.c),l.rect))};
 for(const id of ['time','boundaryDate','prev','next']){$(id)?.addEventListener(id==='time'?'input':id==='boundaryDate'?'change':'click',()=>{state.jump=null;schedule();});}
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('.country-hover-explanation'))hideHover();},true);
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape')hideHover();});

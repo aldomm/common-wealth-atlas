@@ -90,7 +90,7 @@
  function interval(){const a=document.getElementById('timelineStart'),b=document.getElementById('timelineEnd'),lo=Number(a.value),hi=Number(b.value);return a.value&&b.value&&Number.isInteger(lo)&&Number.isInteger(hi)&&lo>=years[0]&&hi<=years.at(-1)&&lo<=hi?{start:lo,end:hi}:null;}
  function keepYearInInterval(){const span=interval();if(span&&(years[idx]<span.start||years[idx]>span.end))goYear(span.start);}
  for(const [local,id]of [[start,'timelineStart'],[end,'timelineEnd']])local.addEventListener('input',()=>{const target=document.getElementById(id);target.value=local.value;target.dispatchEvent(new Event('input',{bubbles:true}));keepYearInInterval();});
- function show(value){closePopup();open=value;picking=false;panel.hidden=!open;picker.hidden=true;entry.setAttribute('aria-expanded',String(open));
+ function show(value){if(value)window.AtlasTerritoryUI?.reference();closePopup();open=value;picking=false;panel.hidden=!open;picker.hidden=true;entry.setAttribute('aria-expanded',String(open));
   if(open){if(groups.length===1&&!groups[0].ids.length){const id=AtlasCountryCanvas.getCountryId();if(id){groups[0].ids=[id];save();}}renderTabs();renderEditor();renderMeasures();refresh();}
   else{serial++;outlines.replaceChildren();entry.focus();}AtlasCountryCanvas.schedule();scheduleOutlines();}
  function renderPicker(){picker.replaceChildren(el('span',{},`Adding to ${groups[active].name} · ${groups[active].ids.length} selected. Tap countries to add/remove; drag to pan.`),button('Done',()=>setPicking(false)));}
