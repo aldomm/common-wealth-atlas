@@ -13,7 +13,7 @@
   properties=[...new Set(saved.properties.filter(k=>model.metrics.has(k)))].slice(0,3);while(properties.length<3)properties.push('');
   mode=saved.mode==='interval'?'interval':'year';
  }}catch(_){}
- let availability=null,availabilityPending=null,availabilityToken=0;
+ let availability=null,availabilityPending=null,availabilityToken=0,focusedCountry=null;
  const el=(tag,attrs={},text)=>{const n=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(k==='class')n.className=v;else n.setAttribute(k,v);}if(text!=null)n.textContent=text;return n;};
  const button=(text,fn,attrs={})=>{const b=el('button',{type:'button',...attrs},text);b.addEventListener('click',fn);return b;};
  const svg=(tag,attrs={},text)=>{const n=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);if(text!=null)n.textContent=text;return n;};
@@ -30,6 +30,7 @@
  const intervalRow=el('div',{class:'gc-row'});const start=el('input',{type:'number','aria-label':'Comparison from year',min:years[0],max:years.at(-1),step:1}),end=el('input',{type:'number','aria-label':'Comparison to year',min:years[0],max:years.at(-1),step:1});
  for(const [title,input]of [['From',start],['To',end]]){const label=el('label',{},title);label.append(input);intervalRow.append(label);}
  const play=button('▶ Play',()=>document.getElementById('timelinePlay').click(),{'aria-label':'Play this interval'});intervalRow.append(play);panel.append(intervalRow);
+ const focusNotice=el('div',{class:'gc-focus-notice',hidden:''}),focusText=el('span',{role:'status'});focusNotice.append(focusText,button('Show all countries',()=>setCountryFocus(null)));panel.append(focusNotice);
  const status=el('p',{class:'gc-notice',role:'status'}),charts=el('div',{id:'atlasGroupCharts'});panel.append(status,charts);
  const method=el('details');method.append(el('summary',{},'How group values and coverage work'));
  for(const text of [
@@ -120,6 +121,17 @@
    cache={signature,data};inFlight=null;refresh();
   })();
  }
+ function focusAttrs(ids){return {'data-focus-countries':[...new Set(ids)].join(' ')};}
+ function pointMembers(i,o){return o?.id?[o.id]:o?.includedIds||groups[i].ids;}
+ function setCountryFocus(id){focusedCountry=focusedCountry===id?null:id;applyCountryFocus();}
+ function countryToggle(id,label){const name=model.countries.get(id)?.name||id;return button(label,()=>{if(!popup.hidden)popupPinned=true;setCountryFocus(id);},{'data-country-toggle':id,'aria-label':'Highlight '+name,'aria-pressed':String(focusedCountry===id),title:'Highlight '+name+' across graphs'});}
+ function applyCountryFocus(){
+  for(const root of [panel,popup]){
+   root.querySelectorAll('[data-focus-countries]').forEach(n=>{const ids=n.dataset.focusCountries.split(' '),match=!!focusedCountry&&ids.includes(focusedCountry);n.classList.toggle('gc-focus-dim',!!focusedCountry&&!match);n.classList.toggle('gc-focus-active',match&&ids.length===1);});
+   root.querySelectorAll('[data-country-toggle]').forEach(n=>{n.setAttribute('aria-pressed',String(n.dataset.countryToggle===focusedCountry));n.classList.toggle('gc-key-dim',!!focusedCountry&&n.dataset.countryToggle!==focusedCountry&&!n.parentElement.closest('[data-focus-countries]'));});
+  }
+  focusNotice.hidden=!focusedCountry;if(focusedCountry)focusText.textContent=`Following ${model.countries.get(focusedCountry)?.name||focusedCountry}. Combined lines containing it remain group totals; highlighting does not change values.`;
+ }
  function pointCountry(i,point){return point?.id||(groups[i].ids.length===1?groups[i].ids[0]:null);}
  function pointColor(i,point){const id=pointCountry(i,point);return id?countryColor(id):colors[i];}
  function paintCharts(data,keys,span,y){for(const key of keys){
@@ -130,13 +142,13 @@
   const py=v=>180-(v-min)/range*145,x=year=>94+(year-span.start)/Math.max(1,span.end-span.start)*490;
   for(let i=0;i<=3;i++){const v=min+range*i/3,yy=py(v);graph.append(svg('line',{x1:94,x2:584,y1:yy,y2:yy,stroke:'#38565e'}),svg('text',{x:88,y:yy+4,'text-anchor':'end'},fmt(v)));}
   const legend=el('div',{class:'gc-plot-legend','aria-label':meta.name+' group coverage'});
-  data[key].forEach((series,i)=>{const plotted=series.filter(o=>o.value!=null||o.fallback?.length);if(!plotted.length)return;const partial=series.filter(o=>o.value!=null&&o.partial),individual=series.filter(o=>o.fallback?.length);const item=el('div');item.style.setProperty('--group-color',pointColor(i));item.append(el('strong',{},groups[i].name),el('small',{},plotted.length?`${plotted.length}/${series.length} dates shown${partial.length?' · '+partial.length+' partial':''}${individual.length?' · individual country values included':''}`:'No usable data in this selection — see evidence below'));legend.append(item);});card.append(legend);
-  const countryIds=[...new Set(data[key].flatMap((series,i)=>series.flatMap(o=>o.value!=null?(groups[i].ids.length===1?groups[i].ids:[]):(o.fallback||[]).map(m=>m.id))))].sort();
-  if(countryIds.length){const countryKey=el('div',{class:'gc-country-key','aria-label':'Country color key'});for(const [j,id] of countryIds.entries()){const item=el('span',{title:model.countries.get(id)?.name||id}),swatch=el('i');swatch.style.background=countryColor(id);item.append(swatch,document.createTextNode(countryCode(id,j)));countryKey.append(item);}card.append(countryKey,el('small',{},'Country colors stay fixed across measures, groups and years. Combined lines use group colors.'));}
+  data[key].forEach((series,i)=>{const plotted=series.filter(o=>o.value!=null||o.fallback?.length);if(!plotted.length)return;const partial=series.filter(o=>o.value!=null&&o.partial),individual=series.filter(o=>o.fallback?.length);const item=el('div',focusAttrs(plotted.flatMap(o=>pointMembers(i,o))));item.style.setProperty('--group-color',pointColor(i));item.append(el('strong',{},groups[i].name),el('small',{},plotted.length?`${plotted.length}/${series.length} dates shown${partial.length?' · '+partial.length+' partial':''}${individual.length?' · individual country values included':''}`:'No usable data in this selection — see evidence below'));legend.append(item);});card.append(legend);
+  const countryIds=[...new Set(data[key].flatMap((series,i)=>series.flatMap(o=>o.value!=null?pointMembers(i,o):(o.fallback||[]).map(m=>m.id))))].sort();
+  if(countryIds.length){const countryKey=el('div',{class:'gc-country-key','aria-label':'Country color key'});for(const [j,id] of countryIds.entries()){const item=countryToggle(id,''),swatch=el('i');swatch.style.background=countryColor(id);item.append(swatch,document.createTextNode(countryCode(id,j)));countryKey.append(item);}card.append(countryKey,el('small',{},'Click a country code to highlight it everywhere; click again to show all. Combined lines use group colors.'));}
 
   function dot(o,i,xx,label){
    const pointYear=o.year??y,pointLabel=`Breakdown for ${label}, ${meta.name}, ${pointYear}`;
-   const mark=svg('g',{role:'button',tabindex:'0','aria-label':pointLabel,'aria-haspopup':'dialog',class:'gc-point',...(pointCountry(i,o)?{'data-country-id':pointCountry(i,o)}:{})});
+   const mark=svg('g',{role:'button',tabindex:'0','aria-label':pointLabel,'aria-haspopup':'dialog',class:'gc-point',...focusAttrs(pointMembers(i,o)),...(pointCountry(i,o)?{'data-country-id':pointCountry(i,o)}:{})});
    mark.append(svg('circle',{cx:xx,cy:py(o.value),r:9+i,fill:'transparent'}),svg('circle',{cx:xx,cy:py(o.value),r:4+i*1.1,fill:'none',stroke:pointColor(i,o),'stroke-width':2,'stroke-dasharray':o.partial?'2 2':'','pointer-events':'none'}));
    const show=pin=>showBreakdown(mark,{key,i,year:pointYear,span:mode==='interval'?span:null,individualId:o.id},pin);
    mark.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch'&&!popupPinned)show(false);});
@@ -151,8 +163,8 @@
    data[key].forEach((series,i)=>{
     function trace(points,label){let previous=null;const valid=points.filter(o=>o.value!=null);for(const o of valid){
      if(previous){const continuous=o.year===previous.year+1&&o.source===previous.source&&o.unit===previous.unit&&o.periodStart===o.periodEnd&&previous.periodStart===previous.periodEnd&&JSON.stringify(o.includedIds)===JSON.stringify(previous.includedIds);
-      const segment=svg('line',{x1:x(previous.year),y1:py(previous.value),x2:x(o.year),y2:py(o.value),stroke:pointColor(i,o),'stroke-width':2,'stroke-dasharray':continuous?(i?'10 2':''):'4 5','stroke-dashoffset':i*2});segment.append(svg('title',{},continuous?'Consecutive records with the same coverage':'Visual connection only: missing years, changed coverage or reporting basis; no values inferred'));graph.append(segment);
-     }else if(valid.length===1)graph.append(svg('line',{x1:x(o.year),x2:x(o.year),y1:py(o.value)-7,y2:py(o.value)+7,stroke:pointColor(i,o)}));
+      const segment=svg('line',{...focusAttrs([...pointMembers(i,previous),...pointMembers(i,o)]),x1:x(previous.year),y1:py(previous.value),x2:x(o.year),y2:py(o.value),stroke:pointColor(i,o),'stroke-width':2,'stroke-dasharray':continuous?(i?'10 2':''):'4 5','stroke-dashoffset':i*2});segment.append(svg('title',{},continuous?'Consecutive records with the same coverage':'Visual connection only: missing years, changed coverage or reporting basis; no values inferred'));graph.append(segment);
+     }else if(valid.length===1)graph.append(svg('line',{...focusAttrs(pointMembers(i,o)),x1:x(o.year),x2:x(o.year),y1:py(o.value)-7,y2:py(o.value)+7,stroke:pointColor(i,o)}));
      previous=o;
     }for(const o of valid)dot(o,i,x(o.year),label);}
     trace(series,groups[i].name);
@@ -163,7 +175,7 @@
    graph.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();goYear(e.key==='Home'?span.start:e.key==='End'?span.end:Math.max(span.start,Math.min(span.end,y+(e.key==='ArrowRight'?1:-1))));}});
   }else{
    const width=490/groups.length;data[key].forEach((series,i)=>{const o=series[0],xx=94+(i+.5)*width,points=o.value!=null?[o]:o.fallback||[];
-    for(const point of points){graph.append(svg('line',{x1:xx,x2:xx,y1:py(0),y2:py(point.value),stroke:pointColor(i,point),'stroke-width':2,'stroke-dasharray':point.partial?'4 4':''}));dot(point,i,xx,groups[i].name+(point.id?' / '+model.countries.get(point.id)?.name:''));}
+    for(const point of points){graph.append(svg('line',{...focusAttrs(pointMembers(i,point)),x1:xx,x2:xx,y1:py(0),y2:py(point.value),stroke:pointColor(i,point),'stroke-width':2,'stroke-dasharray':point.partial?'4 4':''}));dot(point,i,xx,groups[i].name+(point.id?' / '+model.countries.get(point.id)?.name:''));}
     if(points.length)graph.append(svg('text',{x:xx,y:207,'text-anchor':'middle'},String.fromCharCode(65+i)));
    });
   }
@@ -174,7 +186,7 @@
   if(all.length&&meta.kind==='single')card.append(el('p',{class:'gc-muted'},'Country values are shown individually within each group; no combined distribution is invented.'));
   const values=el('div',{class:'gc-values'});data[key].forEach((series,i)=>{
    const o=series.find(o=>o.year===y),count=series.filter(o=>o.value!=null||o.fallback?.length).length;if(!count)return;
-   const b=button('',()=>{evidence=evidence?.key===key&&evidence.i===i&&evidence.year===y?null:{key,i,year:y};refresh();},{class:'gc-value','aria-label':`Evidence for ${groups[i].name}, ${meta.name}, ${y}`});b.style.setProperty('--group-color',pointColor(i));
+   const b=button('',()=>{evidence=evidence?.key===key&&evidence.i===i&&evidence.year===y?null:{key,i,year:y};refresh();},{class:'gc-value',...focusAttrs(series.flatMap(o=>pointMembers(i,o))),'aria-label':`Evidence for ${groups[i].name}, ${meta.name}, ${y}`});b.style.setProperty('--group-color',pointColor(i));
    b.append(el('strong',{},`${String.fromCharCode(65+i)} · ${groups[i].name}`));const text=el('span',{},o?.value!=null?(o.partial?'PARTIAL · ':'')+fmt(o.value):o?.reason||'Selected year is outside the interval');text.append(el('small',{},`${o?(o.fallback?.length?o.fallback.length+'/'+groups[i].ids.length+' countries shown individually':o.covered+'/'+groups[i].ids.length+' contributing countries'):'Outside interval'}${mode==='interval'?` · ${count}/${span.end-span.start+1} plotted years`:''}${o?.value!=null&&o.periodStart!==o.periodEnd?` · source window ${o.periodStart}–${o.periodEnd}`:''}`));b.append(text);values.append(b);
   });card.append(values);
   if(evidence?.key===key)renderEvidence(card,evidence,span);
@@ -182,7 +194,7 @@
   groups.forEach(g=>{const missing=g.ids.filter(id=>!availableIds.has(id));if(missing.length)excluded.append(el('p',{},`${g.name} — excluded from this graph: ${missing.map(id=>model.countries.get(id)?.name||id).join(', ')}. No usable source data for ${mode==='interval'?span.start+'–'+span.end:y}.`));});
   if(excluded.childElementCount){excluded.prepend(el('strong',{},'Countries without data'));excluded.append(el('small',{},'Saved group membership is unchanged. These countries return automatically when data is available for your selection. Partial-coverage counts still refer to the full selected group.'));card.append(excluded);}
   charts.append(card);
- }if(graphFocus&&document.activeElement===document.body)charts.querySelector('[data-comparison-property="'+graphFocus+'"] svg')?.focus({preventScroll:true});graphFocus=null;}
+ }applyCountryFocus();if(graphFocus&&document.activeElement===document.body)charts.querySelector('[data-comparison-property="'+graphFocus+'"] svg')?.focus({preventScroll:true});graphFocus=null;}
  function renderEvidence(card,which,span){
   const g=groups[which.i];if(!g)return;const o=model.aggregate(g.ids,which.key,which.year,mode==='interval'?span:null),box=el('div',{class:'gc-evidence'});
   box.append(el('h3',{},`${g.name} · ${which.year}`),el('p',{},o.value==null?o.reason:`${fmt(o.value,false)} ${o.unit} · ${o.method}`));
@@ -206,7 +218,7 @@
  function queuePopupClose(){clearTimeout(popupTimer);if(!popupPinned)popupTimer=setTimeout(closePopup,220);}
  popup.addEventListener('pointerenter',()=>clearTimeout(popupTimer));popup.addEventListener('pointerleave',queuePopupClose);
  popup.addEventListener('focusin',()=>clearTimeout(popupTimer));popup.addEventListener('focusout',e=>{if(!popup.contains(e.relatedTarget))queuePopupClose();});
- document.addEventListener('pointerdown',e=>{if(!popup.hidden&&!popup.contains(e.target)&&!e.target.closest('.gc-point'))closePopup();});
+ document.addEventListener('pointerdown',e=>{if(!popup.hidden&&!popup.contains(e.target)&&!e.target.closest('.gc-point,[data-country-toggle]'))closePopup();});
  panel.addEventListener('scroll',closePopup,{passive:true});window.addEventListener('resize',closePopup);
  function showBreakdown(anchor,selection,pin){
   clearTimeout(popupTimer);popupPinned=pin;const g=groups[selection.i],meta=model.metrics.get(selection.key);
@@ -215,16 +227,16 @@
   popup.append(el('p',{},detail.kind==='total'?'Country shares of the plotted total':detail.kind==='average'?'Each country’s contribution to the plotted average':'Individual country values — no combined group value'));
   const total=parts.reduce((sum,p)=>sum+p.contribution,0),pie=detail.kind==='total'&&parts.length<=6&&parts.length>0&&total>0&&parts.every(p=>p.contribution>=0);
   const chart=svg('svg',{viewBox:pie?'0 0 300 150':`0 0 300 ${Math.max(64,parts.length*24+12)}`,role:'img','aria-label':pie?'Country contribution pie chart':'Country contribution bar chart'}),chartBox=el('div',{class:'gc-mini-chart'});
-  if(pie){let angle=-Math.PI/2;for(const [j,p] of parts.entries()){const end=angle+p.contribution/total*Math.PI*2,color=countryColor(p.id);if(p.contribution===total)chart.append(svg('circle',{cx:150,cy:75,r:68,fill:color}));else if(p.contribution>0)chart.append(svg('path',{d:`M150 75 L${150+68*Math.cos(angle)} ${75+68*Math.sin(angle)} A68 68 0 ${end-angle>Math.PI?1:0} 1 ${150+68*Math.cos(end)} ${75+68*Math.sin(end)} Z`,fill:color,stroke:'#102b34','stroke-width':1}));if(p.contribution/total>=.05){const mid=(angle+end)/2,radius=p.contribution===total?0:44;chart.append(svg('text',{x:150+radius*Math.cos(mid),y:79+radius*Math.sin(mid),'text-anchor':'middle',fill:'#102b34','font-size':12,'font-weight':700},countryCode(p.id,j)));}angle=end;}}
+  if(pie){let angle=-Math.PI/2;for(const [j,p] of parts.entries()){const end=angle+p.contribution/total*Math.PI*2,color=countryColor(p.id),part=svg('g',focusAttrs([p.id]));chart.append(part);if(p.contribution===total)part.append(svg('circle',{cx:150,cy:75,r:68,fill:color}));else if(p.contribution>0)part.append(svg('path',{d:`M150 75 L${150+68*Math.cos(angle)} ${75+68*Math.sin(angle)} A68 68 0 ${end-angle>Math.PI?1:0} 1 ${150+68*Math.cos(end)} ${75+68*Math.sin(end)} Z`,fill:color,stroke:'#102b34','stroke-width':1}));if(p.contribution/total>=.05){const mid=(angle+end)/2,radius=p.contribution===total?0:44;part.append(svg('text',{x:150+radius*Math.cos(mid),y:79+radius*Math.sin(mid),'text-anchor':'middle',fill:'#102b34','font-size':12,'font-weight':700},countryCode(p.id,j)));}angle=end;}}
   else{const low=parts.reduce((n,p)=>Math.min(n,p.contribution),0),high=parts.reduce((n,p)=>Math.max(n,p.contribution),0),scale=v=>32+(v-low)/(high-low||1)*256,zero=scale(0);
-   chart.append(svg('line',{x1:zero,x2:zero,y1:2,y2:parts.length*24+6,stroke:'#759398'}));parts.forEach((p,j)=>{const x=scale(p.contribution);chart.append(svg('text',{x:3,y:j*24+19,fill:'#d7e9e6','font-size':10},countryCode(p.id,j)),svg('rect',{x:Math.min(zero,x),y:j*24+5,width:Math.max(1,Math.abs(x-zero)),height:15,fill:countryColor(p.id)}));});}
+   chart.append(svg('line',{x1:zero,x2:zero,y1:2,y2:parts.length*24+6,stroke:'#759398'}));parts.forEach((p,j)=>{const x=scale(p.contribution),part=svg('g',focusAttrs([p.id]));chart.append(part);part.append(svg('text',{x:3,y:j*24+19,fill:'#d7e9e6','font-size':10},countryCode(p.id,j)),svg('rect',{x:Math.min(zero,x),y:j*24+5,width:Math.max(1,Math.abs(x-zero)),height:15,fill:countryColor(p.id)}));});}
   chartBox.append(chart);popup.append(chartBox,el('small',{},meta.unit));
-  const key=el('ol',{class:'gc-mini-key'});parts.forEach((p,j)=>{const row=el('li'),swatch=el('span',{class:'gc-mini-swatch'});swatch.style.background=countryColor(p.id);row.append(swatch,el('span',{},`${countryCode(p.id,j)} · ${model.countries.get(p.id)?.name||p.id}${selection.individualId===p.id?' (selected)':''}`));
+  const key=el('ol',{class:'gc-mini-key'});parts.forEach((p,j)=>{const row=el('li',focusAttrs([p.id])),swatch=el('span',{class:'gc-mini-swatch'});swatch.style.background=countryColor(p.id);row.append(swatch,countryToggle(p.id,`${countryCode(p.id,j)} · ${model.countries.get(p.id)?.name||p.id}${selection.individualId===p.id?' (selected)':''}`));
    row.append(el('strong',{},fmt(p.value)),el('small',{},detail.kind==='total'&&total>0&&parts.every(p=>p.contribution>=0)?`${(p.contribution/total*100).toFixed(1)}% of shown total`:detail.kind==='average'?`${(p.weight*100).toFixed(1)}% weight · ${fmt(p.contribution)} contribution`:'Individual source value'));key.append(row);});popup.append(key);
   if(detail.result.partial)popup.append(el('p',{},`Partial coverage: ${detail.result.covered}/${detail.result.total} countries contribute.`));
   if(detail.excluded.length){const missing=el('details');missing.append(el('summary',{},`${detail.excluded.length} ${detail.excluded.length===1?'country':'countries'} excluded at this date`),el('p',{},detail.excluded.map(m=>`${model.countries.get(m.id)?.name||m.id}: ${m.exclusionReason||m.reason||'not combined'}`).join('; ')));popup.append(missing);}
   popup.append(el('small',{},pin?'Click outside or × to close.':'Click a point to keep this breakdown open.'));
-  popup.hidden=false;popup.style.maxHeight='';popup.style.left='8px';popup.style.top='8px';const r=anchor.getBoundingClientRect(),box=popup.getBoundingClientRect();let left=r.right+12;if(left+box.width>innerWidth-8)left=r.left-box.width-12;popup.style.left=Math.max(8,Math.min(left,innerWidth-box.width-8))+'px';const top=Math.max(8,Math.min(r.top-30,innerHeight-box.height-8));popup.style.top=top+'px';popup.style.maxHeight=Math.min(560,innerHeight-top-8)+'px';
+  applyCountryFocus();popup.hidden=false;popup.style.maxHeight='';popup.style.left='8px';popup.style.top='8px';const r=anchor.getBoundingClientRect(),box=popup.getBoundingClientRect();let left=r.right+12;if(left+box.width>innerWidth-8)left=r.left-box.width-12;popup.style.left=Math.max(8,Math.min(left,innerWidth-box.width-8))+'px';const top=Math.max(8,Math.min(r.top-30,innerHeight-box.height-8));popup.style.top=top+'px';popup.style.maxHeight=Math.min(560,innerHeight-top-8)+'px';
  }
  // Group colors are geographic outlines, not a value choropleth. Multiple
  // memberships get alternating colored strokes rather than overwriting one.
