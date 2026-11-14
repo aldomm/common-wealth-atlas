@@ -4,10 +4,12 @@
  const model=AtlasGroupComparisonModel.create({countries:D.countries,indicators:ExtendedData.indicators,units:D.units,series:AtlasObservations.series,source:AtlasObservations.source,convert:AtlasCurrency.convert,cpi:AtlasCPI});
  const countries=[...model.countries.values()].filter(c=>!['SUN','YUG','CSK'].includes(c.id)).sort((a,b)=>a.name.localeCompare(b.name));
  const colors=['#7ce1c4','#ffc879','#98baff','#ed9dd0','#c4db78'],storage='atlas-country-groups-v1';
- let groups=[{name:'Group 1',ids:[]}],properties=['gdp','pop',''],active=0,mode='year',open=false,picking=false,chartsMode=false,frame=0,highlightFrame=0,cache=null,inFlight=null,evidence=null,graphFocus=null,serial=0;
+ const defaultName=i=>'Group '+String.fromCharCode(65+i);
+ const nextName=()=>Array.from({length:5},(_,i)=>defaultName(i)).find(name=>!groups.some(g=>g.name===name))||defaultName(groups.length);
+ let groups=[{name:'Group A',ids:[]}],properties=['gdp','pop',''],active=0,mode='year',open=false,picking=false,chartsMode=false,frame=0,highlightFrame=0,cache=null,inFlight=null,evidence=null,graphFocus=null,serial=0;
  try{const saved=JSON.parse(localStorage.getItem(storage));if(saved){
-  groups=saved.groups.slice(0,5).map((g,i)=>({name:String(g.name||'Group '+(i+1)).slice(0,40),ids:[...new Set(g.ids.filter(id=>countries.some(c=>c.id===id))) ]}));
-  if(!groups.length)groups=[{name:'Group 1',ids:[]}];
+  groups=saved.groups.slice(0,5).map((g,i)=>({name:String(!g.name||/^Group [1-5]$/.test(g.name)?defaultName(i):g.name).slice(0,40),ids:[...new Set(g.ids.filter(id=>countries.some(c=>c.id===id))) ]}));
+  if(!groups.length)groups=[{name:'Group A',ids:[]}];
   properties=[...new Set(saved.properties.filter(k=>model.metrics.has(k)))].slice(0,3);while(properties.length<3)properties.push('');
   mode=saved.mode==='interval'?'interval':'year';
  }}catch(_){}
@@ -39,11 +41,11 @@
  ])method.append(el('p',{},text));panel.append(method);
  function save(){try{localStorage.setItem(storage,JSON.stringify({groups,properties,mode}));}catch(_){}}
  function changed(){cache=null;evidence=null;serial++;save();renderTabs();renderEditor();refresh();scheduleOutlines();}
- function renderTabs(){tabs.replaceChildren();groups.forEach((g,i)=>{const b=button(g.name,()=>{active=i;setChartsMode(false);editor.open=true;renderTabs();renderEditor();},{class:'gc-group-tab','aria-pressed':String(active===i)});b.style.setProperty('--group-color',colors[i]);b.append(el('small',{},`${g.ids.length} ${g.ids.length===1?'country':'countries'}`));tabs.append(b);});const add=button('+ Group',()=>{if(groups.length>=5)return;groups.push({name:'Group '+(groups.length+1),ids:[]});active=groups.length-1;setChartsMode(false);editor.open=true;changed();});add.disabled=groups.length>=5;tabs.append(add);}
+ function renderTabs(){tabs.replaceChildren();groups.forEach((g,i)=>{const b=button(g.name,()=>{active=i;setChartsMode(false);editor.open=true;renderTabs();renderEditor();},{class:'gc-group-tab','aria-pressed':String(active===i)});b.style.setProperty('--group-color',colors[i]);b.append(el('small',{},`${g.ids.length} ${g.ids.length===1?'country':'countries'}`));tabs.append(b);});const add=button('+ Group',()=>{if(groups.length>=5)return;groups.push({name:nextName(),ids:[]});active=groups.length-1;setChartsMode(false);editor.open=true;changed();});add.disabled=groups.length>=5;tabs.append(add);}
  function renderEditor(){
   const previousSearch=editBody.querySelector('input[type=search]')?.value||'',scroll=editBody.querySelector('.gc-country-list')?.scrollTop||0,focused=document.activeElement?.matches('input[type=checkbox]')?document.activeElement.getAttribute('aria-label'):null;editBody.replaceChildren();const g=groups[active];
-  const row=el('div',{class:'gc-row'}),name=el('input',{type:'text',maxlength:'40','aria-label':'Group name'});name.value=g.name;name.addEventListener('input',()=>{g.name=name.value.trim()||'Group '+(active+1);save();renderTabs();refresh();});
-  row.append(name,button('Pick on map',()=>setPicking(true)),button('Remove group',()=>{groups.splice(active,1);if(!groups.length)groups.push({name:'Group 1',ids:[]});active=Math.min(active,groups.length-1);changed();}));editBody.append(row);
+  const row=el('div',{class:'gc-row'}),name=el('input',{type:'text',maxlength:'40','aria-label':'Group name'});name.value=g.name;name.addEventListener('input',()=>{g.name=name.value.trim()||defaultName(active);save();renderTabs();refresh();});
+  row.append(name,button('Pick on map',()=>setPicking(true)),button('Remove group',()=>{groups.splice(active,1);if(!groups.length)groups.push({name:'Group A',ids:[]});active=Math.min(active,groups.length-1);changed();}));editBody.append(row);
   const members=el('div',{class:'gc-members','aria-label':'Selected countries'});for(const id of g.ids){const c=model.countries.get(id);members.append(button(c.name+' ×',()=>toggleCountry(id),{'aria-label':'Remove '+c.name+' from '+g.name}));}editBody.append(members);
   const search=el('input',{type:'search',class:'gc-country-search',placeholder:'Find countries to add','aria-label':'Find countries for group'});search.value=previousSearch;editBody.append(search);
   const actions=el('div',{class:'gc-row'}),list=el('div',{class:'gc-country-list'});let matches=[];
@@ -112,7 +114,7 @@
    graph.addEventListener('click',e=>{const rect=graph.getBoundingClientRect(),sx=(e.clientX-rect.left)*600/rect.width;if(sx<94||sx>584)return;goYear(Math.round(span.start+(sx-94)/490*(span.end-span.start)));});
    graph.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();goYear(e.key==='Home'?span.start:e.key==='End'?span.end:Math.max(span.start,Math.min(span.end,y+(e.key==='ArrowRight'?1:-1))));}});
   }else{
-   const width=490/groups.length;data[key].forEach((series,i)=>{const o=series[0],xx=94+i*width;if(o.value!=null){const top=Math.min(py(o.value),py(0)),height=Math.abs(py(o.value)-py(0));graph.append(svg('rect',{x:xx+width*.18,y:top,width:width*.64,height:Math.max(2,height),fill:colors[i]}));graph.append(svg('text',{x:xx+width/2,y:Math.max(15,top-7),'text-anchor':'middle'},fmt(o.value)));}else graph.append(svg('text',{x:xx+width/2,y:110,'text-anchor':'middle'},'No data'));graph.append(svg('text',{x:xx+width/2,y:207,'text-anchor':'middle'},'G'+(i+1)));});
+   const width=490/groups.length;data[key].forEach((series,i)=>{const o=series[0],xx=94+i*width;if(o.value!=null){const top=Math.min(py(o.value),py(0)),height=Math.abs(py(o.value)-py(0));graph.append(svg('rect',{x:xx+width*.18,y:top,width:width*.64,height:Math.max(2,height),fill:colors[i]}));graph.append(svg('text',{x:xx+width/2,y:Math.max(15,top-7),'text-anchor':'middle'},fmt(o.value)));}else graph.append(svg('text',{x:xx+width/2,y:110,'text-anchor':'middle'},'No data'));graph.append(svg('text',{x:xx+width/2,y:207,'text-anchor':'middle'},String.fromCharCode(65+i)));});
   }
   card.append(graph);
   if(!all.length)card.append(el('p',{class:'gc-muted'},'No complete group values for this selection. Missing data is not zero.'));
@@ -122,7 +124,7 @@
   const values=el('div',{class:'gc-values'});data[key].forEach((series,i)=>{
    const o=series.find(o=>o.year===y),count=series.filter(o=>o.value!=null).length;
    const b=button('',()=>{evidence=evidence?.key===key&&evidence.i===i&&evidence.year===y?null:{key,i,year:y};refresh();},{class:'gc-value','aria-label':`Evidence for ${groups[i].name}, ${meta.name}, ${y}`});b.style.setProperty('--group-color',colors[i]);
-   b.append(el('strong',{},`G${i+1} · ${groups[i].name}`));const text=el('span',{},o?.value!=null?fmt(o.value):o?.reason||'Selected year is outside the interval');text.append(el('small',{},`${o?o.covered+'/'+groups[i].ids.length+' countries with records':'Outside interval'}${mode==='interval'?` · ${count}/${span.end-span.start+1} plotted years`:''}${o?.value!=null&&o.periodStart!==o.periodEnd?` · source window ${o.periodStart}–${o.periodEnd}`:''}`));b.append(text);values.append(b);
+   b.append(el('strong',{},`${String.fromCharCode(65+i)} · ${groups[i].name}`));const text=el('span',{},o?.value!=null?fmt(o.value):o?.reason||'Selected year is outside the interval');text.append(el('small',{},`${o?o.covered+'/'+groups[i].ids.length+' countries with records':'Outside interval'}${mode==='interval'?` · ${count}/${span.end-span.start+1} plotted years`:''}${o?.value!=null&&o.periodStart!==o.periodEnd?` · source window ${o.periodStart}–${o.periodEnd}`:''}`));b.append(text);values.append(b);
   });card.append(values);
   if(evidence?.key===key)renderEvidence(card,evidence,span);
   charts.append(card);
