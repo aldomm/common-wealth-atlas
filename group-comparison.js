@@ -5,7 +5,7 @@
  const countries=[...model.countries.values()].filter(c=>!['SUN','YUG','CSK'].includes(c.id)).sort((a,b)=>a.name.localeCompare(b.name));
  const colors=['#7ce1c4','#ffc879','#98baff','#ed9dd0','#c4db78'],storage='atlas-country-groups-v1';
  const defaultName=i=>'Group '+String.fromCharCode(65+i);
- const nextName=()=>Array.from({length:5},(_,i)=>defaultName(i)).find(name=>!groups.some(g=>g.name===name))||defaultName(groups.length);
+ const nextName=()=>{const preferred=defaultName(groups.length);return !groups.some(g=>g.name===preferred)?preferred:Array.from({length:5},(_,i)=>defaultName(i)).find(name=>!groups.some(g=>g.name===name))||preferred;};
  let groups=[{name:'Group A',ids:[]}],properties=['gdp','pop',''],active=0,mode='year',open=false,picking=false,chartsMode=false,frame=0,highlightFrame=0,cache=null,inFlight=null,evidence=null,graphFocus=null,serial=0;
  try{const saved=JSON.parse(localStorage.getItem(storage));if(saved){
   groups=saved.groups.slice(0,5).map((g,i)=>({name:String(!g.name||/^Group [1-5]$/.test(g.name)?defaultName(i):g.name).slice(0,40),ids:[...new Set(g.ids.filter(id=>countries.some(c=>c.id===id))) ]}));
