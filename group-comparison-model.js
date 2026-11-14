@@ -8,8 +8,8 @@ function create(env){
   {key:'pop',name:'Population',unit:'people',kind:'sum',method:'Combined population'},
   {key:'total_gdp',name:'Total GDP',unit:'2011 international dollars / year',kind:'sum',method:'Combined annual GDP (derived)'},
   ...Object.entries(env.indicators).map(([key,m])=>({key,name:key==='gini'?'Gini index':m.name,unit:key==='defence_spending_eur'?`${env.cpi?.baseYear||2024} USD`:m.unit,
-   kind:key==='defence_spending_eur'?'sum':/^(gini|wealth_|hna_)/.test(key)?'single':'mean',
-   method:key==='defence_spending_eur'?'Combined defence spending':/^(gini|wealth_|hna_)/.test(key)?'Individual-country value':'Unweighted mean of country values',definition:m.definition,caveat:m.caveat})),
+   kind:key==='regional_gdp'||key==='defence_spending_eur'?'sum':/^(gini|wealth_|hna_)/.test(key)?'single':'mean',
+   method:key==='regional_gdp'?'Combined calculated population allocations (1990 PPP)':key==='defence_spending_eur'?'Combined defence spending':/^(gini|wealth_|hna_)/.test(key)?'Individual-country value':'Unweighted mean of country values',definition:m.definition,caveat:m.caveat})),
  ];
  const metrics=new Map(catalogue.map(m=>[m.key,m]));
  function records(c,key){const id=c.id+'|'+key;if(!recordCache.has(id))recordCache.set(id,new Map(env.series(c,key).map(r=>[r.year,r])));return recordCache.get(id);}
@@ -23,6 +23,7 @@ function create(env){
   const r=records(c,key).get(year),src=env.source(c,key);
   if(!r)return {id,value:null,reason:'No source record for '+year};
   if(!Number.isFinite(r.value)||r.estimate||/interpolat|extrapolat|backcast/i.test(r.raw?.status||'')||r.raw?.comparable===false)return {id,value:null,reason:'No comparable source observation (project estimates excluded)'};
+  if(key==='regional_gdp'&&(!r.raw?.allocationModel||!r.raw?.allocationId))return {id,value:null,reason:'No validated regional population allocation'};
   const from=r.raw?.periodStart??year,to=r.raw?.periodEnd??year;
   if(from!==to&&(!interval||from<interval.start||to>interval.end||to!==year))return {id,value:null,reason:`Source window ${from}–${to}; select an interval containing the whole window`};
   if(from===to&&from!==year)return {id,value:null,reason:'Record refers to a different source year'};
@@ -38,7 +39,7 @@ function create(env){
    value=(conversion.nominalValue??conversion.value)*base/index;
   }
   return {id,key,year,value,unit:key==='pop'||key==='defence_spending_eur'?meta.unit:r.unit||src.unit,source:r.source||src.id,url:src.url,row:r.row,
-   periodStart:from,periodEnd:to,sourceStatus:r.raw?.status||'Source estimate',sourceNote:r.raw?.qualityDescription||r.raw?.qualityNote||r.raw?.sourceNote||'',conversion};
+   periodStart:from,periodEnd:to,allocationId:r.raw?.allocationId,sourceStatus:r.raw?.status||'Source estimate',sourceNote:r.raw?.qualityDescription||r.raw?.qualityNote||r.raw?.sourceNote||'',conversion};
  }
  // Inspect actual source years only; reuse read() so dates, units, estimates and
  // conversions follow exactly the same rules as plotted values.
@@ -65,7 +66,7 @@ function create(env){
   }
   if(!usable.length)return fallback('No usable group value for '+year+'; available individual records are listed separately');
   const a=usable[0];
-  if(usable.some(b=>a.source!==b.source||a.unit!==b.unit||a.periodStart!==b.periodStart||a.periodEnd!==b.periodEnd))return fallback('Individual country values shown: incompatible sources, units or reporting windows');
+  if(usable.some(b=>a.source!==b.source||a.unit!==b.unit||a.periodStart!==b.periodStart||a.periodEnd!==b.periodEnd||(key==='regional_gdp'&&a.allocationId!==b.allocationId)))return fallback('Individual country values shown: incompatible sources, units or reporting windows');
   let value;
   if(meta.kind==='weighted'&&ids.length>1){
    const weights=usable.map(m=>result.weights.find(w=>w.id===m.id));
@@ -73,7 +74,7 @@ function create(env){
   }else value=usable.reduce((sum,m)=>sum+m.value,0)/(meta.kind==='mean'?usable.length:1);
   if(!Number.isFinite(value))return fallback('The combined value is not finite');
   const partial=usable.length<ids.length;
-  return finish({value,source:a.source,periodStart:a.periodStart,periodEnd:a.periodEnd,reason:partial?'Partial coverage: '+usable.length+'/'+ids.length+' countries; not the full group':'',method:(partial?'PARTIAL · available countries only · ':'')+(ids.length===1&&key!=='total_gdp'?'Individual-country source value':meta.method)});
+  return finish({value,source:a.source,periodStart:a.periodStart,periodEnd:a.periodEnd,reason:partial?'Partial coverage: '+usable.length+'/'+ids.length+' countries; not the full group':'',method:(partial?'PARTIAL · available countries only · ':'')+(ids.length===1&&key!=='total_gdp'&&key!=='regional_gdp'?'Individual-country source value':meta.method)});
  }
  function breakdown(ids,key,year,interval){
   const result=aggregate(ids,key,year,interval),meta=metrics.get(key);

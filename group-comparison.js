@@ -1,5 +1,5 @@
 /* Up to five named country groups, three independently scaled measures, and
-   source-only year/interval charts synchronized with the shared timeline. */
+   dated source and explicitly calculated year/interval charts synchronized with the shared timeline. */
 (()=>{'use strict';
  const model=AtlasGroupComparisonModel.create({countries:D.countries,indicators:ExtendedData.indicators,units:D.units,series:AtlasObservations.series,source:AtlasObservations.source,convert:AtlasCurrency.convert,cpi:AtlasCPI,wars:window.AtlasWarData?.records||[]});
  const countries=[...model.countries.values()].filter(c=>!['SUN','YUG','CSK'].includes(c.id)).sort((a,b)=>a.name.localeCompare(b.name));
@@ -35,9 +35,10 @@
  const method=el('details');method.append(el('summary',{},'How group values and coverage work'));
  for(const text of [
   'Available compatible countries are shown even when other members are missing. Partial totals and averages are labeled with the number included; they are not full-group values. Changes in the contributing countries can also change the trend. Evidence identifies excluded countries and missing weights or conversions. Missing values are never zero, carried forward, or interpolated here. Incompatible records are shown individually instead of combined.',
-  'Population and annual GDP totals are summed. GDP/person is total annual GDP divided by total population, using matching GDP and population records. GDP uses 2011 PPP international dollars; defence spending uses source-year exchange rates and US CPI to express 2024 US dollars. These units are not interchangeable.',
+  'Population and annual GDP totals are summed. GDP/person is total annual GDP divided by total population, using matching GDP and population records. Original GDP measures use 2011 PPP international dollars; defence spending uses source-year exchange rates and US CPI to express 2024 US dollars. These units are not interchangeable.',
   'Other eligible indicators show unweighted means of national values: each country has equal influence. These are comparisons of countries, not pooled population statistics or a newly calculated HDI, life expectancy, mortality rate or poverty rate. National definitions can differ; inspect the evidence.',
   'Gini, wealth-distribution shares and country-specific historical sector indexes are shown as individual country values within each group. Computing a combined distribution needs underlying household data. National Ginis or top-wealth shares cannot simply be averaged.',
+  'GDP · population allocation is a separate calculated series in 1990 PPP units. It divides a complete regional total using same-year population shares; group selection sums those fixed shares without reallocating the rest. It assumes equal GDP per person and is not the original country GDP series.',
   'A source estimate or reconstruction is not necessarily a direct measurement. Source reporting windows, including three-year happiness averages, are included only in interval mode when the full window fits inside your selected interval. They are plotted at the window end and remain labeled; they are never relabeled as annual observations.',
   'Interval graphs show annual records and eligible source windows, not a sum or average across time. Dashed connectors span missing years or changes in contributing countries; they are visual guides, not interpolated values. Reporting windows and incompatible source changes are also flagged with dashed connectors. Countries use the atlas’s statistical reference areas; a group is not a reconstruction of an empire or historical alliance. Groups may overlap, so their totals must not be added together.',
  ])method.append(el('p',{},text));panel.append(method);
