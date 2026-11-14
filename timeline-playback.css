@@ -2,3 +2,5 @@
 #timelinePlay{min-width:86px;color:#f4dfa7}#timelinePlay[aria-pressed="true"]{background:#365d62;border-color:#e5c989}
 #timelineSpeed{min-width:44px}
 @media(max-width:600px){.atlas-semantic-canvas footer>div:first-child{gap:7px;flex-wrap:wrap}.atlas-semantic-canvas footer #timelinePlay,.atlas-semantic-canvas footer #timelineSpeed{font-size:14px}.atlas-semantic-canvas footer #year{min-width:62px}}
+
+#timelineInterval{font-size:12px;margin:4px 0;color:#d7e5df}#timelineInterval summary{cursor:pointer;min-height:28px;display:list-item;width:fit-content;padding:4px}#timelineInterval .timeline-interval-fields{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:4px 0}#timelineInterval label{display:flex;align-items:center;gap:7px;margin:0;font-size:13px;letter-spacing:0}#timelineInterval input{width:90px;min-height:44px;font:16px system-ui;background:#1c3a42;color:#e2efea;border:1px solid #688b8c;border-radius:7px;padding:6px}#timelineInterval span{font-size:12px;color:#c6dcd5}@media(max-width:600px){#timelineInterval summary{min-height:36px;padding:7px}#timelineInterval .timeline-interval-fields{gap:8px}#timelineInterval span{width:100%}}
