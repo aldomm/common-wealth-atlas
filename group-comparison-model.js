@@ -40,6 +40,16 @@ function create(env){
   return {id,key,year,value,unit:key==='pop'||key==='defence_spending_eur'?meta.unit:r.unit||src.unit,source:r.source||src.id,url:src.url,row:r.row,
    periodStart:from,periodEnd:to,sourceStatus:r.raw?.status||'Source estimate',sourceNote:r.raw?.qualityDescription||r.raw?.qualityNote||r.raw?.sourceNote||'',conversion};
  }
+ // Inspect actual source years only; reuse read() so dates, units, estimates and
+ // conversions follow exactly the same rules as plotted values.
+ function hasData(id,key,start,end,intervalMode=false){
+  const c=countries.get(id);if(!c||!metrics.has(key)||!Number.isInteger(start)||!Number.isInteger(end)||start>end)return false;
+  const interval=intervalMode?{start,end}:null;
+  for(const year of records(c,key==='total_gdp'?'gdp':key).keys()){
+   if(year>=start&&year<=end&&read(id,key,year,interval).value!=null)return true;
+  }
+  return false;
+ }
  function aggregate(ids,key,year,interval){
   ids=[...new Set(ids)];const meta=metrics.get(key),result={key,year,value:null,total:ids.length,covered:0,members:[],missing:[],unit:meta?.unit||'',method:meta?.method||'',reason:''};
   if(!ids.length)return {...result,reason:'Choose countries for this group'};
@@ -66,7 +76,7 @@ function create(env){
   return finish({value,source:a.source,periodStart:a.periodStart,periodEnd:a.periodEnd,reason:partial?'Partial coverage: '+usable.length+'/'+ids.length+' countries; not the full group':'',method:(partial?'PARTIAL · available countries only · ':'')+(ids.length===1&&key!=='total_gdp'?'Individual-country source value':meta.method)});
  }
  function series(ids,key,start,end){const out=[];for(let year=start;year<=end;year++){const {members,weights,missing,...summary}=aggregate(ids,key,year,{start,end});out.push(summary);}return out;}
- return {catalogue,metrics,countries,read,aggregate,series};
+ return {catalogue,metrics,countries,read,hasData,aggregate,series};
 }
 window.AtlasGroupComparisonModel={create};
 })();

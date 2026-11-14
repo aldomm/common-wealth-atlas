@@ -52,3 +52,5 @@
 @media(max-width:600px){#atlasGroupPanel .gc-chart svg text{font-size:24px}}
 
 #atlasGroupPanel .gc-plot-legend{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}#atlasGroupPanel .gc-plot-legend>div{flex:1;min-width:110px;border-left:4px solid var(--group-color);padding:4px 8px;background:#19363f}#atlasGroupPanel .gc-plot-legend strong,#atlasGroupPanel .gc-plot-legend small{display:block}
+
+#atlasGroupPanel .gc-exclusions{margin-top:14px;padding-top:10px;border-top:1px solid #56727a;font-size:12px}#atlasGroupPanel .gc-exclusions small{display:block}
