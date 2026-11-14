@@ -26,6 +26,11 @@ function bounds(){
 function rangeLabel(){summary.textContent='Interval: '+start.value+'–'+end.value;}
 for(const input of [start,end])input.addEventListener('input',()=>{pause();bounds();rangeLabel();});
 rangeLabel();
+// Keep navigation reachable when the interval editor expands or wraps on phones.
+if(window.ResizeObserver){
+ const footer=slider.parentElement,placeZoom=()=>{const zoom=document.querySelector('.zoom');if(zoom)zoom.style.bottom=Math.max(0,window.innerHeight-footer.getBoundingClientRect().top+12)+'px';};
+ new ResizeObserver(placeZoom).observe(footer);window.addEventListener('resize',placeZoom);
+}
 let playing=false,timer=null,speedIndex=0;
 const speeds=[1,2,5];
 function paint(){
