@@ -120,6 +120,8 @@
    cache={signature,data};inFlight=null;refresh();
   })();
  }
+ function pointCountry(i,point){return point?.id||(groups[i].ids.length===1?groups[i].ids[0]:null);}
+ function pointColor(i,point){const id=pointCountry(i,point);return id?countryColor(id):colors[i];}
  function paintCharts(data,keys,span,y){for(const key of keys){
   const meta=model.metrics.get(key),card=el('article',{class:'gc-chart','data-comparison-property':key});card.append(el('h3',{},meta.name),el('small',{},meta.unit+' · '+meta.method));
   const graph=svg('svg',{viewBox:'0 0 600 225',role:'group','aria-label':meta.name+' comparison graph',tabindex:'0'});
@@ -128,11 +130,14 @@
   const py=v=>180-(v-min)/range*145,x=year=>94+(year-span.start)/Math.max(1,span.end-span.start)*490;
   for(let i=0;i<=3;i++){const v=min+range*i/3,yy=py(v);graph.append(svg('line',{x1:94,x2:584,y1:yy,y2:yy,stroke:'#38565e'}),svg('text',{x:88,y:yy+4,'text-anchor':'end'},fmt(v)));}
   const legend=el('div',{class:'gc-plot-legend','aria-label':meta.name+' group coverage'});
-  data[key].forEach((series,i)=>{const plotted=series.filter(o=>o.value!=null||o.fallback?.length);if(!plotted.length)return;const partial=series.filter(o=>o.value!=null&&o.partial),individual=series.filter(o=>o.fallback?.length);const item=el('div');item.style.setProperty('--group-color',colors[i]);item.append(el('strong',{},groups[i].name),el('small',{},plotted.length?`${plotted.length}/${series.length} dates shown${partial.length?' · '+partial.length+' partial':''}${individual.length?' · individual country values included':''}`:'No usable data in this selection — see evidence below'));legend.append(item);});card.append(legend);
+  data[key].forEach((series,i)=>{const plotted=series.filter(o=>o.value!=null||o.fallback?.length);if(!plotted.length)return;const partial=series.filter(o=>o.value!=null&&o.partial),individual=series.filter(o=>o.fallback?.length);const item=el('div');item.style.setProperty('--group-color',pointColor(i));item.append(el('strong',{},groups[i].name),el('small',{},plotted.length?`${plotted.length}/${series.length} dates shown${partial.length?' · '+partial.length+' partial':''}${individual.length?' · individual country values included':''}`:'No usable data in this selection — see evidence below'));legend.append(item);});card.append(legend);
+  const countryIds=[...new Set(data[key].flatMap((series,i)=>series.flatMap(o=>o.value!=null?(groups[i].ids.length===1?groups[i].ids:[]):(o.fallback||[]).map(m=>m.id))))].sort();
+  if(countryIds.length){const countryKey=el('div',{class:'gc-country-key','aria-label':'Country color key'});for(const [j,id] of countryIds.entries()){const item=el('span',{title:model.countries.get(id)?.name||id}),swatch=el('i');swatch.style.background=countryColor(id);item.append(swatch,document.createTextNode(countryCode(id,j)));countryKey.append(item);}card.append(countryKey,el('small',{},'Country colors stay fixed across measures, groups and years. Combined lines use group colors.'));}
+
   function dot(o,i,xx,label){
    const pointYear=o.year??y,pointLabel=`Breakdown for ${label}, ${meta.name}, ${pointYear}`;
-   const mark=svg('g',{role:'button',tabindex:'0','aria-label':pointLabel,'aria-haspopup':'dialog',class:'gc-point'});
-   mark.append(svg('circle',{cx:xx,cy:py(o.value),r:9+i,fill:'transparent'}),svg('circle',{cx:xx,cy:py(o.value),r:4+i*1.1,fill:'none',stroke:colors[i],'stroke-width':2,'stroke-dasharray':o.partial?'2 2':'','pointer-events':'none'}));
+   const mark=svg('g',{role:'button',tabindex:'0','aria-label':pointLabel,'aria-haspopup':'dialog',class:'gc-point',...(pointCountry(i,o)?{'data-country-id':pointCountry(i,o)}:{})});
+   mark.append(svg('circle',{cx:xx,cy:py(o.value),r:9+i,fill:'transparent'}),svg('circle',{cx:xx,cy:py(o.value),r:4+i*1.1,fill:'none',stroke:pointColor(i,o),'stroke-width':2,'stroke-dasharray':o.partial?'2 2':'','pointer-events':'none'}));
    const show=pin=>showBreakdown(mark,{key,i,year:pointYear,span:mode==='interval'?span:null,individualId:o.id},pin);
    mark.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch'&&!popupPinned)show(false);});
    mark.addEventListener('pointerleave',queuePopupClose);
@@ -146,8 +151,8 @@
    data[key].forEach((series,i)=>{
     function trace(points,label){let previous=null;const valid=points.filter(o=>o.value!=null);for(const o of valid){
      if(previous){const continuous=o.year===previous.year+1&&o.source===previous.source&&o.unit===previous.unit&&o.periodStart===o.periodEnd&&previous.periodStart===previous.periodEnd&&JSON.stringify(o.includedIds)===JSON.stringify(previous.includedIds);
-      const segment=svg('line',{x1:x(previous.year),y1:py(previous.value),x2:x(o.year),y2:py(o.value),stroke:colors[i],'stroke-width':2,'stroke-dasharray':continuous?(i?'10 2':''):'4 5','stroke-dashoffset':i*2});segment.append(svg('title',{},continuous?'Consecutive records with the same coverage':'Visual connection only: missing years, changed coverage or reporting basis; no values inferred'));graph.append(segment);
-     }else if(valid.length===1)graph.append(svg('line',{x1:x(o.year),x2:x(o.year),y1:py(o.value)-7,y2:py(o.value)+7,stroke:colors[i]}));
+      const segment=svg('line',{x1:x(previous.year),y1:py(previous.value),x2:x(o.year),y2:py(o.value),stroke:pointColor(i,o),'stroke-width':2,'stroke-dasharray':continuous?(i?'10 2':''):'4 5','stroke-dashoffset':i*2});segment.append(svg('title',{},continuous?'Consecutive records with the same coverage':'Visual connection only: missing years, changed coverage or reporting basis; no values inferred'));graph.append(segment);
+     }else if(valid.length===1)graph.append(svg('line',{x1:x(o.year),x2:x(o.year),y1:py(o.value)-7,y2:py(o.value)+7,stroke:pointColor(i,o)}));
      previous=o;
     }for(const o of valid)dot(o,i,x(o.year),label);}
     trace(series,groups[i].name);
@@ -158,7 +163,7 @@
    graph.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();goYear(e.key==='Home'?span.start:e.key==='End'?span.end:Math.max(span.start,Math.min(span.end,y+(e.key==='ArrowRight'?1:-1))));}});
   }else{
    const width=490/groups.length;data[key].forEach((series,i)=>{const o=series[0],xx=94+(i+.5)*width,points=o.value!=null?[o]:o.fallback||[];
-    for(const point of points){graph.append(svg('line',{x1:xx,x2:xx,y1:py(0),y2:py(point.value),stroke:colors[i],'stroke-width':2,'stroke-dasharray':point.partial?'4 4':''}));dot(point,i,xx,groups[i].name+(point.id?' / '+model.countries.get(point.id)?.name:''));}
+    for(const point of points){graph.append(svg('line',{x1:xx,x2:xx,y1:py(0),y2:py(point.value),stroke:pointColor(i,point),'stroke-width':2,'stroke-dasharray':point.partial?'4 4':''}));dot(point,i,xx,groups[i].name+(point.id?' / '+model.countries.get(point.id)?.name:''));}
     if(points.length)graph.append(svg('text',{x:xx,y:207,'text-anchor':'middle'},String.fromCharCode(65+i)));
    });
   }
@@ -169,7 +174,7 @@
   if(all.length&&meta.kind==='single')card.append(el('p',{class:'gc-muted'},'Country values are shown individually within each group; no combined distribution is invented.'));
   const values=el('div',{class:'gc-values'});data[key].forEach((series,i)=>{
    const o=series.find(o=>o.year===y),count=series.filter(o=>o.value!=null||o.fallback?.length).length;if(!count)return;
-   const b=button('',()=>{evidence=evidence?.key===key&&evidence.i===i&&evidence.year===y?null:{key,i,year:y};refresh();},{class:'gc-value','aria-label':`Evidence for ${groups[i].name}, ${meta.name}, ${y}`});b.style.setProperty('--group-color',colors[i]);
+   const b=button('',()=>{evidence=evidence?.key===key&&evidence.i===i&&evidence.year===y?null:{key,i,year:y};refresh();},{class:'gc-value','aria-label':`Evidence for ${groups[i].name}, ${meta.name}, ${y}`});b.style.setProperty('--group-color',pointColor(i));
    b.append(el('strong',{},`${String.fromCharCode(65+i)} · ${groups[i].name}`));const text=el('span',{},o?.value!=null?(o.partial?'PARTIAL · ':'')+fmt(o.value):o?.reason||'Selected year is outside the interval');text.append(el('small',{},`${o?(o.fallback?.length?o.fallback.length+'/'+groups[i].ids.length+' countries shown individually':o.covered+'/'+groups[i].ids.length+' contributing countries'):'Outside interval'}${mode==='interval'?` · ${count}/${span.end-span.start+1} plotted years`:''}${o?.value!=null&&o.periodStart!==o.periodEnd?` · source window ${o.periodStart}–${o.periodEnd}`:''}`));b.append(text);values.append(b);
   });card.append(values);
   if(evidence?.key===key)renderEvidence(card,evidence,span);
@@ -195,6 +200,7 @@
  // Two-letter economy codes from the bundled World Bank country reference.
  const countryCodes={"ABW":"AW","AFG":"AF","AGO":"AO","ALB":"AL","AND":"AD","ARE":"AE","ARG":"AR","ARM":"AM","ASM":"AS","ATG":"AG","AUS":"AU","AUT":"AT","AZE":"AZ","BDI":"BI","BEL":"BE","BEN":"BJ","BFA":"BF","BGD":"BD","BGR":"BG","BHR":"BH","BHS":"BS","BIH":"BA","BLR":"BY","BLZ":"BZ","BMU":"BM","BOL":"BO","BRA":"BR","BRB":"BB","BRN":"BN","BTN":"BT","BWA":"BW","CAF":"CF","CAN":"CA","CHE":"CH","CHI":"JG","CHL":"CL","CHN":"CN","CIV":"CI","CMR":"CM","COD":"CD","COG":"CG","COL":"CO","COM":"KM","CPV":"CV","CRI":"CR","CUB":"CU","CUW":"CW","CYM":"KY","CYP":"CY","CZE":"CZ","DEU":"DE","DJI":"DJ","DMA":"DM","DNK":"DK","DOM":"DO","DZA":"DZ","ECU":"EC","EGY":"EG","ERI":"ER","ESP":"ES","EST":"EE","ETH":"ET","FIN":"FI","FJI":"FJ","FRA":"FR","FRO":"FO","FSM":"FM","GAB":"GA","GBR":"GB","GEO":"GE","GHA":"GH","GIB":"GI","GIN":"GN","GMB":"GM","GNB":"GW","GNQ":"GQ","GRC":"GR","GRD":"GD","GRL":"GL","GTM":"GT","GUM":"GU","GUY":"GY","HKG":"HK","HND":"HN","HRV":"HR","HTI":"HT","HUN":"HU","IDN":"ID","IMN":"IM","IND":"IN","IRL":"IE","IRN":"IR","IRQ":"IQ","ISL":"IS","ISR":"IL","ITA":"IT","JAM":"JM","JOR":"JO","JPN":"JP","KAZ":"KZ","KEN":"KE","KGZ":"KG","KHM":"KH","KIR":"KI","KNA":"KN","KOR":"KR","KWT":"KW","LAO":"LA","LBN":"LB","LBR":"LR","LBY":"LY","LCA":"LC","LIE":"LI","LKA":"LK","LSO":"LS","LTU":"LT","LUX":"LU","LVA":"LV","MAC":"MO","MAF":"MF","MAR":"MA","MCO":"MC","MDA":"MD","MDG":"MG","MDV":"MV","MEX":"MX","MHL":"MH","MKD":"MK","MLI":"ML","MLT":"MT","MMR":"MM","MNE":"ME","MNG":"MN","MNP":"MP","MOZ":"MZ","MRT":"MR","MUS":"MU","MWI":"MW","MYS":"MY","NAM":"NA","NCL":"NC","NER":"NE","NGA":"NG","NIC":"NI","NLD":"NL","NOR":"NO","NPL":"NP","NRU":"NR","NZL":"NZ","OMN":"OM","PAK":"PK","PAN":"PA","PER":"PE","PHL":"PH","PLW":"PW","PNG":"PG","POL":"PL","PRI":"PR","PRK":"KP","PRT":"PT","PRY":"PY","PSE":"PS","PYF":"PF","QAT":"QA","ROU":"RO","RUS":"RU","RWA":"RW","SAU":"SA","SDN":"SD","SEN":"SN","SGP":"SG","SLB":"SB","SLE":"SL","SLV":"SV","SMR":"SM","SOM":"SO","SRB":"RS","SSD":"SS","STP":"ST","SUR":"SR","SVK":"SK","SVN":"SI","SWE":"SE","SWZ":"SZ","SXM":"SX","SYC":"SC","SYR":"SY","TCA":"TC","TCD":"TD","TGO":"TG","THA":"TH","TJK":"TJ","TKM":"TM","TLS":"TL","TON":"TO","TTO":"TT","TUN":"TN","TUR":"TR","TUV":"TV","TZA":"TZ","UGA":"UG","UKR":"UA","URY":"UY","USA":"US","UZB":"UZ","VCT":"VC","VEN":"VE","VGB":"VG","VIR":"VI","VNM":"VN","VUT":"VU","WSM":"WS","XKX":"XK","YEM":"YE","ZAF":"ZA","ZMB":"ZM","ZWE":"ZW"};
  const countryCode=(id,index)=>countryCodes[id]||String(index+1);
+ // Deterministic country identity: independent of group, metric, year and ordering.
  const countryColor=id=>{let n=0;for(const ch of id)n=(n*31+ch.charCodeAt(0))>>>0;return `hsl(${n*137.508%360} 65% 67%)`;};
  function closePopup(){clearTimeout(popupTimer);popup.hidden=true;popupPinned=false;}
  function queuePopupClose(){clearTimeout(popupTimer);if(!popupPinned)popupTimer=setTimeout(closePopup,220);}
