@@ -62,7 +62,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 (()=>{
 'use strict';
 const ns='http://www.w3.org/2000/svg', cache=new Map();
-let active=false,longitude=8,latitude=25,magnification=1,gesture=null,frame=0,lastCenter=null;
+let active=false,longitude=8,latitude=25,roll=0,magnification=1,gesture=null,frame=0,lastCenter=null;
 const sphere=document.createElementNS(ns,'svg');
 sphere.id='atlasGlobe';sphere.setAttribute('tabindex','0');sphere.setAttribute('aria-label','Historical economic globe. Drag to rotate, scroll to zoom, arrow keys to rotate. Click a territory to inspect it.');
 sphere.style.display='none'; document.body.insertBefore(sphere,document.body.firstChild);
@@ -114,7 +114,7 @@ function polygon(f,attrs,title){const p=path(geometry(f.path||f));if(!p)return;c
 function render(){
  if(!active)return;
  const width=innerWidth,height=innerHeight,base=Math.max(70,Math.min(width*(width<650?.45:.30),height*.34));
- projection.rotate([-longitude,-latitude]).translate([width*(width<650?.5:.55),height*.47]).scale(base*magnification).clipExtent([[0,0],[width,height]]);
+ projection.rotate([-longitude,-latitude,roll]).translate([width*(width<650?.5:.55),height*.47]).scale(base*magnification).clipExtent([[0,0],[width,height]]);
  sphere.setAttribute('viewBox',`0 0 ${width} ${height}`);sphere.replaceChildren();
  sphere.append(node('defs',{},null));
  sphere.firstChild.innerHTML='<radialGradient id="atlasOcean" cx="33%" cy="28%" r="78%"><stop offset="0" stop-color="#214d5b"/><stop offset=".7" stop-color="#102f3e"/><stop offset="1" stop-color="#071b28"/></radialGradient>';
@@ -150,15 +150,19 @@ function setView(view){
 }
 for(const b of toggle.querySelectorAll('button'))b.onclick=()=>setView(b.dataset.view);
 const originalDraw=draw;draw=function(){originalDraw();if(active){focusSharedCenter();render();}};
+function zoomAt(zoom,x,y,fromX=x,fromY=y){
+ const next=Math.max(.7,Math.min(5000,zoom)),angles=AtlasZoomAnchor.anchoredRotation([-longitude,-latitude,roll],projection.translate(),projection.scale(),projection.scale()*next/magnification,[fromX,fromY],[x,y]);
+ longitude=-angles[0];latitude=-angles[1];roll=angles[2];magnification=next;render();
+}
 function zoomBy(factor){magnification=Math.max(.7,Math.min(5000,magnification*factor));render();}
 for(const [id,factor]of [['plus',1.4],['minus',1/1.4]]){const old=$(id).onclick;$(id).onclick=e=>active?zoomBy(factor):old(e);}
-const oldHome=$('home').onclick;$('home').onclick=e=>{if(!active)return oldHome(e);magnification=1;longitude=8;latitude=25;render();};
+const oldHome=$('home').onclick;$('home').onclick=e=>{if(!active)return oldHome(e);magnification=1;longitude=8;latitude=25;roll=0;render();};
 sphere.onpointerdown=e=>{gesture={x:e.clientX,y:e.clientY,lon:longitude,lat:latitude,moved:false,id:e.target.closest('[data-id]')?.dataset.id};sphere.setPointerCapture(e.pointerId);};
 sphere.onpointermove=e=>{if(!gesture)return;const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;if(Math.abs(dx)+Math.abs(dy)>4)gesture.moved=true;longitude=gesture.lon-dx*.28/magnification;latitude=Math.max(-89,Math.min(89,gesture.lat+dy*.28/magnification));schedule();};
 sphere.onpointerup=e=>{const g=gesture;gesture=null;if(g&&!g.moved&&g.id)choose(g.id);};sphere.onpointercancel=()=>{gesture=null;};
-sphere.onwheel=e=>{e.preventDefault();zoomBy(Math.exp(-e.deltaY*.0015));};
+sphere.onwheel=e=>{e.preventDefault();zoomAt(magnification*Math.exp(-e.deltaY*.0015),e.clientX,e.clientY);};
 sphere.onkeydown=e=>{const amount=e.shiftKey?15:5;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','Home'].includes(e.key))e.preventDefault();if(e.key==='ArrowLeft')longitude-=amount;if(e.key==='ArrowRight')longitude+=amount;if(e.key==='ArrowUp')latitude=Math.min(89,latitude+amount);if(e.key==='ArrowDown')latitude=Math.max(-89,latitude-amount);if(e.key==='+'||e.key==='=')return zoomBy(1.4);if(e.key==='-')return zoomBy(1/1.4);if(e.key==='Home')return $('home').click();render();};
 window.addEventListener('resize',schedule);
-window.AtlasGlobe={project,invert:(x,y)=>{const t=projection.translate(),r=projection.scale();return Math.hypot(x-t[0],y-t[1])<=r?projection.invert([x,y]):null;},getView:()=>({longitude,latitude,zoom:magnification,scale:projection.scale(),center:projection.translate()}),setZoom:zoom=>{magnification=Math.max(.7,Math.min(5000,zoom));render();},isActive:()=>active,setView,render,svg:sphere,getZoom:()=>magnification,focus:(lon,lat,zoom)=>{longitude=lon;latitude=Math.max(-89,Math.min(89,lat));if(Number.isFinite(zoom))magnification=Math.max(.7,Math.min(5000,zoom));render();},geometry};
+window.AtlasGlobe={project,invert:(x,y)=>{const t=projection.translate(),r=projection.scale();return Math.hypot(x-t[0],y-t[1])<=r?projection.invert([x,y]):null;},zoomAt,getView:()=>({longitude,latitude,roll,zoom:magnification,scale:projection.scale(),center:projection.translate()}),setZoom:zoom=>{magnification=Math.max(.7,Math.min(5000,zoom));render();},isActive:()=>active,setView,render,svg:sphere,getZoom:()=>magnification,focus:(lon,lat,zoom,newRoll=0)=>{longitude=lon;latitude=Math.max(-89.999999,Math.min(89.999999,lat));roll=newRoll;if(Number.isFinite(zoom))magnification=Math.max(.7,Math.min(5000,zoom));render();},geometry};
 setView('globe');
 })();

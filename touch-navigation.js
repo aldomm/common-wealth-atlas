@@ -43,8 +43,7 @@
     const current=geometry(),ratio=current.d/previous.d;
     if(window.AtlasGlobe?.isActive()) {
       const v=AtlasGlobe.getView();
-      AtlasGlobe.focus(v.longitude-(current.x-previous.x)*.28/v.zoom,
-        v.latitude+(current.y-previous.y)*.28/v.zoom,v.zoom*ratio);
+      AtlasGlobe.zoomAt(v.zoom*ratio,current.x,current.y,previous.x,previous.y);
     } else {
       const base=Math.min(innerWidth/1140,innerHeight/660),old=base*z;
       const next=Math.max(.03,Math.min(512,z*ratio));

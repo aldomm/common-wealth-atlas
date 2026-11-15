@@ -26,6 +26,7 @@
  const tabs=el('div',{class:'gc-group-list','aria-label':'Comparison groups'});panel.append(tabs);
  const editor=el('details',{open:''});editor.append(el('summary',{},'Edit countries & group name'));const editBody=el('div');editor.append(editBody);panel.append(editor);
  const measures=el('div',{class:'gc-measures'}),measureNotice=el('p',{class:'gc-muted',role:'status'});panel.append(measures,measureNotice);
+ const contextButton=button('Event overlays · applies everywhere',()=>AtlasContext.open(groups.flatMap(g=>g.ids)));panel.append(contextButton);window.addEventListener('atlas:context-change',()=>{refresh();AtlasCountryCanvas.schedule();});
  const modeRow=el('div',{class:'gc-row'}),yearButton=button('Selected year',()=>setMode('year')),intervalButton=button('Timeline interval',()=>setMode('interval'));modeRow.append(yearButton,intervalButton);panel.append(modeRow);
  const intervalRow=el('div',{class:'gc-row'});const start=el('input',{type:'number','aria-label':'Comparison from year',min:years[0],max:years.at(-1),step:1}),end=el('input',{type:'number','aria-label':'Comparison to year',min:years[0],max:years.at(-1),step:1});
  for(const [title,input]of [['From',start],['To',end]]){const label=el('label',{},title);label.append(input);intervalRow.append(label);}
@@ -135,7 +136,7 @@
  }
  function pointCountry(i,point){return point?.id||(groups[i].ids.length===1?groups[i].ids[0]:null);}
  function pointColor(i,point){const id=pointCountry(i,point);return id?countryColor(id):colors[i];}
- function paintCharts(data,keys,span,y){const conflictRange=mode==='interval'?span:{start:y,end:y},conflicts=model.conflictPeriods(groups.flatMap(g=>g.ids),conflictRange.start,conflictRange.end);for(const key of keys){
+ function paintCharts(data,keys,span,y){const conflictRange=mode==='interval'?span:{start:y,end:y},conflicts=AtlasContext.warEnabled()?model.conflictPeriods(groups.flatMap(g=>g.ids),conflictRange.start,conflictRange.end):[],context=AtlasContext.query(groups.flatMap(g=>g.ids),conflictRange.start,conflictRange.end);for(const key of keys){
   const meta=model.metrics.get(key),card=el('article',{class:'gc-chart','data-comparison-property':key});card.append(el('h3',{},meta.name),el('small',{},meta.unit+' · '+meta.method));
   const graph=svg('svg',{viewBox:'0 0 600 225',role:'group','aria-label':meta.name+' comparison graph',tabindex:'0'});
   const all=data[key].flatMap(series=>series.flatMap(o=>o.value!=null?[o]:o.fallback||[])),low=all.length?all.reduce((v,o)=>Math.min(v,o.value),Infinity):0,high=all.length?all.reduce((v,o)=>Math.max(v,o.value),-Infinity):1,pad=(high-low||Math.abs(high)||1)*.05;
@@ -181,12 +182,14 @@
     if(points.length)graph.append(svg('text',{x:xx,y:207,'text-anchor':'middle'},String.fromCharCode(65+i)));
    });
   }
-  if(all.length||conflicts.length)card.append(graph);
+  addContextMarkers(graph,context,conflictRange,mode==='interval');
+  if(all.length||conflicts.length||context.length)card.append(graph);
+  addContextKey(card,context);
   addConflictKey(card,conflicts,conflictRange);
   if(!all.length)card.append(el('p',{class:'gc-muted'},'No usable records for this selection. See the exclusions below; missing data is not zero.'));
   if(all.length&&mode==='interval')card.append(el('p',{class:'gc-muted'},'Hover or tap a dot for its country breakdown. Dots are available records. Dashed connections span missing years or changed coverage/basis; they do not create values. Dotted rings indicate partial groups. Click the graph to move the shared year.'));
   if(meta.kind==='mean')card.append(el('p',{class:'gc-muted'},'Equal weight per country — not a pooled population measure.'));
-  if(all.length&&meta.kind==='single')card.append(el('p',{class:'gc-muted'},'Country values are shown individually within each group; no combined distribution is invented.'));
+  if(all.length&&meta.kind==='single')card.append(el('p',{class:'gc-muted'},'Country values are shown individually within each group; no combined value is invented.'));
   const values=el('div',{class:'gc-values'});data[key].forEach((series,i)=>{
    const o=series.find(o=>o.year===y),count=series.filter(o=>o.value!=null||o.fallback?.length).length;if(!count)return;
    const b=button('',()=>{evidence=evidence?.key===key&&evidence.i===i&&evidence.year===y?null:{key,i,year:y};refresh();},{class:'gc-value',...focusAttrs(series.flatMap(o=>pointMembers(i,o))),'aria-label':`Evidence for ${groups[i].name}, ${meta.name}, ${y}`});b.style.setProperty('--group-color',pointColor(i));
@@ -198,6 +201,16 @@
   if(excluded.childElementCount){excluded.prepend(el('strong',{},'Countries without data'));excluded.append(el('small',{},'Saved group membership is unchanged. These countries return automatically when data is available for your selection. Partial-coverage counts still refer to the full selected group.'));card.append(excluded);}
   charts.append(card);
  }applyCountryFocus();if(graphFocus&&document.activeElement===document.body)charts.querySelector('[data-comparison-property="'+graphFocus+'"] svg')?.focus({preventScroll:true});graphFocus=null;}
+ function addContextMarkers(graph,records,range,intervalMode){
+  if(!intervalMode)return;const x=y=>94+(y-range.start)/Math.max(1,range.end-range.start)*490,lanes=Array(3).fill(-Infinity);let clusters=[];
+  for(const r of records){const xx=x(Math.max(range.start,r.startYear)),end=x(Math.min(range.end,r.endYear)),lane=lanes.findIndex(v=>xx-v>=15);if(lane<0){const prev=clusters.at(-1);if(prev)prev.records.push(r);continue;}lanes[lane]=xx;clusters.push({x:xx,end,lane,records:[r]});}
+  for(const c of clusters){const mark=svg('g',{class:'gc-context-marker',role:'button',tabindex:'0','aria-label':c.records.map(r=>r.title+' '+AtlasContext.period(r)).join('; ')}),yy=184+c.lane*6;mark.append(svg('line',{x1:c.x,x2:Math.max(c.x+1,c.end),y1:yy,y2:yy,stroke:'#e2bf81','stroke-width':3}),svg('rect',{x:c.x-6,y:yy-4,width:12,height:8,rx:2,fill:'#e2bf81'}));mark.append(svg('title',{},'Context, not a measured value. '+c.records.map(r=>r.title).join('; ')));const show=()=>{if(c.records.length===1)AtlasContext.showEvidence(c.records[0]);else AtlasContext.open(groups.flatMap(g=>g.ids));};mark.addEventListener('click',e=>{e.stopPropagation();show();});mark.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();e.stopPropagation();show();}});graph.append(mark);}
+ }
+ function addContextKey(card,records){const box=el('details',{class:'gc-context-events'});box.append(el('summary',{},records.length+' context events · sources & explanations'));
+  box.append(el('p',{},'Gold marks below the plot are events, not data values. Global context does not establish local adoption or causation. Overlapping markers share a position; every event remains listed here.'));
+  for(const r of records)box.append(button(AtlasContext.period(r)+' · '+r.title+' · '+(r.scope==='global'?'global context':'country-linked'),()=>AtlasContext.showEvidence(r)));
+  if(!records.length)box.append(el('p',{},'No selected context records for these dates and places; this is not evidence that no events occurred.'));card.append(box);
+ }
  function renderEvidence(card,which,span){
   const g=groups[which.i];if(!g)return;const o=model.aggregate(g.ids,which.key,which.year,mode==='interval'?span:null),box=el('div',{class:'gc-evidence'});
   box.append(el('h3',{},`${g.name} · ${which.year}`),el('p',{},o.value==null?o.reason:`${fmt(o.value,false)} ${o.unit} · ${o.method}`));
