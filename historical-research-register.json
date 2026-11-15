@@ -57,7 +57,7 @@
       "languages": "English; original local and colonial records",
       "use": "Occupational wages, prices and economic-history datasets",
       "url": "https://aehnetwork.org/data-research/",
-      "status": "Imported: Broadberry–Gardner GDP/person for eight African countries in original 1990 international dollars. Occupational wage archive downloaded for later audit."
+      "status": "Imported: Broadberry–Gardner GDP/person for eight African countries in original 1990 international dollars. Imported: pre-1950 occupational wages and calculated skilled/unskilled pay ratios, preserving source currencies, country notes and researcher exclusions."
     },
     {
       "name": "IBGE — Anuário Estatístico do Brasil",
@@ -242,141 +242,56 @@
       "use": "Death rate · 1949 retrospective; Urban population · 1949 retrospective",
       "url": "https://www.stats.gov.cn/zt_18555/ztfx/xzg50nxlfxbg/202303/t20230301_1920453.html",
       "status": "Imported: 2 source records. National Bureau of Statistics of China (1999-09-28), 之十五：控制人口增长成绩巨大 坚持基本国策任重道远. Attributed factual values and brief translated definitions, not full text."
+    },
+    {
+      "name": "鈴木諒一 · 日本経済の基盤 (1958)",
+      "coverage": "Pre-1950 local wage and living-cost evidence",
+      "languages": "Japanese",
+      "use": "Wages, real-pay indices and household costs",
+      "url": "https://koara.lib.keio.ac.jp/xoonips/modules/xoonips/detail.php?koara_id=AN00234610-19580101-0001",
+      "status": "Imported: 107 source facts. 鈴木諒一 (Ryōichi Suzuki), 日本経済の基盤 [The basic conditions of Japanese economy], 三田学会雑誌 51(1), 1958, pp.1–22, Tables 17–18, printed pp.16–17 / PDF p.10. doi:10.14991/001.19580101-0001. Attributed numerical table facts only; copyrighted article not redistributed."
+    },
+    {
+      "name": "Carvalhal & Palma · Luanda and Benguela wages",
+      "coverage": "Pre-1950 local wage and living-cost evidence",
+      "languages": "English study; Portuguese archival and official sources",
+      "use": "Wages, real-pay indices and household costs",
+      "url": "https://www.aehnetwork.org/wp-content/uploads/2024/04/75_Carvalhal_Palma.pdf",
+      "status": "Imported: 117 source facts. Hélder Carvalhal and Nuno Palma, Living Standards in Angola, 1760–1975, African Economic History Working Paper 75 (April 2024), Tables A1–A2, printed pp.47–49 / PDF pp.48–50. This is the working-paper edition, not a transcription of the later journal dataset. Attributed numerical facts only; full working paper not redistributed."
+    },
+    {
+      "name": "Ibrahima Thioub · salaire du manœuvre à Dakar",
+      "coverage": "Pre-1950 local wage and living-cost evidence",
+      "languages": "French",
+      "use": "Wages, real-pay indices and household costs",
+      "url": "https://www.persee.fr/doc/outre_0300-9513_1994_num_81_305_3254?pageId=T1_450",
+      "status": "Imported: 63 source facts. Ibrahima Thioub (1994), Économie coloniale et rémunération de la force de travail : le salaire du manœuvre à Dakar de 1930 à 1954, Revue française d’histoire d’outre-mer 81(305):427–453, Annex Table 5, p.450. doi:10.3406/outre.1994.3254. Attributed numerical table facts only; article and scanned table not redistributed."
     }
   ],
   "latestImport": {
+    "batch": 4,
     "coverage": {
-      "historical_numeracy": {
-        "sourceRecords": 402,
-        "pre1950Records": 350,
-        "displayYears": 4020,
-        "countries": 61,
-        "firstYear": 1820,
-        "lastYear": 1979
+      "sourceRecords": 3587,
+      "derivedRatios": 1857,
+      "selectableRecords": 5444,
+      "displayYears": 6497,
+      "countries": 40,
+      "counts": {
+        "nominal_wage": 3473,
+        "occupational_ratio": 1857,
+        "real_wage_index": 51,
+        "gender_pay_ratio": 28,
+        "living_cost_index": 28,
+        "nominal_wage_index": 7
       },
-      "historical_gini_gross": {
-        "sourceRecords": 380,
-        "pre1950Records": 153,
-        "displayYears": 380,
-        "countries": 65,
-        "firstYear": 1820,
-        "lastYear": 2000
-      },
-      "historical_daily_baskets": {
-        "sourceRecords": 2013,
-        "pre1950Records": 985,
-        "displayYears": 2013,
-        "countries": 63,
-        "firstYear": 1820,
-        "lastYear": 2008
-      },
-      "historical_china_death": {
-        "sourceRecords": 1,
-        "pre1950Records": 1,
-        "displayYears": 1,
-        "countries": 1,
-        "firstYear": 1949,
-        "lastYear": 1949
-      },
-      "historical_china_urban_population": {
-        "sourceRecords": 1,
-        "pre1950Records": 1,
-        "displayYears": 1,
-        "countries": 1,
-        "firstYear": 1949,
-        "lastYear": 1949
-      },
-      "historical_japan_birth": {
-        "sourceRecords": 48,
-        "pre1950Records": 48,
-        "displayYears": 48,
-        "countries": 1,
-        "firstYear": 1899,
-        "lastYear": 1949
-      },
-      "historical_japan_death": {
-        "sourceRecords": 48,
-        "pre1950Records": 48,
-        "displayYears": 48,
-        "countries": 1,
-        "firstYear": 1899,
-        "lastYear": 1949
-      },
-      "historical_japan_infant": {
-        "sourceRecords": 48,
-        "pre1950Records": 48,
-        "displayYears": 48,
-        "countries": 1,
-        "firstYear": 1899,
-        "lastYear": 1949
-      },
-      "historical_japan_neonatal": {
-        "sourceRecords": 48,
-        "pre1950Records": 48,
-        "displayYears": 48,
-        "countries": 1,
-        "firstYear": 1899,
-        "lastYear": 1949
-      },
-      "historical_gdp_1990": {
-        "sourceRecords": 790,
-        "pre1950Records": 318,
-        "displayYears": 790,
-        "countries": 8,
-        "firstYear": 1885,
-        "lastYear": 2008
-      },
-      "historical_morocco_population": {
-        "sourceRecords": 5,
-        "pre1950Records": 4,
-        "displayYears": 5,
-        "countries": 1,
-        "firstYear": 1900,
-        "lastYear": 1952
-      },
-      "historical_morocco_south_population": {
-        "sourceRecords": 5,
-        "pre1950Records": 5,
-        "displayYears": 5,
-        "countries": 1,
-        "firstYear": 1921,
-        "lastYear": 1947
-      },
-      "historical_cv_infant": {
-        "sourceRecords": 30,
-        "pre1950Records": 29,
-        "displayYears": 30,
-        "countries": 1,
-        "firstYear": 1912,
-        "lastYear": 1950
-      },
-      "historical_cv_death": {
-        "sourceRecords": 68,
-        "pre1950Records": 67,
-        "displayYears": 68,
-        "countries": 1,
-        "firstYear": 1860,
-        "lastYear": 1950
-      },
-      "historical_cv_birth": {
-        "sourceRecords": 67,
-        "pre1950Records": 66,
-        "displayYears": 67,
-        "countries": 1,
-        "firstYear": 1860,
-        "lastYear": 1950
-      }
+      "duplicatedWorkbookCellsRemoved": 457
     },
-    "sourceRecords": 3954,
-    "pre1950Records": 2171,
-    "countries": 78,
     "languages": [
-      "English",
-      "Japanese",
-      "Portuguese",
-      "French",
-      "Chinese"
+      "English compilation",
+      "French original",
+      "Japanese original",
+      "Portuguese underlying archives"
     ],
-    "data": "africa-asia-history-data.json"
+    "data": "historical-wages-data.json"
   }
 }
