@@ -3089,6 +3089,545 @@
         }
       ]
     },
+    "hna_jpn_agriculture_forestry_fishing_volume1935": {
+      "meaning": "This reconstructs historical activity in agriculture, forestry and fishing on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_jpn_agriculture_forestry_volume1935": {
+      "meaning": "This reconstructs historical activity in agriculture and forestry on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_jpn_fishing_volume1935": {
+      "meaning": "This reconstructs historical activity in fishing on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_jpn_industry_volume1935": {
+      "meaning": "This reconstructs historical activity in industry on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_jpn_mining_volume1935": {
+      "meaning": "This reconstructs historical activity in mining and quarrying on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_jpn_manufacturing_volume1935": {
+      "meaning": "This reconstructs historical activity in manufacturing on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_jpn_utilities_volume1935": {
+      "meaning": "This reconstructs historical activity in electricity, gas and water on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_jpn_construction_volume1935": {
+      "meaning": "This reconstructs historical activity in construction on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · JPN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_jpn_09.xls"
+        }
+      ]
+    },
+    "hna_kor_agriculture_forestry_fishing_volume1935": {
+      "meaning": "This reconstructs historical activity in agriculture, forestry and fishing on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_kor_agriculture_forestry_volume1935": {
+      "meaning": "This reconstructs historical activity in agriculture and forestry on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_kor_fishing_volume1935": {
+      "meaning": "This reconstructs historical activity in fishing on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_kor_industry_volume1935": {
+      "meaning": "This reconstructs historical activity in industry on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_kor_mining_volume1935": {
+      "meaning": "This reconstructs historical activity in mining and quarrying on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_kor_manufacturing_volume1935": {
+      "meaning": "This reconstructs historical activity in manufacturing on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_kor_utilities_volume1935": {
+      "meaning": "This reconstructs historical activity in electricity, gas and water on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_kor_construction_volume1935": {
+      "meaning": "This reconstructs historical activity in construction on the source’s gross domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published GDP-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · KOR",
+          "url": "https://www.rug.nl/ggdc/docs/hna_kor_09.xls"
+        }
+      ]
+    },
+    "hna_twn_agriculture_forestry_fishing_volume1935": {
+      "meaning": "This reconstructs historical activity in agriculture, forestry and fishing on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · TWN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_twn_09.xls"
+        }
+      ]
+    },
+    "hna_twn_manufacturing_mining_volume1935": {
+      "meaning": "This reconstructs historical activity in manufacturing and mining on the source’s net domestic product basis. The index describes the activity relative to its own 1935 level.",
+      "calculation": "The published VA-Ki index is retained. A value of 100 is the sector’s 1935 volume; 150 is 50% above that base. This is not a sector share of GDP or an amount of money.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "GGDC historical accounts · TWN",
+          "url": "https://www.rug.nl/ggdc/docs/hna_twn_09.xls"
+        }
+      ]
+    },
+    "hna_mar_agriculture_durum_wheat_tonnes1959": {
+      "meaning": "This is the reported physical harvest of durum wheat in the Moroccan yearbook, not the monetary value or GDP contribution of farming.",
+      "calculation": "Source table I reports thousands of metric quintals. The Atlas multiplies each printed quantity by 100 to express metric tonnes. No blank cells are replaced with zero and no missing years are interpolated.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_agriculture_soft_wheat_tonnes1959": {
+      "meaning": "This is the reported physical harvest of soft wheat in the Moroccan yearbook, not the monetary value or GDP contribution of farming.",
+      "calculation": "Source table I reports thousands of metric quintals. The Atlas multiplies each printed quantity by 100 to express metric tonnes. No blank cells are replaced with zero and no missing years are interpolated.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_agriculture_barley_tonnes1959": {
+      "meaning": "This is the reported physical harvest of barley in the Moroccan yearbook, not the monetary value or GDP contribution of farming.",
+      "calculation": "Source table I reports thousands of metric quintals. The Atlas multiplies each printed quantity by 100 to express metric tonnes. No blank cells are replaced with zero and no missing years are interpolated.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_agriculture_maize_tonnes1959": {
+      "meaning": "This is the reported physical harvest of maize in the Moroccan yearbook, not the monetary value or GDP contribution of farming.",
+      "calculation": "Source table I reports thousands of metric quintals. The Atlas multiplies each printed quantity by 100 to express metric tonnes. No blank cells are replaced with zero and no missing years are interpolated.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_agriculture_oats_tonnes1959": {
+      "meaning": "This is the reported physical harvest of oats in the Moroccan yearbook, not the monetary value or GDP contribution of farming.",
+      "calculation": "Source table I reports thousands of metric quintals. The Atlas multiplies each printed quantity by 100 to express metric tonnes. No blank cells are replaced with zero and no missing years are interpolated.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_agriculture_pulses_tonnes1959": {
+      "meaning": "This is the reported physical harvest of pulses in the Moroccan yearbook, not the monetary value or GDP contribution of farming.",
+      "calculation": "Source table I reports thousands of metric quintals. The Atlas multiplies each printed quantity by 100 to express metric tonnes. No blank cells are replaced with zero and no missing years are interpolated.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_all_index1938": {
+      "meaning": "This measures mining including phosphates in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_ex_phosphate_index1938": {
+      "meaning": "This measures mining excluding phosphates in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_phosphate_index1938": {
+      "meaning": "This measures phosphate mining in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_coal_index1938": {
+      "meaning": "This measures coal mining in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_iron_index1938": {
+      "meaning": "This measures iron mining in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_manganese_index1938": {
+      "meaning": "This measures metallurgical manganese mining in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_lead_index1938": {
+      "meaning": "This measures lead mining in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_mar_mining_cobalt_index1938": {
+      "meaning": "This measures cobalt mining in the historical Moroccan reporting area relative to 1938, using the official index of marketable mine production.",
+      "calculation": "The yearbook’s published annual index is retained. Its general index is a weighted arithmetic average of product indexes, using base-year production values as weights. No monetary or GDP-share conversion is made.",
+      "interpretation": "Above 100 means greater activity than in the stated base year; below 100 means less. This is a within-series historical index, not a GDP percentage, an absolute output comparison between countries, or a welfare score.",
+      "sources": [
+        {
+          "title": "المغرب · Annuaire statistique du Maroc 1959",
+          "url": "https://www.hcp.ma/file/233897/"
+        }
+      ]
+    },
+    "hna_sen_agriculture_groundnuts_a321": {
+      "meaning": "This is the reported physical quantity of groundnut harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed tonnes quantity is multiplied by 1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mar_mining_coal_a321": {
+      "meaning": "This is the reported physical quantity of coal mine production in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed tonnes quantity is multiplied by 1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mar_mining_phosphate_a321": {
+      "meaning": "This is the reported physical quantity of phosphate mine production in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed tonnes quantity is multiplied by 1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mar_mining_manganese_a321": {
+      "meaning": "This is the reported physical quantity of manganese mine production in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed tonnes quantity is multiplied by 1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mar_mining_lead_a321": {
+      "meaning": "This is the reported physical quantity of lead mine production in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed tonnes quantity is multiplied by 1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_tun_agriculture_durum_wheat_a321": {
+      "meaning": "This is the reported physical quantity of durum wheat harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed metric quintals quantity is multiplied by 0.1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_tun_agriculture_soft_wheat_a321": {
+      "meaning": "This is the reported physical quantity of soft wheat harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed metric quintals quantity is multiplied by 0.1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_tun_agriculture_barley_a321": {
+      "meaning": "This is the reported physical quantity of barley harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed metric quintals quantity is multiplied by 0.1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_tun_agriculture_oats_a321": {
+      "meaning": "This is the reported physical quantity of oats harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed metric quintals quantity is multiplied by 0.1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_tun_agriculture_maize_sorghum_a321": {
+      "meaning": "This is the reported physical quantity of maize and sorghum harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed metric quintals quantity is multiplied by 0.1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_tun_agriculture_olive_oil_a321": {
+      "meaning": "This is the reported physical quantity of olive oil production in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed metric quintals quantity is multiplied by 0.1 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mdg_agriculture_paddy_a321": {
+      "meaning": "This is the reported physical quantity of paddy rice harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed thousand tonnes quantity is multiplied by 1000 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mdg_agriculture_maize_a321": {
+      "meaning": "This is the reported physical quantity of maize grain harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed thousand tonnes quantity is multiplied by 1000 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mdg_agriculture_cassava_a321": {
+      "meaning": "This is the reported physical quantity of cassava harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed thousand tonnes quantity is multiplied by 1000 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mdg_agriculture_coffee_a321": {
+      "meaning": "This is the reported physical quantity of coffee harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed thousand tonnes quantity is multiplied by 1000 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mdg_agriculture_sugarcane_a321": {
+      "meaning": "This is the reported physical quantity of sugarcane harvest in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed thousand tonnes quantity is multiplied by 1000 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
+    "hna_mdg_manufacturing_raw_sugar_a321": {
+      "meaning": "This is the reported physical quantity of raw sugar production in the historical territorial report. It records a specific commodity or processing stage rather than total sector value added.",
+      "calculation": "The printed thousand tonnes quantity is multiplied by 1000 to express metric tonnes. No value is inferred from missing entries; historical revisions and uncertainty remain possible.",
+      "interpretation": "Higher means a larger recorded physical quantity of this particular product. Lower means less; it does not by itself mean poorer living standards. Crop failure, weather, coverage and accounting changes can affect the series. Products and processing stages must not be summed as if they were independent value added.",
+      "sources": [
+        {
+          "title": "United Nations A/321 · French territorial reports, 1947",
+          "url": "https://digitallibrary.un.org/record/828644/files/A_321-FR.pdf"
+        }
+      ]
+    },
     "aaowd_wage_bgd_labourer_rupees": {
       "meaning": "This is the published daily wage for labourer wage · bangladesh, expressed in rupees per paid day (nominal, Bangladesh source). It represents the recorded occupation and locality or payroll scope, not the average income of the whole country.",
       "calculation": "The compilation expresses pay per paid day in the original currency. Where necessary, authors standardise annual, monthly or hourly pay using 312 days per year, 26 days per month or 8 hours per day, unless the source notes specify otherwise. Source reconstructions and estimates are retained. The Atlas does not multiply this into observed annual household earnings.",

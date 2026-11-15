@@ -8,3 +8,5 @@ body.atlas-semantic-canvas,body.atlas-semantic-canvas *{user-select:none!importa
 body.atlas-semantic-canvas input,body.atlas-semantic-canvas textarea,body.atlas-semantic-canvas [contenteditable=true]{user-select:text!important;-webkit-user-select:text!important}
 
 .measure-definition{margin:12px 0;padding:10px 12px;border:1px solid #48616a;border-radius:8px;background:#172e38}.measure-definition summary{cursor:pointer;font-weight:600;min-height:28px}.measure-definition h4{margin:14px 0 5px;font-size:1em}.measure-definition p{line-height:1.5}.measure-definition a{overflow-wrap:anywhere}
+
+.timeline-event-preview-body input[type=search]{box-sizing:border-box;width:100%;min-height:44px;padding:8px 12px;background:#1c404a;color:#eff6ed;border:1px solid #64878a;border-radius:8px;font:inherit}.timeline-event-group-list{display:grid;gap:6px;margin-top:10px}.timeline-event-group-list button{text-align:left;width:100%}
