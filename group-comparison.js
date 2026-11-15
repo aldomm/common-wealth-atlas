@@ -98,7 +98,7 @@
  function renderPicker(){picker.replaceChildren(el('span',{},`Adding to ${groups[active].name} · ${groups[active].ids.length} selected. Tap countries to add/remove; drag to pan.`),button('Done',()=>setPicking(false)));}
  function setPicking(value){picking=value;panel.hidden=value;picker.hidden=!value;if(value){AtlasCountryCanvas.compareMetric(null);AtlasWars?.deactivate();AtlasTrade?.deactivate();AtlasIndustryMarkets?.clear();renderPicker();}else{refresh();}AtlasCountryCanvas.schedule();scheduleOutlines();}
  function goYear(year){const i=years.indexOf(year);if(i<0)return;document.getElementById('timelinePlay').getAttribute('aria-pressed')==='true'&&document.getElementById('timelinePlay').click();const slider=document.getElementById('time');slider.value=i;slider.dispatchEvent(new Event('input',{bubbles:true}));}
- function fmt(value,compact=true){return value==null?'No usable value':value.toLocaleString('en-US',{notation:compact&&Math.abs(value)>=10000?'compact':'standard',maximumSignificantDigits:compact?4:9});}
+ function fmt(value,compact=true){return value==null?'No usable value':compact?AtlasNumbers.compact(value,4):value.toLocaleString('en-US',{maximumSignificantDigits:9});}
  function refresh(){if(!open)return;if(frame)cancelAnimationFrame(frame);frame=requestAnimationFrame(render);}
  function render(){
   closePopup();frame=0;const ready=ensureAvailability(),y=years[idx],span=interval();start.value=document.getElementById('timelineStart').value;end.value=document.getElementById('timelineEnd').value;

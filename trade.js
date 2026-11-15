@@ -74,7 +74,7 @@ function pairsAtYear(year=currentYear()){
 }
 function currencyInfo(v,ds=dataset(),y=currentYear()){return ['GBP','USD'].includes(ds.currency)&&window.AtlasCurrency?AtlasCurrency.convert(v,ds.currency,y,{scale:ds.scale||1,basis:'nominal'}):null;}
 function displayUnit(ds=dataset(),y=currentYear()){const fx=currencyInfo(1,ds,y);return fx?AtlasCurrency.unit(fx):ds.unit+' · nominal';}
-function amount(v,ds=dataset(),y=currentYear()){if(v==null)return 'Not reported';const fx=currencyInfo(v,ds,y);return (fx?fx.value:Number(v)).toLocaleString('en-US',{notation:fx?'compact':'standard',maximumSignificantDigits:4});}
+function amount(v,ds=dataset(),y=currentYear()){if(v==null)return 'Not reported';const fx=currencyInfo(v,ds,y);return AtlasNumbers.compact(fx?fx.value:Number(v),4);}
 function conversionNote(v,ds,y){const fx=currencyInfo(v,ds,y);if(!fx)return '';return `<p>${escape(AtlasCurrency.describe(fx))}</p>${fx.cpiBaseSource?.url&&fx.cpiBaseSource.url!==fx.cpiSource?.url?`<p><a href="${escape(fx.cpiBaseSource.url)}" target="_blank" rel="noopener">Base-year US CPI source ↗</a></p>`:''}${fx.cpiSource?.url?`<p><a href="${escape(fx.cpiSource.url)}" target="_blank" rel="noopener">US CPI source ↗</a></p>`:''}${fx.source?.url?`<p><a href="${escape(fx.source.url)}" target="_blank" rel="noopener">Exchange-rate source ↗</a></p>`:''}`;}
 
 function endpointName(id,p){return id===String(p.a.id)?p.a.name:p.b.name;}
