@@ -3,7 +3,10 @@
 const slider=document.getElementById('time'),row=slider.previousElementSibling;
 const play=document.createElement('button'),speed=document.createElement('button');
 play.id='timelinePlay';play.type='button';speed.id='timelineSpeed';speed.type='button';
-row.append(play,speed);
+const reset=document.createElement('button');reset.id='timelineReset';reset.type='button';
+reset.textContent='Full period';reset.title='Reset timeline to 1820–2025; keep the selected year.';
+reset.setAttribute('aria-label','Reset timeline to full period, 1820–2025');
+row.append(play,speed,reset);
 const range=document.createElement('details'),summary=document.createElement('summary'),fields=document.createElement('div');
 range.id='timelineInterval';fields.className='timeline-interval-fields';
 const start=document.createElement('input'),end=document.createElement('input');
@@ -63,6 +66,12 @@ for(const input of [start,end])input.addEventListener('input',()=>{
  saveInterval();
  if(idx<span.lo||idx>span.hi){idx=Math.max(span.lo,Math.min(span.hi,idx));historicalDate=years[idx]+'-01-01';}
  draw();
+});
+reset.addEventListener('click',()=>{
+ start.value=String(years[0]);end.value=String(years.at(-1));
+ // Use the shared interval handler so slider, comparison graphs and saved
+ // preferences refresh together, without changing the selected date.
+ end.dispatchEvent(new Event('input',{bubbles:true}));
 });
 rangeLabel();
 // Keep navigation reachable when the interval editor expands or wraps on phones.

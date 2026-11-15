@@ -1,4 +1,4 @@
-#timelinePlay,#timelineSpeed{min-height:44px;font-size:14px;white-space:nowrap;touch-action:manipulation}
+#timelinePlay,#timelineSpeed,#timelineReset{min-height:44px;font-size:14px;white-space:nowrap;touch-action:manipulation}
 #timelinePlay{min-width:86px;color:#f4dfa7}#timelinePlay[aria-pressed="true"]{background:#365d62;border-color:#e5c989}
 #timelineSpeed{min-width:44px}
 @media(max-width:600px){.atlas-semantic-canvas footer>div:first-child{gap:7px;flex-wrap:wrap}.atlas-semantic-canvas footer #timelinePlay,.atlas-semantic-canvas footer #timelineSpeed{font-size:14px}.atlas-semantic-canvas footer #year{min-width:62px}}
