@@ -40,7 +40,7 @@ function describe(o){
  if(!o||o.status==='unavailable')return 'Unavailable: no earlier supported source record. No backward extrapolation.';
  if(o.estimateKind==='extrapolated')return `COMPILED EXTRAPOLATED ESTIMATE for ${o.targetYear} · source endpoints ${o.from} and ${o.to}. Outside the observed interval; not an observation.`;
  if(o.status==='interpolated')return `PROJECT ESTIMATE for ${o.targetYear} · linear interpolation between ${o.from} and ${o.to}. Not observed; smooths unknown volatility.`;
- const period=o.periodStart!==o.periodEnd?`survey window ${o.periodStart}–${o.periodEnd}`:`source year ${o.sourceYear}`;
+ const period=o.raw?.fiscalYear?`fiscal year ${o.raw.fiscalYear}`:o.periodStart!==o.periodEnd?`survey window ${o.periodStart}–${o.periodEnd}`:`source year ${o.sourceYear}`;
  return o.status==='last'?`LAST AVAILABLE · ${period}, not ${o.targetYear}. Dated reference, not a current-year estimate.`:`${period[0].toUpperCase()+period.slice(1)} · ${o.method.replaceAll('_',' ')}.`;
 }
 function availableYears(c,key){const r=records(c,key);return [...new Set([...r.exact.keys(),...r.series.map(x=>x.year)])].sort((a,b)=>a-b);}
