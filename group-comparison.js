@@ -239,7 +239,7 @@
  function showBreakdown(anchor,selection,pin){
   clearTimeout(popupTimer);popup.setAttribute('aria-label','Country contributions');popupPinned=pin;const g=groups[selection.i],meta=model.metrics.get(selection.key);
   const detail=model.breakdown(g.ids,selection.key,selection.year,selection.span),parts=detail.parts.slice().sort((a,b)=>(model.countries.get(a.id)?.name||a.id).localeCompare(model.countries.get(b.id)?.name||b.id));
-  popup.replaceChildren();const head=el('div',{class:'gc-mini-heading'});head.append(el('strong',{},`${g.name} · ${selection.year}`),button('×',()=>{closePopup();anchor.focus({preventScroll:true});closePopup();},{'aria-label':'Close country contributions'}));popup.append(head,el('strong',{},meta.name));
+  popup.replaceChildren();const head=el('div',{class:'gc-mini-heading'});head.append(el('strong',{},`${g.name} · ${selection.year}`),button('×',()=>{closePopup();anchor.focus({preventScroll:true});closePopup();},{'aria-label':'Close country contributions'}));popup.append(head,el('strong',{},meta.name));window.AtlasMeasureDefinitions?.append(popup,selection.key);
   popup.append(el('p',{},detail.kind==='total'?'Country shares of the plotted total':detail.kind==='average'?'Each country’s contribution to the plotted average':'Individual country values — no combined group value'));
   const total=parts.reduce((sum,p)=>sum+p.contribution,0),pie=detail.kind==='total'&&parts.length<=6&&parts.length>0&&total>0&&parts.every(p=>p.contribution>=0);
   const chart=svg('svg',{viewBox:pie?'0 0 300 150':`0 0 300 ${Math.max(64,parts.length*24+12)}`,role:'img','aria-label':pie?'Country contribution pie chart':'Country contribution bar chart'}),chartBox=el('div',{class:'gc-mini-chart'});

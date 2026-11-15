@@ -2,8 +2,8 @@
 (()=>{'use strict';
 const higher=new Set(['gdp','total_gdp','regional_gdp','historical_gdp_1990','life','historical_life','hdi','happiness','school_mean','school_expected','historical_schooling','historical_numeracy','water','sanitation','electricity','internet','historical_daily_baskets','wages_japan_real_index','wages_dakar_single_real','wages_dakar_couple_real','wages_dakar_one_child_real','wages_dakar_two_child_real']);
 const lower=new Set(['gini','historical_gini_gross','poverty','poverty_lower_middle','poverty_upper_middle','infant_mortality','historical_infant_mortality','under5_mortality','historical_illiteracy_15_br','historical_illiteracy_15_mx','historical_illiteracy_10_mx','historical_illiteracy_6_mx','historical_japan_infant','historical_japan_neonatal','historical_cv_infant','fiscal_inflation']);
-const palettes={favorable:[[238,115,103],[239,207,129],[94,206,166]],neutral:[[101,177,239],[124,145,224],[147,114,208]]};
-const gray='rgb(155,166,174)',deflation='rgb(90,160,235)';
+const palettes={favorable:[[238,115,103],[239,207,129],[94,206,166]],neutral:[[75,145,220],[163,185,171],[245,210,92]]};
+const gray='rgb(202,207,211)',deflation='rgb(90,160,235)';
 const colorKey=key=>key==='pop'?'population_density':key;
 function policy(key){return {direction:higher.has(key)||/^matched_baskets_/.test(key)?'higher':lower.has(key)?'lower':'neutral',logarithmic:['gdp','total_gdp','regional_gdp','historical_gdp_1990'].includes(key),density:key==='population_density',inflation:key==='fiscal_inflation',output:['total_gdp','regional_gdp'].includes(key)};}
 const ranges=new Map();let rangeYear=null,rangeCurrency=null;
@@ -46,7 +46,7 @@ function description(key){const p=policy(key);
  if(p.inflation)return 'Lower nonnegative inflation is green; higher inflation is red. Blue means deflation, not automatically better. Relative to this year, not a universal healthy inflation target';
  if(p.output)return 'Logarithmic colors: equal ratios use equal color steps. Lower output is red; higher output is green. Total GDP measures economic output, not overall wellbeing or income per person';
  if(p.logarithmic)return 'Logarithmic colors: equal ratios use equal color steps. Lower = unfavorable on this measure; higher = favorable';
- return p.direction==='higher'?'Lower = unfavorable on this measure; higher = favorable':p.direction==='lower'?'Higher = unfavorable on this measure; lower = favorable':p.density?'Low density → high density, in blue–purple; neither is inherently better':'Lower → higher in blue–purple; no better/worse judgement';
+ return p.direction==='higher'?'Lower = unfavorable on this measure; higher = favorable':p.direction==='lower'?'Higher = unfavorable on this measure; lower = favorable':p.density?'Low density → high density, in blue–gold; neither is inherently better':'Lower → higher in blue–gold; no better/worse judgement';
 }
 function endpoints(key){const p=policy(key);return p.inflation?['Lower nonnegative inflation','Higher inflation']:p.output?['Lower output','Higher output']:p.direction==='lower'?['Better / lower','Worse / higher']:p.direction==='higher'?['Worse / lower','Better / higher']:['Low','High'];}
 function label(c,key,o,y){

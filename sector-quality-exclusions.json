@@ -1,0 +1,772 @@
+[
+  {
+    "country": "BRA",
+    "year": 1980,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 4996,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1979,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 4997,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1978,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 4998,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1977,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 4999,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1976,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5000,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1975,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5001,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1974,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5002,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1973,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5003,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1972,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5004,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1971,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5005,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1970,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5006,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1969,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5007,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1968,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5008,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1967,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5009,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1966,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5010,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1965,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5011,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1964,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5012,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1963,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5013,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1962,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5014,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1961,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5015,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1960,
+    "property": "agriculture_share",
+    "value": 0,
+    "row": 5016,
+    "source": "NV.AGR.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1978,
+    "property": "industry_share",
+    "value": 0,
+    "row": 4998,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1977,
+    "property": "industry_share",
+    "value": 0,
+    "row": 4999,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1976,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5000,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1975,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5001,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1974,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5002,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1973,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5003,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1972,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5004,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1971,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5005,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1970,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5006,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1969,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5007,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1968,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5008,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1967,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5009,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1966,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5010,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1965,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5011,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1964,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5012,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1963,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5013,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1962,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5014,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1961,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5015,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1960,
+    "property": "industry_share",
+    "value": 0,
+    "row": 5016,
+    "source": "NV.IND.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1978,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 4998,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1977,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 4999,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1976,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5000,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1975,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5001,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1974,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5002,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1973,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5003,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1972,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5004,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1971,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5005,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1970,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5006,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1969,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5007,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1968,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5008,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1967,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5009,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1966,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5010,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1965,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5011,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1964,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5012,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1963,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5013,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1962,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5014,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1961,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5015,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1960,
+    "property": "manufacturing_share",
+    "value": 0,
+    "row": 5016,
+    "source": "NV.IND.MANF.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1977,
+    "property": "services_share",
+    "value": 0,
+    "row": 4999,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1976,
+    "property": "services_share",
+    "value": 0,
+    "row": 5000,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1975,
+    "property": "services_share",
+    "value": 0,
+    "row": 5001,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1974,
+    "property": "services_share",
+    "value": 0,
+    "row": 5002,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1973,
+    "property": "services_share",
+    "value": 0,
+    "row": 5003,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1972,
+    "property": "services_share",
+    "value": 0,
+    "row": 5004,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1971,
+    "property": "services_share",
+    "value": 0,
+    "row": 5005,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1970,
+    "property": "services_share",
+    "value": 0,
+    "row": 5006,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1969,
+    "property": "services_share",
+    "value": 0,
+    "row": 5007,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1968,
+    "property": "services_share",
+    "value": 0,
+    "row": 5008,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1967,
+    "property": "services_share",
+    "value": 0,
+    "row": 5009,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1966,
+    "property": "services_share",
+    "value": 0,
+    "row": 5010,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1965,
+    "property": "services_share",
+    "value": 0,
+    "row": 5011,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1964,
+    "property": "services_share",
+    "value": 0,
+    "row": 5012,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1963,
+    "property": "services_share",
+    "value": 0,
+    "row": 5013,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1962,
+    "property": "services_share",
+    "value": 0,
+    "row": 5014,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1961,
+    "property": "services_share",
+    "value": 0,
+    "row": 5015,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  },
+  {
+    "country": "BRA",
+    "year": 1960,
+    "property": "services_share",
+    "value": 0,
+    "row": 5016,
+    "source": "NV.SRV.TOTL.ZS",
+    "reason": "Unverified early zero sector share for Brazil; historical national accounts document nonzero sector activity. Withheld pending reconciliation, not silently replaced or interpolated.",
+    "reference": "https://documents1.worldbank.org/curated/en/253331468226757982/pdf/Brazil-Country-economic-memorandum.pdf"
+  }
+]
