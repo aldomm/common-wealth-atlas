@@ -36,3 +36,12 @@
 .country-catalog-preference{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;margin:12px 0;cursor:pointer}.country-catalog-preference input{flex:0 0 auto;width:20px;height:20px;margin-top:2px;accent-color:#70cbb2}.country-catalog-heading{font-weight:650;color:#a5d9cf;font-size:13px;margin:16px 0 6px!important}.country-record-years{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.country-record-years button{min-width:48px;min-height:36px}.country-catalog-row details{grid-column:1/-1;font-size:13px}.country-indicator-catalog [hidden]{display:none!important}
 
 @media(max-width:600px){.country-record-years button{min-height:44px;min-width:52px}.country-catalog-preference{font-size:15px}}
+
+/* One HTML surface owns both background and text, avoiding WebKit SVG scroll compositing. */
+body>.country-hover-explanation{position:fixed;box-sizing:border-box;z-index:81;background:#102a33;border:1px solid #68878b;border-radius:10px;box-shadow:0 8px 28px #0006;overflow:hidden;pointer-events:auto;touch-action:pan-y;display:flex;flex-direction:column}
+body>.country-hover-explanation .country-readable-explanation{position:relative;min-height:0;height:auto;flex:1;overscroll-behavior:contain}
+body>.country-hover-explanation .country-explanation-close{position:static;flex:0 0 auto;margin:0;min-width:44px;min-height:44px}
+body>.country-hover-explanation .country-readable-explanation strong{padding-right:0}
+@media(max-width:600px){body>.country-hover-explanation .country-explanation-close{min-width:44px;min-height:44px}}
+
+.country-explanation-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid #68878b55;flex:0 0 auto;color:#ffe1a1;font-size:14px}.atlas-native-reader .country-explanation-header{font-size:18px;padding:12px 22px}

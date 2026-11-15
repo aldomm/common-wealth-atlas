@@ -360,15 +360,16 @@ let hoverTimer;
 function hideHover(){clearTimeout(hoverTimer);hoverNode?.remove();hoverNode=null;state.hover=null;state.openLabel=null;}
 function scheduleHoverClose(){}
 function showHover(label){
- window.AtlasTerritoryUI?.reference();window.AtlasPublications?.close();clearTimeout(hoverTimer);hoverNode?.remove();const info=detailFor(label),width=Math.min(380,innerWidth-40),maxHeight=Math.max(100,innerHeight-230);
+ window.AtlasTerritoryUI?.reference();window.AtlasPublications?.close();clearTimeout(hoverTimer);hoverNode?.remove();const info=detailFor(label),width=Math.min(document.body.classList.contains('atlas-native-reader')?580:380,innerWidth-40),maxHeight=Math.max(100,innerHeight-230);
  const estimatedLines=info.lines.reduce((n,line)=>n+Math.ceil(String(line).length/Math.max(20,(width-32)/7)),0);
  const height=info.catalog||info.actions||window.AtlasTerritoryUI?maxHeight:Math.min(maxHeight,94+estimatedLines*19+info.lines.length*8);
  let x=label.rect.x+label.rect.w+18;if(x+width>innerWidth-16)x=label.rect.x-width-18;x=Math.max(16,Math.min(innerWidth-width-16,x));const y=Math.max(70,Math.min(innerHeight-125-height,label.rect.y));
- const g=node('g',{class:'country-hover-explanation',transform:`translate(${x} ${y})`,role:'note','aria-label':info.title});
- g.append(node('rect',{x:0,y:0,width,height,rx:10,fill:'#102a33',stroke:'#68878b','stroke-width':1}));
- const foreign=node('foreignObject',{x:0,y:0,width,height});
- const body=document.createElementNS('http://www.w3.org/1999/xhtml','div');body.className='country-readable-explanation';body.setAttribute('tabindex','0');
- const close=document.createElement('button');close.className='country-explanation-close';close.type='button';close.setAttribute('aria-label','Close explanation');close.textContent='×';close.addEventListener('click',hideHover);body.append(close);const title=document.createElement('strong');title.textContent=info.title;body.append(title);
+ // Keep scrollable HTML out of SVG foreignObject: WebKit can paint its
+ // composited content at the page origin instead of the SVG transform.
+ const g=document.createElement('section');g.className='country-hover-explanation';g.setAttribute('role','region');g.setAttribute('aria-label',info.title);
+ Object.assign(g.style,{left:x+'px',top:y+'px',width:width+'px',height:height+'px'});
+ const body=document.createElement('div');body.className='country-readable-explanation';body.setAttribute('tabindex','0');
+ const close=document.createElement('button');close.className='country-explanation-close';close.type='button';close.setAttribute('aria-label','Close explanation');close.textContent='×';close.addEventListener('click',hideHover);const header=document.createElement('div');header.className='country-explanation-header';const title=document.createElement('strong');title.textContent=info.title;header.append(title,close);
  if((metricKeys(label.c).includes(label.key)||label.key==='total_gdp')&&ExtendedData.indicators[label.key]?.comparison!==false){
   const compare=document.createElement('button');compare.className='compare-measure';compare.textContent='Compare this measure across countries';compare.onclick=()=>compareMetric(label.key);body.append(compare);
   if(state.comparison&&label.o?.value==null){const next=firstRecord(label.c,label.key);if(next!=null){const jump=document.createElement('button');jump.className='compare-measure';jump.textContent='Move whole map to '+next;jump.onclick=()=>{jumpToFirst(label.c,label.key);hideHover();};body.append(jump);}}
@@ -383,11 +384,11 @@ for(const line of new Set(info.lines)){const p=document.createElement('p');p.tex
  for(const source of info.additionalSources||[]){const a=document.createElement('a');a.href=source.url;a.target='_blank';a.rel='noopener';a.textContent=source.title+' ↗';body.append(a);}
  if(info.source?.url){const a=document.createElement('a');a.href=info.source.url;a.target='_blank';a.rel='noopener';a.textContent=(info.source.title||'Original source')+' ↗';body.append(a);}
  if(info.auditNotes?.length){const notes=document.createElement('details'),heading=document.createElement('summary');heading.textContent='Source notes: places, occupations and estimates';notes.append(heading);for(const line of info.auditNotes){const p=document.createElement('p');p.textContent=line;notes.append(p);}body.append(notes);}
- foreign.append(body);g.append(foreign);
- g.addEventListener('keydown',e=>{if(e.key==='Escape')hideHover();});overlay.append(g);hoverNode=g;state.hover={countryId:label.c.id,key:label.key};state.openLabel=label;
+ g.append(header,body);
+ g.addEventListener('keydown',e=>{if(e.key==='Escape')hideHover();});document.body.append(g);hoverNode=g;state.hover={countryId:label.c.id,key:label.key};state.openLabel=label;
 }
 function render(){
- state.frame=0;shadeComparison();const previous=state.hover;hoverNode=null;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);overlay.replaceChildren();currentLabels=[];localLabels=[];countryTitles.clear();
+ state.frame=0;shadeComparison();const previous=state.hover,previousScroll=hoverNode?.querySelector('.country-readable-explanation')?.scrollTop||0;hoverNode?.remove();hoverNode=null;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);overlay.replaceChildren();currentLabels=[];localLabels=[];countryTitles.clear();
  if(window.AtlasTerritoryUI?.isActive()||window.AtlasWars?.state.active||window.AtlasTrade?.state.active||window.AtlasIndustryMarkets?.isActive?.())return;
  const occupied=[...document.querySelectorAll('header,footer,.atlas-view-toggle,.zoom,#atlasComparison,#atlasGroupPanel,#atlasGroupPicker,#territoryToolbar')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};}).filter(b=>b.w&&b.h);
  const visible=countries.map(c=>({c,mask:projectedMask(c)})).filter(x=>x.mask?.area>500).sort((a,b)=>b.mask.area-a.mask.area);
@@ -396,7 +397,7 @@ function render(){
  drawLocalPoints(locals);
  if(!state.comparison)missingOutlinePoints(occupied);drawJumpFlag();
  text(overlay,innerWidth/2,innerHeight-(phoneLayout()?155:106),'National values · present-day reference areas · ≈ estimate · dated values remain dated · * derived','country-reference-caption');
- if(previous){let label=[...currentLabels,...localLabels].find(l=>l.c.id===previous.countryId&&l.key===previous.key);const saved=state.openLabel,anchor=countryTitles.get(previous.countryId)||currentLabels.find(l=>l.c.id===previous.countryId)?.rect;if(!label&&saved&&(anchor||saved.fixedAnchor))label={...saved,rect:anchor||saved.rect,o:metricKeys().includes(saved.key)?observationFor(saved.c,saved.key):saved.o};if(label)showHover(label);else{state.hover=null;state.openLabel=null;}}
+ if(previous){let label=[...currentLabels,...localLabels].find(l=>l.c.id===previous.countryId&&l.key===previous.key);const saved=state.openLabel,anchor=countryTitles.get(previous.countryId)||currentLabels.find(l=>l.c.id===previous.countryId)?.rect;if(!label&&saved&&(anchor||saved.fixedAnchor))label={...saved,rect:anchor||saved.rect,o:metricKeys().includes(saved.key)?observationFor(saved.c,saved.key):saved.o};if(label){showHover(label);const reader=hoverNode?.querySelector('.country-readable-explanation');if(reader)reader.scrollTop=previousScroll;}else{state.hover=null;state.openLabel=null;}}
 }
 function schedule(){if(!state.frame)state.frame=requestAnimationFrame(render);}
 function countryAt(ev){const ll=globe()?AtlasGlobe.invert(ev.clientX,ev.clientY):(()=>{const v=map.viewBox.baseVal,k=innerWidth/v.width;return [(v.x+ev.clientX/k)/3-180,90-(v.y+ev.clientY/k)/3];})();if(!ll)return null;const x=(ll[0]+180)*3,y=(90-ll[1])*3;return countries.find(c=>shape(c).path&&hit.isPointInPath(shape(c).path,x,y,'evenodd'))||null;}
