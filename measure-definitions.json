@@ -3506,6 +3506,435 @@
           "url": "https://www.persee.fr/doc/outre_0300-9513_1994_num_81_305_3254?pageId=T1_450"
         }
       ]
+    },
+    "hna_bra_agriculture_fc": {
+      "meaning": "Agriculture and livestock · historical factor-cost share measures the historical share of economic value added in the named activity, using Brazil’s FGV/IBGE consolidated national accounts at factor cost. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "The source publishes each activity as a percentage of total factor-cost GDP. Values are retained as printed, with historical classifications and one-decimal rounding.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://periodicos.fgv.br/rce/article/download/27176/26050"
+        }
+      ]
+    },
+    "hna_bra_industry_fc": {
+      "meaning": "Industry · historical factor-cost share measures the historical share of economic value added in the named activity, using Brazil’s FGV/IBGE consolidated national accounts at factor cost. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "The source publishes each activity as a percentage of total factor-cost GDP. Values are retained as printed, with historical classifications and one-decimal rounding.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://periodicos.fgv.br/rce/article/download/27176/26050"
+        }
+      ]
+    },
+    "hna_bra_services_fc": {
+      "meaning": "Services · historical factor-cost share measures the historical share of economic value added in the named activity, using Brazil’s FGV/IBGE consolidated national accounts at factor cost. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "The source publishes each activity as a percentage of total factor-cost GDP. Values are retained as printed, with historical classifications and one-decimal rounding.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://periodicos.fgv.br/rce/article/download/27176/26050"
+        }
+      ]
+    },
+    "hna_bra_fisim_fc": {
+      "meaning": "This is the historical FISIM adjustment: financial intermediation services indirectly measured, expressed relative to factor-cost GDP. The source deducts this adjustment from the displayed sector shares to reconcile total GDP.",
+      "calculation": "The source publishes each activity as a percentage of total factor-cost GDP. Values are retained as printed, with historical classifications and one-decimal rounding.",
+      "interpretation": "Higher means a larger financial-intermediation adjustment is deducted in reconciling sector value added to total GDP; lower means a smaller adjustment. It is an accounting item, not a direct welfare ranking or a separate additional sector.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://periodicos.fgv.br/rce/article/download/27176/26050"
+        }
+      ]
+    },
+    "hna_can_agriculture_fc": {
+      "meaning": "Agriculture · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_communication_fc": {
+      "meaning": "Communication · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_community_business_and_personal_service_fc": {
+      "meaning": "Community, business and personal service · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_construction_fc": {
+      "meaning": "Construction · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_electric_power_gas_and_water_utilities_fc": {
+      "meaning": "Electric power, gas and water utilities · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_finance_insurance_and_real_estate_fc": {
+      "meaning": "Finance, insurance and real estate · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_fishing_and_trapping_fc": {
+      "meaning": "Fishing and trapping · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_forestry_fc": {
+      "meaning": "Forestry · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_manufacturing_fc": {
+      "meaning": "Manufacturing · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_mines_quarries_and_oil_wells_fc": {
+      "meaning": "Mines, quarries and oil wells · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_public_administration_and_defence_fc": {
+      "meaning": "Public administration and defence · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_retail_trade_fc": {
+      "meaning": "Retail trade · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_storage_fc": {
+      "meaning": "Storage · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_transportation_fc": {
+      "meaning": "Transportation · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_wholesale_trade_fc": {
+      "meaning": "Wholesale trade · historical factor-cost share measures the historical share of economic value added in the named activity, using Canada’s archived factor-cost national accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry GDP ÷ total-industry GDP from the same year and archived table. Both amounts use current prices and the same million-dollar unit, which cancels.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610028201"
+        }
+      ]
+    },
+    "hna_can_agriculture_index": {
+      "meaning": "Agriculture · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_can_forestry_index": {
+      "meaning": "Forestry · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_can_fishing_and_trapping_index": {
+      "meaning": "Fishing and trapping · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_can_manufacturing_industries_index": {
+      "meaning": "Manufacturing industries · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_can_construction_industry_index": {
+      "meaning": "Construction industry · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_can_mines_including_milling_quarries_and_oil_wells_index": {
+      "meaning": "Mines (including milling), quarries and oil wells · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_can_service_producing_industries_index": {
+      "meaning": "Service-producing industries · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_can_real_domestic_product_index": {
+      "meaning": "Real domestic product · historical volume index measures the volume of production/value added in the named activity, using Canada’s archived constant-price industry accounts. It measures change through time, not a share of GDP.",
+      "calculation": "The source publishes constant-price production relative to its 1971 level set to 100. The Atlas preserves the published index, without converting it to a monetary value or interpolating missing years.",
+      "interpretation": "Above 100 means more real activity than in 1971; below 100 means less. Higher or lower does not show the size of this sector compared with other countries. Do not add indexes or interpret them as percentages of GDP.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610038701"
+        }
+      ]
+    },
+    "hna_usa_agriculture_forestry_and_fishing_sic": {
+      "meaning": "Agriculture, forestry and fishing · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_farms_sic": {
+      "meaning": "Farms · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_agricultural_services_forestry_and_fishing_sic": {
+      "meaning": "Agricultural services, forestry and fishing · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_mining_sic": {
+      "meaning": "Mining · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_construction_sic": {
+      "meaning": "Construction · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_manufacturing_sic": {
+      "meaning": "Manufacturing · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_transportation_and_public_utilities_sic": {
+      "meaning": "Transportation and public utilities · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_wholesale_trade_services_sic": {
+      "meaning": "Wholesale trade services · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_retail_trade_services_sic": {
+      "meaning": "Retail trade services · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_finance_insurance_and_real_estate_sic": {
+      "meaning": "Finance, insurance and real estate · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_services_sic_grouping_sic": {
+      "meaning": "Services (SIC grouping) · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
+    },
+    "hna_usa_government_services_sic": {
+      "meaning": "Government services · historical SIC share measures the historical share of economic value added in the named activity, using the U.S. BEA archived industry accounts. Value added is output less intermediate inputs, not sales or employment.",
+      "calculation": "Calculated share = 100 × industry current-dollar value added ÷ current-dollar GDP from the same sheet and year. Both source figures are in millions of dollars. Value added excludes intermediate inputs; original monetary amounts remain in the evidence.",
+      "interpretation": "Higher means this activity contributed a larger share of the source economy’s output; lower means a smaller share. Neither is inherently better. A falling share can accompany rising production if other activities grow faster. Shares with different price or accounting bases are not directly comparable.",
+      "sources": [
+        {
+          "title": "Historical source table and methodology",
+          "url": "https://www.bea.gov/industry/io-histannual"
+        }
+      ]
     }
   }
 }
