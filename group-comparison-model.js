@@ -25,7 +25,8 @@ function create(env){
   if(!Number.isFinite(r.value)||r.estimate||/interpolat|extrapolat|backcast/i.test(r.raw?.status||'')||r.raw?.comparable===false)return {id,value:null,reason:'No comparable source observation (project estimates excluded)'};
   if(key==='regional_gdp'&&(!r.raw?.allocationModel||!r.raw?.allocationId))return {id,value:null,reason:'No validated regional population allocation'};
   const from=r.raw?.periodStart??year,to=r.raw?.periodEnd??year;
-  if(from!==to&&(!interval||from<interval.start||to>interval.end||to!==year))return {id,value:null,reason:`Source window ${from}–${to}; select an interval containing the whole window`};
+  const heldPeriod=r.raw?.status==='published_period_estimate'&&r.raw?.evidenceClass==='published estimate'&&from<=year&&year<=to;
+  if(from!==to&&!heldPeriod&&(!interval||from<interval.start||to>interval.end||to!==year))return {id,value:null,reason:`Source window ${from}–${to}; select an interval containing the whole window`};
   if(from===to&&from!==year)return {id,value:null,reason:'Record refers to a different source year'};
   if(env.indicators[key]?.applicableCountries&&!env.indicators[key].applicableCountries.includes(id))return {id,value:null,reason:'Series is not defined for this country'};
   if((key==='gdp'||key==='pop')&&r.unit!==env.units[key])return {id,value:null,reason:'Source units do not match the GDP/population series'};
