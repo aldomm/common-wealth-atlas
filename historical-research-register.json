@@ -266,32 +266,117 @@
       "use": "Wages, real-pay indices and household costs",
       "url": "https://www.persee.fr/doc/outre_0300-9513_1994_num_81_305_3254?pageId=T1_450",
       "status": "Imported: 63 source facts. Ibrahima Thioub (1994), Économie coloniale et rémunération de la force de travail : le salaire du manœuvre à Dakar de 1930 à 1954, Revue française d’histoire d’outre-mer 81(305):427–453, Annex Table 5, p.450. doi:10.3406/outre.1994.3254. Attributed numerical table facts only; article and scanned table not redistributed."
+    },
+    {
+      "name": "Allen et al. · Chinese city wage and basket estimates",
+      "coverage": "Pre-1950 matched wage and basket-cost estimates",
+      "languages": "English compilation; Chinese administrative, merchant and local gazetteer sources",
+      "use": "Annual adult or family basket affordability",
+      "url": "https://gpih.ucdavis.edu/files/China_1730-1933_Allen_et_al.xls",
+      "status": "Imported: 113 matched calculated estimates. Allen, Bassino, Ma, Moll-Murata & van Zanden (2011), Wages, prices, and living standards in China, 1738–1925, Economic History Review 64:8–38. GPIH January 2010 figure-workbook edition. Attributed numerical extracts and Atlas calculations; source workbooks and publication text are not republished. No blanket open license asserted."
+    },
+    {
+      "name": "Pim de Zwart · Cape and Natal matched wages and baskets",
+      "coverage": "Pre-1950 matched wage and basket-cost estimates",
+      "languages": "English compilation; British colonial statistical records",
+      "use": "Annual adult or family basket affordability",
+      "url": "https://gpih.ucdavis.edu/files/South_Africa_w_1837-1913a.xlsx",
+      "status": "Imported: 182 matched calculated estimates. Pim de Zwart (2011), South African Living Standards in Global Perspective, 1835–1910, Economic History of Developing Regions 26(1):49–74; GPIH December 2011 wage and price workbooks. Attributed numerical extracts and Atlas calculations; source workbooks and publication text are not republished. No blanket open license asserted."
+    },
+    {
+      "name": "Yuzuru Kumon · Japanese servant wages and local-price baskets",
+      "coverage": "Pre-1950 matched wage and basket-cost estimates",
+      "languages": "English workbook with Japanese source titles and notes",
+      "use": "Annual adult or family basket affordability",
+      "url": "https://gpih.ucdavis.edu/files/Japanese%20Wages.xlsx",
+      "status": "Imported: 70 matched calculated estimates. Yuzuru Kumon (2022), The Labor-Intensive Path: Wages, Incomes, and the Work Year in Japan, 1610–1890, Journal of Economic History 82(2):368–402. GPIH Japanese Wages workbook; source notes also cite Bassino & Ma (2005), Mitsui Bunko and Japanese imperial statistics. Attributed numerical extracts and Atlas calculations; source workbooks and publication text are not republished. No blanket open license asserted."
     }
   ],
   "latestImport": {
-    "batch": 4,
+    "batch": 5,
     "coverage": {
-      "sourceRecords": 3587,
-      "derivedRatios": 1857,
-      "selectableRecords": 5444,
-      "displayYears": 6497,
-      "countries": 40,
+      "held": [],
       "counts": {
-        "nominal_wage": 3473,
-        "occupational_ratio": 1857,
-        "real_wage_index": 51,
-        "gender_pay_ratio": 28,
-        "living_cost_index": 28,
-        "nominal_wage_index": 7
+        "CHN": 113,
+        "ZAF": 182,
+        "JPN": 70
       },
-      "duplicatedWorkbookCellsRemoved": 457
+      "records": 365,
+      "series": {
+        "matched_baskets_beijing": {
+          "country": "CHN",
+          "records": 81,
+          "first": 1820,
+          "last": 1923
+        },
+        "matched_baskets_suzhou_shanghai": {
+          "country": "CHN",
+          "records": 15,
+          "first": 1820,
+          "last": 1927
+        },
+        "matched_baskets_canton": {
+          "country": "CHN",
+          "records": 17,
+          "first": 1820,
+          "last": 1927
+        },
+        "matched_baskets_cape_n": {
+          "country": "ZAF",
+          "records": 5,
+          "first": 1853,
+          "last": 1913
+        },
+        "matched_baskets_cape_ai": {
+          "country": "ZAF",
+          "records": 17,
+          "first": 1837,
+          "last": 1853
+        },
+        "matched_baskets_cape_ar": {
+          "country": "ZAF",
+          "records": 56,
+          "first": 1854,
+          "last": 1909
+        },
+        "matched_baskets_cape_au": {
+          "country": "ZAF",
+          "records": 30,
+          "first": 1854,
+          "last": 1883
+        },
+        "matched_baskets_natal_n": {
+          "country": "ZAF",
+          "records": 14,
+          "first": 1900,
+          "last": 1913
+        },
+        "matched_baskets_natal_q": {
+          "country": "ZAF",
+          "records": 10,
+          "first": 1900,
+          "last": 1909
+        },
+        "matched_baskets_natal_ac": {
+          "country": "ZAF",
+          "records": 50,
+          "first": 1852,
+          "last": 1901
+        },
+        "matched_baskets_japan_servant": {
+          "country": "JPN",
+          "records": 70,
+          "first": 1820,
+          "last": 1889
+        }
+      },
+      "formulaChecks": "All inputs positive, same-year source matching; source family cost = adult × 3.15; retained China ratios reconcile with published ratios. No Atlas interpolation."
     },
+    "data": "matched-baskets-data.json",
     "languages": [
-      "English compilation",
-      "French original",
-      "Japanese original",
-      "Portuguese underlying archives"
-    ],
-    "data": "historical-wages-data.json"
+      "English compilations",
+      "Japanese original source titles and methodology",
+      "Chinese and colonial underlying sources"
+    ]
   }
 }

@@ -14,12 +14,12 @@ window.AtlasBaskets={
    'These are published calculated estimates, not direct observations of every price and wage. Source interpolation, extrapolation, proxies, changing occupations and price locations remain in the original series. The atlas adds no interpolation. Missing matched rows remain missing.'
   ];
   const lines=r?[
-   (r.year===year?'Source year '+r.year:'Last available matched record: '+r.year+', not '+year())+'. '+s.label+' · source urban unskilled male wage series. Not a country average.',
+   (r.year===year?'Source year '+r.year:'Last available matched record: '+r.year+', not '+year)+'. '+s.label+' · source urban unskilled male wage series. Not a country average.',
    ...r.variants.map(v=>`${v.staple} basket: ${v.value.toFixed(2)} annual family baskets affordable. Daily wage ${v.dailyWage.toFixed(2)} source pence × 312 = ${v.annualWage.toFixed(2)} source pence/year; family basket ${v.familyBasketCost.toFixed(2)} source pence/year. Published calculated estimate; welfare ratio sheet, row ${v.sourceRow}.`),
    ...common,s.scope,'Available matched years: '+s.records.map(r=>r.year).join(', '),
    
    data.attribution+' Reuse: '+data.license+'.'
-  ]:['No matched wage-and-basket record loaded '+(s?'at or before '+year():'for this reference country')+'. This is a coverage gap, not zero purchasing power.',...(s?['Available matched years: '+s.records.map(r=>r.year).join(', ')]:[]),...common];
+  ]:['No matched wage-and-basket record loaded '+(s?'at or before '+year:'for this reference country')+'. This is a coverage gap, not zero purchasing power.',...(s?['Available matched years: '+s.records.map(r=>r.year).join(', ')]:[]),...common];
   return {title:(s?.label||id)+' · basic-needs baskets',lines,auditNotes:s?.sourceNotes||[],actions:['all_indicators','distribution'],source:{url:s?.sourceUrl||data.sourceUrl,title:'Original wages, prices and welfare-ratio workbook'},additionalSources:[{url:data.methodUrl,title:'Published method and household assumptions'},{url:data.sourceUrl,title:'IISH collection · attribution and license'}]};
  }
 };
