@@ -41,7 +41,7 @@
       "languages": "English; underlying publications in multiple languages",
       "use": "Schooling, mortality, wages, inequality, production and other reconstructions",
       "url": "https://clio-infra.eu/",
-      "status": "Schooling and infant-mortality batch imported; other series await review."
+      "status": "Imported: schooling, infant mortality, population, life expectancy, urbanization and birth-cohort height. Other series await review."
     },
     {
       "name": "IISH Historical Prices and Wages",
@@ -154,6 +154,183 @@
       "use": "Modeled spatial population, land use and agriculture",
       "url": "https://hyde-portal.geo.uu.nl/",
       "status": "Already identified; spatial estimates need area/period reconciliation before allocation."
+    },
+    {
+      "name": "INEP / IBGE — Mapa do Analfabetismo do Brasil",
+      "coverage": "Brazil, 1900–2000",
+      "languages": "Portuguese",
+      "use": "Historical illiteracy rates, ages 15+",
+      "url": "https://download.inep.gov.br/publicacoes/institucionais/estatisticas_e_indicadores/mapa_do_analfabetismo_do_brasil.pdf",
+      "status": "Imported: 9 census benchmarks; Tabela 2, printed page 6 / PDF page 8."
+    },
+    {
+      "name": "INEGI — Estadísticas de educación (1994)",
+      "coverage": "Mexico, 1895–1990",
+      "languages": "Spanish",
+      "use": "Historical census illiteracy rates",
+      "url": "https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/historicos/2104/702825460266/702825460266_1.pdf",
+      "status": "Imported: 11 benchmarks; Cuadro 2, printed page 25 / PDF page 36. Age groups 6+, 10+ and 15+ kept separate; definition notes on printed page 24."
     }
-  ]
+  ],
+  "latestImport": {
+    "coverage": {
+      "historical_population": {
+        "sourceRecords": 2733,
+        "displayYears": 2733,
+        "countries": 190,
+        "firstYear": 1820,
+        "lastBenchmark": 2000
+      },
+      "historical_life": {
+        "sourceRecords": 12726,
+        "displayYears": 12726,
+        "countries": 180,
+        "firstYear": 1820,
+        "lastBenchmark": 2012
+      },
+      "historical_urbanization": {
+        "sourceRecords": 621,
+        "displayYears": 621,
+        "countries": 182,
+        "firstYear": 1850,
+        "lastBenchmark": 2000
+      },
+      "historical_height": {
+        "sourceRecords": 1305,
+        "displayYears": 13050,
+        "countries": 152,
+        "firstYear": 1820,
+        "lastBenchmark": 2000
+      },
+      "historical_illiteracy_15_br": {
+        "sourceRecords": 9,
+        "displayYears": 9,
+        "countries": 1,
+        "firstYear": 1900,
+        "lastBenchmark": 2000
+      },
+      "historical_illiteracy_6_mx": {
+        "sourceRecords": 2,
+        "displayYears": 2,
+        "countries": 1,
+        "firstYear": 1895,
+        "lastBenchmark": 1950
+      },
+      "historical_illiteracy_10_mx": {
+        "sourceRecords": 6,
+        "displayYears": 6,
+        "countries": 1,
+        "firstYear": 1900,
+        "lastBenchmark": 1960
+      },
+      "historical_illiteracy_15_mx": {
+        "sourceRecords": 3,
+        "displayYears": 3,
+        "countries": 1,
+        "firstYear": 1970,
+        "lastBenchmark": 1990
+      }
+    },
+    "languages": [
+      "English",
+      "Portuguese",
+      "Spanish"
+    ],
+    "data": "historical-expansion-data.json",
+    "audit": {
+      "1950": {
+        "beforeCurrentCells": 20713,
+        "afterCurrentCells": 34044,
+        "newlySupportedCells": 13331
+      },
+      "2026": {
+        "beforeCurrentCells": 81439,
+        "afterCurrentCells": 98065,
+        "newlySupportedCells": 16626
+      },
+      "topImprovements": [
+        {
+          "id": "ISL",
+          "newPre1950Cells": 242
+        },
+        {
+          "id": "LUX",
+          "newPre1950Cells": 179
+        },
+        {
+          "id": "MUS",
+          "newPre1950Cells": 156
+        },
+        {
+          "id": "EGY",
+          "newPre1950Cells": 152
+        },
+        {
+          "id": "GUY",
+          "newPre1950Cells": 150
+        },
+        {
+          "id": "JAM",
+          "newPre1950Cells": 148
+        },
+        {
+          "id": "ARG",
+          "newPre1950Cells": 144
+        },
+        {
+          "id": "CUB",
+          "newPre1950Cells": 130
+        },
+        {
+          "id": "CRI",
+          "newPre1950Cells": 130
+        },
+        {
+          "id": "COL",
+          "newPre1950Cells": 129
+        },
+        {
+          "id": "GTM",
+          "newPre1950Cells": 129
+        },
+        {
+          "id": "TUN",
+          "newPre1950Cells": 127
+        },
+        {
+          "id": "DZA",
+          "newPre1950Cells": 127
+        },
+        {
+          "id": "FIN",
+          "newPre1950Cells": 125
+        },
+        {
+          "id": "SEN",
+          "newPre1950Cells": 124
+        },
+        {
+          "id": "UGA",
+          "newPre1950Cells": 124
+        },
+        {
+          "id": "KEN",
+          "newPre1950Cells": 123
+        },
+        {
+          "id": "DNK",
+          "newPre1950Cells": 115
+        },
+        {
+          "id": "CYP",
+          "newPre1950Cells": 114
+        },
+        {
+          "id": "NER",
+          "newPre1950Cells": 111
+        }
+      ],
+      "countriesImprovedPre1950": 191
+    }
+  }
 }

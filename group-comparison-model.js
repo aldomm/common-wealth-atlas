@@ -8,8 +8,8 @@ function create(env){
   {key:'pop',name:'Population',unit:'people',kind:'sum',method:'Combined population'},
   {key:'total_gdp',name:'Total GDP',unit:'2011 international dollars / year',kind:'sum',method:'Combined annual GDP (derived)'},
   ...Object.entries(env.indicators).map(([key,m])=>({key,name:key==='gini'?'Gini index':m.name,unit:key==='defence_spending_eur'?`${env.cpi?.baseYear||2024} USD`:m.unit,
-   kind:key==='regional_gdp'||key==='defence_spending_eur'?'sum':/^(gini|wealth_|hna_)/.test(key)?'single':'mean',
-   method:key==='regional_gdp'?'Combined calculated population allocations (1990 PPP)':key==='defence_spending_eur'?'Combined defence spending':/^(gini|wealth_|hna_)/.test(key)?'Individual-country value':'Unweighted mean of country values',definition:m.definition,caveat:m.caveat})),
+   kind:m.aggregation==='sum'?'sum':m.aggregation==='single'?'single':key==='regional_gdp'||key==='defence_spending_eur'?'sum':/^(gini|wealth_|hna_)/.test(key)?'single':'mean',
+   method:m.aggregation==='sum'?'Combined published country estimates':m.aggregation==='single'?'Individual-country value':key==='regional_gdp'?'Combined calculated population allocations (1990 PPP)':key==='defence_spending_eur'?'Combined defence spending':/^(gini|wealth_|hna_)/.test(key)?'Individual-country value':'Unweighted mean of country values',definition:m.definition,caveat:m.caveat})),
  ];
  const metrics=new Map(catalogue.map(m=>[m.key,m]));
  function records(c,key){const id=c.id+'|'+key;if(!recordCache.has(id))recordCache.set(id,new Map(env.series(c,key).map(r=>[r.year,r])));return recordCache.get(id);}

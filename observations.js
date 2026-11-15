@@ -2,7 +2,7 @@
 (()=>{
 'use strict';
 const cache=new WeakMap();
-const continuous=new Set(['historical_schooling','gdp','pop','hdi','life','school_mean','school_expected','electricity','water','sanitation','internet','birth_rate','death_rate','exports','imports']);
+const continuous=new Set(['historical_population','historical_life','historical_schooling','gdp','pop','hdi','life','school_mean','school_expected','electricity','water','sanitation','internet','birth_rate','death_rate','exports','imports']);
 function source(c,key){
  if(key==='gdp'||key==='pop')return {url:WorldData.source,title:WorldData.release,unit:WorldData.units[key],id:'MPD2023',provenanceUrl:'sources.html#'+(c?.id||'')};
  const m=window.ExtendedData?.indicators?.[key],s=m?ExtendedData.sources[m.source]:null;
