@@ -2,6 +2,7 @@
 (()=>{'use strict';
 const ns='http://www.w3.org/2000/svg',countries=D.countries.filter(c=>Number.isFinite(c.lon)&&Number.isFinite(c.lat)&&!['SUN','CSK','YUG'].includes(c.id));
 const state={comparison:null,country:null,hover:null,metric:null,contentFocus:null,jump:null,frame:0,lock:false};
+try{state.hideEmpty=localStorage.getItem('atlas.hideEmptyIndicators')!=='false';}catch{state.hideEmpty=true;}
 const geometry=new Map(),maskCache=new Map(),hitCanvas=document.createElement('canvas'),hit=hitCanvas.getContext('2d');
 const overlay=document.createElementNS(ns,'svg');overlay.id='countrySemanticCanvas';overlay.setAttribute('aria-label','National data inside present-day reference countries');document.body.append(overlay);
 document.body.classList.add('atlas-semantic-canvas','atlas-contained-labels');window.AtlasEvidence?.closeMenu();
@@ -24,7 +25,7 @@ const paths={
  development:'M3 21V3M3 21h18M6 17l5-6 4 2 6-9',
  factory:'M3 22V9l6 4V8l6 5V3h4v19H3M6 17h2M11 17h2M16 17h2'
 };
-function glyph(key){return ({gdp:'income',regional_gdp:'income',pop:'people',life:'health',happiness:'happiness',hdi:'development',school_mean:'school',school_expected:'school',water:'water',sanitation:'sanitation',electricity:'power',internet:'network',poverty:'income',poverty_lower_middle:'income',poverty_upper_middle:'income',gini:'inequality',infant_mortality:'infant',under5_mortality:'infant',birth_rate:'infant',death_rate:'health',exports:'trade',imports:'trade',trade:'trade',wars:'wars',events:'events',production:'factory',distribution:'inequality',baskets:'income',all_indicators:'network'})[key]||'development';}
+function glyph(key){return ({historical_schooling:'school',historical_infant_mortality:'infant',gdp:'income',regional_gdp:'income',pop:'people',life:'health',happiness:'happiness',hdi:'development',school_mean:'school',school_expected:'school',water:'water',sanitation:'sanitation',electricity:'power',internet:'network',poverty:'income',poverty_lower_middle:'income',poverty_upper_middle:'income',gini:'inequality',infant_mortality:'infant',under5_mortality:'infant',birth_rate:'infant',death_rate:'health',exports:'trade',imports:'trade',trade:'trade',wars:'wars',events:'events',production:'factory',distribution:'inequality',baskets:'income',all_indicators:'network'})[key]||'development';}
 function node(tag,attrs={},text){const n=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);if(text!=null)n.textContent=text;return n;}
 function text(group,x,y,value,cls='country-label-text'){group.append(node('text',{x,y,class:cls},value));}
 function shape(c){
@@ -70,7 +71,7 @@ function shortValue(key,o){
  const fx=window.AtlasCurrency?.observation(o,key,year());
  const compact=['gdp','total_gdp','regional_gdp','pop','defence_spending_eur'].includes(key),v=value.toLocaleString('en-US',{notation:compact?'compact':'standard',maximumFractionDigits:['hdi','development'].includes(key)?3:1});
  const period=o.periodStart!=null&&o.periodStart!==o.periodEnd?`${o.periodStart}–${o.periodEnd}`:o.sourceYear;
- return (o.raw?.allocationModel?'Calculated ≈ ':o.regional?'Regional ≈ ':o.publicationEstimate?'Period ≈ ':o.status==='interpolated'?'≈ ':'')+(fx?AtlasCurrency.format(fx):v+(compactUnits[key]||''))+(o.status==='interpolated'?(o.estimateKind==='extrapolated'?' · extrapolated':' · interpolated'):(!o.raw?.allocationModel&&(o.derived||o.raw?.status?.startsWith('calculated')))?' · calculated':'')+(o.status==='last'?` · ${period}`:o.periodStart!=null&&o.periodStart!==o.periodEnd?` · ${period}`:'');
+ return (o.raw?.evidenceClass==='published estimate'?'Estimate ≈ ':o.raw?.allocationModel?'Calculated ≈ ':o.regional?'Regional ≈ ':o.publicationEstimate?'Period ≈ ':o.status==='interpolated'?'≈ ':'')+(fx?AtlasCurrency.format(fx):v+(compactUnits[key]||''))+(o.status==='interpolated'?(o.estimateKind==='extrapolated'?' · extrapolated':' · interpolated'):(!o.raw?.allocationModel&&(o.derived||o.raw?.status?.startsWith('calculated')))?' · calculated':'')+(o.status==='last'?` · ${period}`:o.periodStart!=null&&o.periodStart!==o.periodEnd?` · ${period}`:'');
 }
 function textWidth(value,font){hit.font=font;return hit.measureText(value).width;}
 function collision(a,b,pad=16){return a.x<b.x+b.w+pad&&a.x+a.w+pad>b.x&&a.y<b.y+b.h+pad&&a.y+a.h+pad>b.y;}
@@ -118,8 +119,8 @@ function tradeCoverage(c){
 const summaryCategories=[...categoryKeys,'trade','wars','government','events','development'];
 function categoryPrimary(c,key){
  const choices={distribution:['gini','poverty',...metricKeys(c).filter(k=>k.startsWith('wealth_'))],production:['services_share','industry_share','agriculture_share','manufacturing_share',...metricKeys(c).filter(k=>k.startsWith('hna_'))],all_indicators:['gdp','pop','life'],trade:['exports','imports']}[key]||[];
- for(const metric of choices){const o=observationFor(c,metric);if(o.value!=null)return {key:metric,o};}
- return null;
+ const values=choices.map(key=>({key,o:observationFor(c,key)})).filter(r=>r.o.value!=null);
+ return values.find(r=>r.o.status!=='last')||values[0]||null;
 }
 function categorySubtitle(key,c){
  if(key==='baskets')return AtlasBaskets.summary(c.id,year());
@@ -138,21 +139,46 @@ function openCategoryEvidence(label){
  if(label.key==='trade'||label.key==='wars'){hideHover();return dispatch(label.c,label.key);}
  showHover(label);
 }
+// A source from another year remains reachable, but never outranks this year's evidence.
+const recordYearCache=new WeakMap();
+function recordYears(c,key){
+ let cached=recordYearCache.get(c);if(!cached||cached.resolver!==AtlasObservations.availableYears){cached={resolver:AtlasObservations.availableYears,keys:new Map()};recordYearCache.set(c,cached);}if(cached.keys.has(key))return cached.keys.get(key);
+ let ys;
+ if(key==='total_gdp')ys=AtlasObservations.availableYears(c,'gdp').filter(y=>totalGDP(c,y).value!=null&&totalGDP(c,y).status!=='last');
+ else ys=AtlasObservations.availableYears(c,key);
+ const result=[...new Set(ys)].filter(y=>y>=years[0]&&y<=years.at(-1)).sort((a,b)=>a-b);cached.keys.set(key,result);return result;
+}
+function availability(c,key,o){
+ if(key==='all_indicators')return 0;
+ if(['production','distribution'].includes(key))return Math.min(2,...categoryInfo(c,key).catalog.map(k=>availability(c,k,observationFor(c,k))));
+ if(key==='baskets'){const r=window.AtlasBaskets?.record(c.id,year());return r?.year===year()?0:window.AtlasBaskets?.series(c.id)?.records.length?1:2;}
+ if(key==='wars')return window.AtlasWars?.records(c.id,year()).length?0:window.AtlasWars?.navigationRecords(c.id).length?1:2;
+ if(key==='events')return eventsFor(c,true).length?0:eventsFor(c,false).length?1:2;
+ if(key==='government'){if(government(c).type!=='Not recorded')return 0;return Object.keys(window.PoliticsData?.countries[c.id]?.years||{}).length||Object.keys(window.GovernmentTypes?.countries[c.id]||{}).length?1:2;}
+ if(key==='development'){const d=developmentFor(c);return d?.year===year()?0:window.HistoricalDevelopment?.series.some(s=>s.mapReference?.id===c.id&&s.values.length)?1:2;}
+ // Trade coverage is indexed separately; retain its entry while annual files load.
+ if(key==='trade'){const p=categoryPrimary(c,key);return p&&p.o.status!=='last'?0:1;}
+ o??=observationFor(c,key);
+ if(o.value!=null&&o.status!=='last')return 0;
+ return o.value!=null||recordYears(c,key).length?1:2;
+}
 function orderedRows(c,available,missing,extras,missingSpecial,count,area,ratio){
  const headlines=available.filter(r=>primary.includes(r.key)),others=available.filter(r=>!primary.includes(r.key));
  const lead=Math.min(headlines.length,Math.max(1,Math.min(3,count-4)));
- return [...headlines.slice(0,lead),{key:'trade',o:null},{key:'wars',o:null},...categoryKeys.map(key=>({key,o:null})),...headlines.slice(lead),...others,...extras,...(area>140000&&ratio>2.3?[...missing,...missingSpecial]:[])];
+ const rows=[...headlines.slice(0,lead),{key:'trade',o:null},{key:'wars',o:null},...categoryKeys.map(key=>({key,o:null})),...headlines.slice(lead),...others,...extras,...missing,...missingSpecial];
+ return rows.filter(r=>r.key!=='historical_infant_mortality'||!observationFor(c,'infant_mortality').publicationEstimate).map(r=>({...r,tier:availability(c,r.key,r.o)})).filter(r=>r.tier!==2||!state.hideEmpty&&area>140000&&ratio>2.3).sort((a,b)=>a.tier-b.tier);
 }
 function categoryInfo(c,key){
  const sectors=[...['agriculture_share','industry_share','manufacturing_share','services_share'].filter(k=>ExtendedData.indicators[k]),...metricKeys(c).filter(k=>k.startsWith('hna_'))],wealth=metricKeys(c).filter(k=>/wealth|networth|asset/i.test(k));
  const income=['gini','poverty','poverty_lower_middle','poverty_upper_middle'].filter(k=>ExtendedData.indicators[k]);
  if(key==='production')return {title:c.name+' · production & sectors',lines:['Modern WDI value-added shares and separately labeled historical reconstructions. Historical volume indexes measure sector growth (1913 = 100), not GDP shares. Each value retains its own source year.','Manufacturing is already a subset of industry. Do not add it again to agriculture + industry + services. The broad sectors need not sum to 100% because of taxes, subsidies and other accounting differences.','Do not multiply these shares by the atlas’s reconstructed PPP GDP total without reconciling source definitions and years.',sectors.length?'Choose a sector below for its definition, date and source.':'Sector shares are not loaded in this build. No composition has been inferred.'],catalog:sectors,actions:['all_indicators','trade'],source:{url:'global-sources.html',title:'Indicator sources'}};
  if(key==='distribution')return {title:c.name+' · wealth & income distribution',lines:['Income inequality, poverty and wealth ownership are different measurements. GDP/person is an average output measure and says nothing by itself about how income or assets are distributed.',wealth.length?'Wealth measures below use their own source population, units and dates; they are not income shares.':'Wealth shares are not yet published in this atlas. Income Gini and poverty below must not be presented as wealth distribution.','Gini may describe income or consumption according to the survey. Poverty measures report population below the stated PPP poverty line. Select each series to inspect its definition and source.'],catalog:[...income,...wealth],actions:['all_indicators','production','baskets'],source:{url:'wealth-sources.html',title:'OECD wealth sources & coverage'}};
- return {title:c.name+' · all indicators',lines:[`All loaded indicators for ${year()}, including those hidden on the map for space.`,`Select a measure for its value, dates and sources. Estimates and older records stay labeled; date jumps update the whole map.`],catalog:metricKeys(c),actions:['trade','wars','production','distribution','baskets','government','events','development'],source:{url:'sources.html#'+c.id,title:'Country bibliography'}};
+ return {title:c.name+' · all indicators',lines:[`All loaded indicators for ${year()}, including those hidden on the map for space.`,`Select a measure for its value, dates and sources. Estimates and older records stay labeled; date jumps update the whole map.`],catalog:metricKeys(c),actions:['trade','wars','production','distribution','baskets','government','events','development'],additionalSources:[{url:'research-sources.html',title:'Historical sources, languages & estimation methods'}],source:{url:'sources.html#'+c.id,title:'Country bibliography'}};
 }
 function appendCategoryActions(body,label,keys){
  const actions=document.createElement('div');actions.className='country-category-actions';
- for(const key of keys){
+ for(const key of [...keys].sort((a,b)=>availability(label.c,a)-availability(label.c,b))){
+  if(state.hideEmpty&&label.categoryOrigin!==key&&availability(label.c,key)===2)continue;
   const b=document.createElement('button');b.type='button';
   const back=label.categoryOrigin===key||(label.key==='gini'&&key==='distribution');
   b.textContent=back?(key==='trade'?'Explore trade connections':'All '+(names[key]||key).toLowerCase()+' measures'):names[key]||key;
@@ -161,14 +187,24 @@ function appendCategoryActions(body,label,keys){
  }body.append(actions);
 }
 function appendCatalog(body,label,keys){
+ const preference=document.createElement('label');preference.className='country-catalog-preference';
+ const toggle=document.createElement('input');toggle.type='checkbox';toggle.checked=state.hideEmpty;
+ preference.append(toggle,document.createTextNode(' Hide properties with no data anywhere on the timeline'));body.append(preference);
  const search=document.createElement('input');search.type='search';search.className='country-catalog-search';search.placeholder='Find an indicator';search.setAttribute('aria-label','Find a loaded indicator');body.append(search);
  const list=document.createElement('div');list.className='country-indicator-catalog';body.append(list);
- for(const key of [...keys].sort((a,b)=>Number(observationFor(label.c,a).value==null)-Number(observationFor(label.c,b).value==null))){const o=observationFor(label.c,key),row=document.createElement('div');row.className='country-catalog-row';row.dataset.search=(names[key]||ExtendedData.indicators[key]?.name||key).toLowerCase();
+ const rows=keys.map(key=>{const o=observationFor(label.c,key);return {key,o,tier:availability(label.c,key,o)};}).sort((a,b)=>a.tier-b.tier);
+ let lastTier=-1;
+ for(const {key,o,tier}of rows){
+  if(tier!==lastTier){const heading=document.createElement('p');heading.className='country-catalog-heading';heading.dataset.tier=tier;heading.textContent=[`Values for ${year()} · including labeled estimates`,'Other periods · values retain their dates','No data loaded on this timeline'][tier];list.append(heading);lastTier=tier;}
+  const row=document.createElement('div');row.className='country-catalog-row';row.dataset.tier=tier;row.dataset.search=(names[key]||ExtendedData.indicators[key]?.name||key).toLowerCase();
   const inspect=document.createElement('button');inspect.type='button';inspect.className='country-catalog-inspect';const title=document.createElement('span');title.textContent=names[key]||ExtendedData.indicators[key]?.name||key;inspect.append(title);const value=document.createElement('small');value.textContent=shortValue(key,o);inspect.append(value);inspect.addEventListener('click',()=>showHover({c:label.c,key,o,rect:label.rect}));row.append(inspect);
-  if(o.value==null){const first=firstRecord(label.c,key);const availability=document.createElement(first==null?'small':'button');availability.textContent=first==null?'No value loaded':'Show next available: '+first;availability.className='country-catalog-first';if(first!=null){availability.type='button';availability.addEventListener('click',()=>{jumpToFirst(label.c,key);const updated=observationFor(label.c,key);showHover({c:label.c,key,o:updated,rect:label.rect});});}row.append(availability);}
-  list.append(row);
+  const ys=recordYears(label.c,key);
+  if(tier===1){const next=ys.find(y=>y>year())??ys.at(-1);if(next!=null){const jump=document.createElement('button');jump.type='button';jump.className='country-catalog-first';jump.textContent=(next>year()?'Show next available: ':'Show last recorded: ')+next;jump.onclick=()=>{jumpToYear(label.c,key,next);showHover({c:label.c,key,o:observationFor(label.c,key),rect:label.rect});};row.append(jump);}}
+  if(ys.length){const dates=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Available years / periods ('+ys.length+')';dates.append(summary);const links=document.createElement('div');links.className='country-record-years';for(const y of ys){const button=document.createElement('button');button.type='button';button.textContent=String(y);button.setAttribute('aria-label','Show '+(names[key]||key)+' in '+y);button.onclick=()=>{jumpToYear(label.c,key,y);showHover({c:label.c,key,o:observationFor(label.c,key),rect:label.rect});};links.append(button);}dates.append(links);row.append(dates);}
+  if(tier===2){const empty=document.createElement('small');empty.textContent='No value loaded in any selectable year';row.append(empty);}list.append(row);
  }
- search.addEventListener('input',()=>{const q=search.value.trim().toLowerCase();list.querySelectorAll('.country-catalog-row').forEach(row=>row.hidden=!row.dataset.search.includes(q));});
+ function filter(){const q=search.value.trim().toLowerCase();for(const row of list.querySelectorAll('.country-catalog-row'))row.hidden=state.hideEmpty&&row.dataset.tier==='2'||!row.dataset.search.includes(q);for(const heading of list.querySelectorAll('.country-catalog-heading'))heading.hidden=![...list.querySelectorAll('.country-catalog-row')].some(r=>r.dataset.tier===heading.dataset.tier&&!r.hidden);}
+ toggle.onchange=()=>{state.hideEmpty=toggle.checked;try{localStorage.setItem('atlas.hideEmptyIndicators',String(state.hideEmpty));}catch{}filter();schedule();};search.addEventListener('input',filter);filter();
 }
 const comparisonBar=document.createElement('div');comparisonBar.id='atlasComparison';comparisonBar.hidden=true;comparisonBar.setAttribute('role','region');comparisonBar.setAttribute('aria-label','Map comparison');document.body.append(comparisonBar);
 function compareMetric(key){
@@ -282,6 +318,10 @@ function firstRecord(c,key){
 }
 function jumpToFirst(c,key){
  const target=firstRecord(c,key);if(target==null)return;
+ return jumpToYear(c,key,target);
+}
+function jumpToYear(c,key,target){
+ if(!Number.isFinite(target)||target<years[0]||target>years.at(-1))return;
  const requested=year(),saved={cx,cy,z,globeView:globe()?AtlasGlobe.getView():null};state.jump={countryId:c.id,key,requestedYear:requested,jumpedYear:target};state.country=c.id;
  // Canonical timeline change updates borders, politics, trade and every numeric series.
  if(!years.includes(target)){$('geography').value='auto';changeGeography();}
@@ -290,7 +330,7 @@ function jumpToFirst(c,key){
 }
 function drawJumpFlag(){
  if(!state.jump)return;if(year()!==state.jump.jumpedYear){state.jump=null;return;}
- const j=state.jump,label=currentLabels.find(l=>l.c.id===j.countryId&&l.key===j.key),kind=label?.o?.estimateKind==='extrapolated'?'extrapolated value':label?.o?.status==='interpolated'?'interpolated value':label?.o?.derived?'calculated value':'data',message=`Requested ${j.requestedYear} · showing ${j.jumpedYear} ${kind}`,width=Math.ceil(textWidth(message,'600 10px system-ui')+4);let p=null;
+ const j=state.jump,label=currentLabels.find(l=>l.c.id===j.countryId&&l.key===j.key),kind=label?.o?.estimateKind==='extrapolated'?'extrapolated value':label?.o?.status==='interpolated'?'interpolated value':label?.o?.raw?.evidenceClass==='published estimate'?'published estimate':label?.o?.derived?'calculated value':'data',message=`Requested ${j.requestedYear} · showing ${j.jumpedYear} ${kind}`,width=Math.ceil(textWidth(message,'600 10px system-ui')+4);let p=null;
  if(label){const mask=projectedMask(label.c);for(const candidate of [{x:label.rect.x,y:label.rect.y+label.rect.h+6,w:width,h:15},{x:label.rect.x,y:label.rect.y-19,w:width,h:15}])if(contained(mask,candidate)&&!currentLabels.some(l=>l!==label&&collision(candidate,l.rect,2))){p=candidate;break;}}
  if(!p)p={x:12,y:innerHeight-130};text(overlay,p.x,p.y+11,message,'country-jump-flag');
 }
@@ -309,7 +349,7 @@ function detailFor(label){
  const fx=window.AtlasCurrency?.observation(o,key,year());
  const outputYear=o.status==='last'?o.sourceYear:year();
  const definition=['gdp','total_gdp'].includes(key)?`Annual economic output for ${outputYear}${key==='gdp'?' per person':''}, expressed in 2011 purchasing-power-parity international dollars. 2011 is the price/comparison benchmark, not the year the output occurred. This is neither a wage, household income nor a stock of wealth.${o.status==='last'?` The displayed value is a dated ${outputYear} reference, not output measured in ${year()}.`:''}${key==='total_gdp'?' '+o.method:''}`:ExtendedData.indicators[key]?.definition||'National population series; source territorial coverage may change.';
- return {actions:label.categoryOrigin?[label.categoryOrigin]:key==='gini'?['distribution']:undefined,title:c.name+' · '+(key==='gini'?'Gini index':names[key]||key),lines:[`${key==='regional_gdp'&&o.value!=null?'Calculated ≈ '+o.value.toLocaleString('en-US',{notation:'compact',maximumFractionDigits:1}):shortValue(key,o)} ${key==='total_gdp'?'2011 international dollars':key==='pop'?'people':fx?'':source.unit||''}.`,o.status==='unavailable'?(firstRecord(c,key)!=null?`No record for ${year()}. Next available value (recorded or calculated) in this dataset: ${firstRecord(c,key)}. The next-year action moves the whole timeline to that year.`:'No record loaded for this indicator; no year is available to jump to.'):o.derived?`${o.status==='last'?'Last source year '+o.sourceYear+', not '+year()+'. ':''}${o.method}`:AtlasObservations.describe(o),definition,...(fx?[AtlasCurrency.describe(fx)]:[]),...[ExtendedData.indicators[key]?.caveat,o.raw?.spatialCaveat,o.raw?.qualityDescription,o.raw?.qualityNote,o.raw?.sourceNote].filter(Boolean),ref],source,fxSource:fx?.source,cpiSource:fx?.cpiSource,currencyDisplay:!!fx};
+ return {actions:label.categoryOrigin?[label.categoryOrigin]:key==='gini'?['distribution']:undefined,title:c.name+' · '+(key==='gini'?'Gini index':names[key]||key),lines:[`${key==='regional_gdp'&&o.value!=null?'Calculated ≈ '+o.value.toLocaleString('en-US',{notation:'compact',maximumFractionDigits:1}):shortValue(key,o)} ${key==='total_gdp'?'2011 international dollars':key==='pop'?'people':key.startsWith('historical_')||fx?'':source.unit||''}.`,o.status==='unavailable'?(firstRecord(c,key)!=null?`No record for ${year()}. Next available value (recorded or calculated) in this dataset: ${firstRecord(c,key)}. The next-year action moves the whole timeline to that year.`:'No record loaded for this indicator; no year is available to jump to.'):o.derived?`${o.status==='last'?'Last source year '+o.sourceYear+', not '+year()+'. ':''}${o.method}`:AtlasObservations.describe(o),definition,...(fx?[AtlasCurrency.describe(fx)]:[]),...[ExtendedData.indicators[key]?.caveat,o.raw?.spatialCaveat,o.raw?.qualityDescription,o.raw?.qualityNote,o.raw?.sourceNote].filter(Boolean),ref],source,fxSource:fx?.source,cpiSource:fx?.cpiSource,currencyDisplay:!!fx};
 }
 function wrap(s,max){const out=[];let line='';for(const word of String(s).split(/\s+/)){if((line+' '+word).trim().length>max&&line){out.push(line);line=word;}else line+=(line?' ':'')+word;}if(line)out.push(line);return out;}
 let hoverTimer;
@@ -329,7 +369,7 @@ function showHover(label){
   const compare=document.createElement('button');compare.className='compare-measure';compare.textContent='Compare this measure across countries';compare.onclick=()=>compareMetric(label.key);body.append(compare);
   if(state.comparison&&label.o?.value==null){const next=firstRecord(label.c,label.key);if(next!=null){const jump=document.createElement('button');jump.className='compare-measure';jump.textContent='Move whole map to '+next;jump.onclick=()=>{jumpToFirst(label.c,label.key);hideHover();};body.append(jump);}}
  }
-for(const line of info.lines){const p=document.createElement('p');p.textContent=line;body.append(p);}
+for(const line of new Set(info.lines)){const p=document.createElement('p');p.textContent=line;body.append(p);}
  window.AtlasTerritoryUI?.appendContext(body,label.c,label.key);
  if(info.actions)appendCategoryActions(body,label,info.actions);
  if(info.catalog)appendCatalog(body,label,info.catalog);
@@ -366,7 +406,7 @@ overlay.addEventListener('pointerup',()=>{pan=null;});overlay.addEventListener('
 overlay.addEventListener('wheel',ev=>{if(ev.target.closest('.country-hover-explanation'))return;ev.preventDefault();hideHover();const factor=Math.exp(-ev.deltaY*.0015);if(globe())AtlasGlobe.setZoom(Math.max(.7,Math.min(5000,getZoom()*factor)));else{const base=Math.min(innerWidth/1140,innerHeight/660),old=base*z;z=Math.max(.03,Math.min(5000,z*factor));const px=ev.clientX-innerWidth/2,py=ev.clientY-innerHeight/2;cx+=px/old-px/(base*z);cy+=py/old-py/(base*z);draw();}},{passive:false});
 const oldDraw=draw;draw=function(){oldDraw();schedule();};window.addEventListener('atlas:globe-render',schedule);window.addEventListener('atlas:view-change',()=>{if(state.lock&&state.country&&!window.AtlasWars?.state.active&&!window.AtlasTrade?.state.active&&!window.AtlasIndustryMarkets?.isActive?.())focusCountry(state.country);else schedule();});window.addEventListener('resize',schedule);
 function openCountry(id){const c=getCountry(id);if(!c)return false;state.country=id;state.lock=false;const rect=countryTitles.get(id)||{x:innerWidth/2,y:innerHeight/3,w:0,h:0};showHover({c,key:'all_indicators',o:null,rect,fixedAnchor:true});return true;}
-window.AtlasCountryCanvas={openCountry,closeDetails:hideHover,projectedMask,candidates,place,compareMetric,active:()=>true,getCountry,getCountryId:()=>state.country,getZoom,focusCountry,render,schedule,state,metricKeys,categoryInfo,orderedRows,firstRecord,jumpToFirst,hitTest:(x,y)=>countryAt({clientX:x,clientY:y})?.id,totalGDP,contained,budget,getLabels:()=>currentLabels.map(l=>({countryId:l.c.id,key:l.key,rect:l.rect})),verifyContainment:()=>currentLabels.every(l=>contained(projectedMask(l.c),l.rect))};
+window.AtlasCountryCanvas={openCountry,closeDetails:hideHover,projectedMask,candidates,place,compareMetric,active:()=>true,getCountry,getCountryId:()=>state.country,getZoom,focusCountry,render,schedule,state,metricKeys,categoryInfo,orderedRows,availability,recordYears,firstRecord,jumpToFirst,jumpToYear,hitTest:(x,y)=>countryAt({clientX:x,clientY:y})?.id,totalGDP,contained,budget,getLabels:()=>currentLabels.map(l=>({countryId:l.c.id,key:l.key,rect:l.rect})),verifyContainment:()=>currentLabels.every(l=>contained(projectedMask(l.c),l.rect))};
 for(const id of ['time','boundaryDate','prev','next']){$(id)?.addEventListener(id==='time'?'input':id==='boundaryDate'?'change':'click',()=>{state.jump=null;schedule();});}
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('.country-hover-explanation'))hideHover();},true);
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape')hideHover();});

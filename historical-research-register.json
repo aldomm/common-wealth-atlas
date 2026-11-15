@@ -1,0 +1,159 @@
+{
+  "objective": "Expand attributable historical evidence across the world for 1820–2025. This is a research queue, not an autonomous background job or a claim of complete coverage.",
+  "searchLanguages": [
+    "English",
+    "Portuguese",
+    "Spanish",
+    "French",
+    "German",
+    "Dutch",
+    "Italian",
+    "Russian",
+    "Chinese",
+    "Japanese",
+    "Arabic",
+    "Hindi",
+    "Indonesian",
+    "other local languages where collections are available"
+  ],
+  "process": [
+    "Prioritize missing country/property/decade combinations, especially pre-1950 and underserved regions.",
+    "Search national statistics, libraries, census reports, historical gazetteers, university repositories, books and published author estimates in original languages.",
+    "Keep original titles, translated summaries, exact page/table/row, author, edition, dates, units, geography, evidence class, uncertainty and reuse terms.",
+    "Retain conflicting claims with provenance; condense only estimates of the same definition, period, territory and unit. A span of estimates is not a confidence interval.",
+    "Apply a decade or period value only across the period the source actually describes; do not turn an event total into an annual flow.",
+    "Interpolate compatible numerical series within documented limits; do not interpolate wars, governments, categorical properties or across known definition/territory breaks.",
+    "Use regional proxies only with explicit geographic scope. Allocate regional totals only with compatible, exhaustive population weights and label the result calculated.",
+    "No invented numerical precision from narrative-only accounts. Unofficial estimates are eligible when attributable; unsupported claims stay context, not chart values.",
+    "Audit zeros versus missing codes, country mappings, translations, source licenses, and totals before publishing."
+  ],
+  "display": [
+    "Selected-year observations and supported estimates first.",
+    "Dated previous values and properties with records only in other selectable years afterward, with year navigation.",
+    "Hide properties with no data anywhere on the timeline by default; saved checkbox allows showing them.",
+    "Official status, published historical estimate, interpolation, regional proxy, calculated allocation and last-record reference remain distinguishable."
+  ],
+  "checkedOn": "2026-11-15",
+  "sources": [
+    {
+      "name": "Clio Infra",
+      "coverage": "Global",
+      "languages": "English; underlying publications in multiple languages",
+      "use": "Schooling, mortality, wages, inequality, production and other reconstructions",
+      "url": "https://clio-infra.eu/",
+      "status": "Schooling and infant-mortality batch imported; other series await review."
+    },
+    {
+      "name": "IISH Historical Prices and Wages",
+      "coverage": "Global",
+      "languages": "English, Dutch and original source languages",
+      "use": "Local wages, prices and matched basic-needs baskets",
+      "url": "https://iisg.amsterdam/en/node/674",
+      "status": "Further local series to audit; existing Uganda material is only a subset."
+    },
+    {
+      "name": "African Economic History Network",
+      "coverage": "Africa and Asia",
+      "languages": "English; original local and colonial records",
+      "use": "Occupational wages, prices and economic-history datasets",
+      "url": "https://aehnetwork.org/data-research/",
+      "status": "Candidate collection; per-dataset dates, definitions and reuse terms require review."
+    },
+    {
+      "name": "IBGE — Anuário Estatístico do Brasil",
+      "coverage": "Brazil",
+      "languages": "Portuguese",
+      "use": "Economic, demographic, geographic and environmental statistics",
+      "url": "https://anuario.ibge.gov.br/anteriores.html",
+      "status": "Candidate for systematic extraction beyond existing census references."
+    },
+    {
+      "name": "IBGE — Estatísticas do Século XX, public finances",
+      "coverage": "Brazil",
+      "languages": "Portuguese",
+      "use": "Historical public-finance series and methodological notes",
+      "url": "https://seculoxx.ibge.gov.br/images/seculoxx/economia/anexos/financas.pdf",
+      "status": "Candidate; preserve original currency changes and accounting definitions."
+    },
+    {
+      "name": "Annuaire statistique de la France",
+      "coverage": "France",
+      "languages": "French",
+      "use": "Annual and retrospective statistics; 1961 and 1966 retrospective editions",
+      "url": "https://www.economie.gouv.fr/saef/annuaire-statistique-france",
+      "status": "Candidate for historical production, population and finance tables."
+    },
+    {
+      "name": "Estadísticas históricas de México 2014",
+      "coverage": "Mexico",
+      "languages": "Spanish",
+      "use": "Official historical statistical compilation",
+      "url": "https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825058203",
+      "status": "Candidate; table-by-table transcription and geography checks needed."
+    },
+    {
+      "name": "Histat — Historische Statistik",
+      "coverage": "Germany and historical studies",
+      "languages": "German",
+      "use": "Historical statistical time series",
+      "url": "https://histat.safe-frankfurt.de/",
+      "status": "Candidate; original-study metadata and terms require review."
+    },
+    {
+      "name": "Statistics Bureau of Japan — historical statistical series",
+      "coverage": "Japan",
+      "languages": "Japanese, English",
+      "use": "Long-run official statistics; historical series archive and e-Stat",
+      "url": "https://www.stat.go.jp/data/sougou/",
+      "status": "Candidate; era dates, units and territorial scope must be preserved."
+    },
+    {
+      "name": "SEADELT — Statistical Pocketbook of Indonesia 1941",
+      "coverage": "Indonesia",
+      "languages": "English; related volumes in Dutch and Indonesian",
+      "use": "Colonial and early national economic statistics",
+      "url": "https://seadelt.net/Documents/?ID=447",
+      "status": "Candidate; colonial territory is not automatically modern Indonesia."
+    },
+    {
+      "name": "Census of India Digital Library",
+      "coverage": "India and historical census territories",
+      "languages": "English, Hindi and other source languages",
+      "use": "Population, occupations and historical census reports",
+      "url": "https://censusindia.gov.in/nada/index.php/home",
+      "status": "Candidate for broader extraction beyond existing census references."
+    },
+    {
+      "name": "IPUMS IHGIS",
+      "coverage": "Global",
+      "languages": "Multiple original census languages",
+      "use": "Census tables paired with geographic boundary files",
+      "url": "https://ihgis.ipums.org/",
+      "status": "Candidate; review country/year coverage and redistribution terms."
+    },
+    {
+      "name": "IPUMS NHGIS",
+      "coverage": "United States",
+      "languages": "English",
+      "use": "Census statistics and boundaries from 1790 onward",
+      "url": "https://www.nhgis.org/about-ipums-nhgis",
+      "status": "Candidate for subnational coverage with matched boundaries."
+    },
+    {
+      "name": "China Historical GIS — Harvard/Fudan",
+      "coverage": "China through 1911",
+      "languages": "Chinese, English",
+      "use": "Historical administrative units and populated places",
+      "url": "https://chgis.fas.harvard.edu/pages/intro/",
+      "status": "Candidate geography crosswalk; does not supply economic totals by itself."
+    },
+    {
+      "name": "HYDE",
+      "coverage": "Global",
+      "languages": "English metadata",
+      "use": "Modeled spatial population, land use and agriculture",
+      "url": "https://hyde-portal.geo.uu.nl/",
+      "status": "Already identified; spatial estimates need area/period reconciliation before allocation."
+    }
+  ]
+}

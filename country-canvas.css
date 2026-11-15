@@ -32,3 +32,7 @@
 
 .comparison-legend{width:100%;font-size:12px;color:#e0ece4}.comparison-ramp{height:12px;border:1px solid #adc4bd;border-radius:3px;margin:7px 0}.comparison-range{display:flex;justify-content:space-between;gap:12px}.comparison-range b{font-weight:500}.comparison-missing{margin-top:6px;color:#c3cccf}.comparison-scale-note{font-size:11px;line-height:1.35;margin-top:6px;color:#b4cbc4}
 @media(max-width:600px){#atlasComparison{max-width:calc(100vw - 16px)}.comparison-scale-note{max-height:42px;overflow:auto}.comparison-legend{font-size:11px}}
+
+.country-catalog-preference{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;margin:12px 0;cursor:pointer}.country-catalog-preference input{flex:0 0 auto;width:20px;height:20px;margin-top:2px;accent-color:#70cbb2}.country-catalog-heading{font-weight:650;color:#a5d9cf;font-size:13px;margin:16px 0 6px!important}.country-record-years{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.country-record-years button{min-width:48px;min-height:36px}.country-catalog-row details{grid-column:1/-1;font-size:13px}.country-indicator-catalog [hidden]{display:none!important}
+
+@media(max-width:600px){.country-record-years button{min-height:44px;min-width:52px}.country-catalog-preference{font-size:15px}}
