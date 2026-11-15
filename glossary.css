@@ -1,0 +1,10 @@
+.atlas-term{display:inline!important;min-width:0!important;min-height:0!important;padding:0 2px!important;margin:0!important;border:0!important;border-bottom:1px dotted currentColor!important;border-radius:0!important;background:transparent!important;color:#8edbc8!important;font:inherit!important;cursor:pointer}
+.atlas-term:focus-visible{outline:2px solid #f3cf85;outline-offset:3px}
+#atlasGlossary{width:min(560px,calc(100vw - 28px));max-height:min(78dvh,760px);padding:0;border:1px solid #638b91;border-radius:16px;background:#10282e;color:#edf5f5;box-shadow:0 16px 70px #0009;overflow:hidden}
+#atlasGlossary::backdrop{background:#00121980}
+.glossary-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;background:#18373e}
+.glossary-heading h2{font-size:20px;margin:0}.glossary-heading button{min-height:44px;min-width:44px;font-size:25px}
+.glossary-content{padding:0 20px 20px;max-height:60dvh;overflow:auto;font-size:16px;line-height:1.55}
+.glossary-content section{padding:12px 0;border-bottom:1px solid #ffffff20}.glossary-content h3{font-size:18px;margin:8px 0}.glossary-content p{margin:8px 0}.glossary-content a{color:#9fe5d6}.glossary-content>button{margin-top:16px}
+
+.atlas-term-tip{position:fixed;z-index:2147483600;display:flex;align-items:center;gap:12px;max-width:min(390px,calc(100vw - 24px));box-sizing:border-box;padding:12px 14px;border:1px solid #638b91;border-radius:12px;background:#10282e;color:#edf5f5;box-shadow:0 8px 30px #0008;font:15px/1.4 system-ui,sans-serif}.atlas-term-tip[hidden]{display:none}.atlas-term-tip strong{font-weight:600}.atlas-term-tip a{white-space:nowrap;color:#9fe5d6}.atlas-term-tip button{flex-shrink:0;min-width:36px;min-height:36px;padding:0;font-size:22px}
