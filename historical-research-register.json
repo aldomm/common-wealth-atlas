@@ -41,7 +41,7 @@
       "languages": "English; underlying publications in multiple languages",
       "use": "Schooling, mortality, wages, inequality, production and other reconstructions",
       "url": "https://clio-infra.eu/",
-      "status": "Imported: schooling, infant mortality, population, life expectancy, urbanization and birth-cohort height. Other series await review."
+      "status": "Imported: schooling, infant mortality, population, life expectancy, urbanization and birth-cohort height. Numeracy, gross-income Gini and daily wage/basket ratios also imported for Africa and Asia. Other series await review."
     },
     {
       "name": "IISH Historical Prices and Wages",
@@ -57,7 +57,7 @@
       "languages": "English; original local and colonial records",
       "use": "Occupational wages, prices and economic-history datasets",
       "url": "https://aehnetwork.org/data-research/",
-      "status": "Candidate collection; per-dataset dates, definitions and reuse terms require review."
+      "status": "Imported: Broadberry–Gardner GDP/person for eight African countries in original 1990 international dollars. Occupational wage archive downloaded for later audit."
     },
     {
       "name": "IBGE — Anuário Estatístico do Brasil",
@@ -170,167 +170,213 @@
       "use": "Historical census illiteracy rates",
       "url": "https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/historicos/2104/702825460266/702825460266_1.pdf",
       "status": "Imported: 11 benchmarks; Cuadro 2, printed page 25 / PDF page 36. Age groups 6+, 10+ and 15+ kept separate; definition notes on printed page 24."
+    },
+    {
+      "name": "Numeracy · birth-cohort estimate (ABCC)",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "English; multilingual underlying references",
+      "use": "Numeracy · birth-cohort estimate (ABCC)",
+      "url": "https://clio-infra.eu/Indicators/NumeracyTotal.html",
+      "status": "Imported: 402 source records. Joerg Baten with coauthors (2013); A’Hearn, Baten & Crayen (2009); Crayen & Baten (2010); Prayon & Baten (2013). CC-BY-SA-4.0"
+    },
+    {
+      "name": "Gini · historical gross household income",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "English; multilingual underlying references",
+      "use": "Gini · historical gross household income",
+      "url": "https://clio-infra.eu/Indicators/IncomeInequality.html",
+      "status": "Imported: 380 source records. Michalis Moatsos, Jan Luiten van Zanden, Joerg Baten, Péter Földvári and Bas van Leeuwen (2014). CC0-1.0"
+    },
+    {
+      "name": "Daily labourer wage / subsistence basket",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "English; multilingual underlying references",
+      "use": "Daily labourer wage / subsistence basket",
+      "url": "https://clio-infra.eu/Indicators/LabourersRealWage.html",
+      "status": "Imported: 2,013 source records. Pim de Zwart, Bas van Leeuwen and Jieli van Leeuwen-Li (2013/2014). CC0-1.0"
+    },
+    {
+      "name": "Broadberry & Gardner · African GDP per capita",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "English",
+      "use": "GDP per person · historical (1990 PPP)",
+      "url": "https://aehnetwork.org/wp-content/uploads/2022/02/Broadberry-and-Gardner-GDP-per-capita-1885-2008.xlsx",
+      "status": "Imported: 790 source records. Stephen Broadberry and Leigh Gardner (2022), Economic growth in Sub-Saharan Africa, 1885–2008: Evidence from eight countries, Explorations in Economic History 83:101424, Appendix 1. AEHN: free to use with investigator citation"
+    },
+    {
+      "name": "厚生労働省 · 人口動態総覧（率）の年次推移",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "Japanese",
+      "use": "Birth rate · Japanese vital statistics; Death rate · Japanese vital statistics; Infant mortality · Japanese vital statistics; Neonatal mortality · Japanese vital statistics",
+      "url": "https://www.mhlw.go.jp/toukei/saikin/hw/jinkou/geppo/nengai07/toukei2.html",
+      "status": "Imported: 192 source records. Ministry of Health, Labour and Welfare, 平成19年 人口動態統計月報年計（概数）の概況, 第2表 (2-1). Attributed numerical table facts; no republication of the full page."
+    },
+    {
+      "name": "Lia Medina · Evolução demográfica da Ilha de São Vicente",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "Portuguese",
+      "use": "Infant mortality · Cabo Verde reconstruction; Birth rate · Cabo Verde reconstruction; Death rate · Cabo Verde reconstruction",
+      "url": "https://repositorio.iscte-iul.pt/bitstream/10071/2567/1/master_lia_medina.pdf",
+      "status": "Imported: 165 source records. Lia Medina (2009), Evolução demográfica da Ilha de São Vicente: do descobrimento a 1950. ISCTE master’s dissertation; national Cabo Verde appendices, Quadros 15 and 18. Attributed factual table values only; thesis text/PDF not redistributed."
+    },
+    {
+      "name": "HCP / Robert Escallier · Moroccan population estimates",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "French",
+      "use": "Population · Escallier/HCP estimate",
+      "url": "https://www.hcp.ma/file/229806/",
+      "status": "Imported: 5 source records. HCP (2019), Population et Développement au Maroc, Figure 12, printed p.135 / PDF p.137; pre-1960 estimates credited to Robert Escallier (1995), Le Maroc en transition démographique. Attributed chart facts; no full-publication redistribution."
+    },
+    {
+      "name": "Abdallah Berrada / HCP · Répartition de la population, urbanisation et migration",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "French",
+      "use": "Population · former southern zone (regional)",
+      "url": "https://www.hcp.ma/file/231656/",
+      "status": "Imported: 5 source records. Abdallah Berrada, Le peuplement du Maroc, Tableau 2, p.5, hosted by HCP. Attributed factual table values only."
+    },
+    {
+      "name": "国家统计局 · 新中国50年系列分析报告之十五",
+      "coverage": "Africa/Asia · exact coverage in linked data",
+      "languages": "Chinese",
+      "use": "Death rate · 1949 retrospective; Urban population · 1949 retrospective",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/xzg50nxlfxbg/202303/t20230301_1920453.html",
+      "status": "Imported: 2 source records. National Bureau of Statistics of China (1999-09-28), 之十五：控制人口增长成绩巨大 坚持基本国策任重道远. Attributed factual values and brief translated definitions, not full text."
     }
   ],
   "latestImport": {
     "coverage": {
-      "historical_population": {
-        "sourceRecords": 2733,
-        "displayYears": 2733,
-        "countries": 190,
+      "historical_numeracy": {
+        "sourceRecords": 402,
+        "pre1950Records": 350,
+        "displayYears": 4020,
+        "countries": 61,
         "firstYear": 1820,
-        "lastBenchmark": 2000
+        "lastYear": 1979
       },
-      "historical_life": {
-        "sourceRecords": 12726,
-        "displayYears": 12726,
-        "countries": 180,
+      "historical_gini_gross": {
+        "sourceRecords": 380,
+        "pre1950Records": 153,
+        "displayYears": 380,
+        "countries": 65,
         "firstYear": 1820,
-        "lastBenchmark": 2012
+        "lastYear": 2000
       },
-      "historical_urbanization": {
-        "sourceRecords": 621,
-        "displayYears": 621,
-        "countries": 182,
-        "firstYear": 1850,
-        "lastBenchmark": 2000
-      },
-      "historical_height": {
-        "sourceRecords": 1305,
-        "displayYears": 13050,
-        "countries": 152,
+      "historical_daily_baskets": {
+        "sourceRecords": 2013,
+        "pre1950Records": 985,
+        "displayYears": 2013,
+        "countries": 63,
         "firstYear": 1820,
-        "lastBenchmark": 2000
+        "lastYear": 2008
       },
-      "historical_illiteracy_15_br": {
-        "sourceRecords": 9,
-        "displayYears": 9,
+      "historical_china_death": {
+        "sourceRecords": 1,
+        "pre1950Records": 1,
+        "displayYears": 1,
+        "countries": 1,
+        "firstYear": 1949,
+        "lastYear": 1949
+      },
+      "historical_china_urban_population": {
+        "sourceRecords": 1,
+        "pre1950Records": 1,
+        "displayYears": 1,
+        "countries": 1,
+        "firstYear": 1949,
+        "lastYear": 1949
+      },
+      "historical_japan_birth": {
+        "sourceRecords": 48,
+        "pre1950Records": 48,
+        "displayYears": 48,
+        "countries": 1,
+        "firstYear": 1899,
+        "lastYear": 1949
+      },
+      "historical_japan_death": {
+        "sourceRecords": 48,
+        "pre1950Records": 48,
+        "displayYears": 48,
+        "countries": 1,
+        "firstYear": 1899,
+        "lastYear": 1949
+      },
+      "historical_japan_infant": {
+        "sourceRecords": 48,
+        "pre1950Records": 48,
+        "displayYears": 48,
+        "countries": 1,
+        "firstYear": 1899,
+        "lastYear": 1949
+      },
+      "historical_japan_neonatal": {
+        "sourceRecords": 48,
+        "pre1950Records": 48,
+        "displayYears": 48,
+        "countries": 1,
+        "firstYear": 1899,
+        "lastYear": 1949
+      },
+      "historical_gdp_1990": {
+        "sourceRecords": 790,
+        "pre1950Records": 318,
+        "displayYears": 790,
+        "countries": 8,
+        "firstYear": 1885,
+        "lastYear": 2008
+      },
+      "historical_morocco_population": {
+        "sourceRecords": 5,
+        "pre1950Records": 4,
+        "displayYears": 5,
         "countries": 1,
         "firstYear": 1900,
-        "lastBenchmark": 2000
+        "lastYear": 1952
       },
-      "historical_illiteracy_6_mx": {
-        "sourceRecords": 2,
-        "displayYears": 2,
+      "historical_morocco_south_population": {
+        "sourceRecords": 5,
+        "pre1950Records": 5,
+        "displayYears": 5,
         "countries": 1,
-        "firstYear": 1895,
-        "lastBenchmark": 1950
+        "firstYear": 1921,
+        "lastYear": 1947
       },
-      "historical_illiteracy_10_mx": {
-        "sourceRecords": 6,
-        "displayYears": 6,
+      "historical_cv_infant": {
+        "sourceRecords": 30,
+        "pre1950Records": 29,
+        "displayYears": 30,
         "countries": 1,
-        "firstYear": 1900,
-        "lastBenchmark": 1960
+        "firstYear": 1912,
+        "lastYear": 1950
       },
-      "historical_illiteracy_15_mx": {
-        "sourceRecords": 3,
-        "displayYears": 3,
+      "historical_cv_death": {
+        "sourceRecords": 68,
+        "pre1950Records": 67,
+        "displayYears": 68,
         "countries": 1,
-        "firstYear": 1970,
-        "lastBenchmark": 1990
+        "firstYear": 1860,
+        "lastYear": 1950
+      },
+      "historical_cv_birth": {
+        "sourceRecords": 67,
+        "pre1950Records": 66,
+        "displayYears": 67,
+        "countries": 1,
+        "firstYear": 1860,
+        "lastYear": 1950
       }
     },
+    "sourceRecords": 3954,
+    "pre1950Records": 2171,
+    "countries": 78,
     "languages": [
       "English",
+      "Japanese",
       "Portuguese",
-      "Spanish"
+      "French",
+      "Chinese"
     ],
-    "data": "historical-expansion-data.json",
-    "audit": {
-      "1950": {
-        "beforeCurrentCells": 20713,
-        "afterCurrentCells": 34044,
-        "newlySupportedCells": 13331
-      },
-      "2026": {
-        "beforeCurrentCells": 81439,
-        "afterCurrentCells": 98065,
-        "newlySupportedCells": 16626
-      },
-      "topImprovements": [
-        {
-          "id": "ISL",
-          "newPre1950Cells": 242
-        },
-        {
-          "id": "LUX",
-          "newPre1950Cells": 179
-        },
-        {
-          "id": "MUS",
-          "newPre1950Cells": 156
-        },
-        {
-          "id": "EGY",
-          "newPre1950Cells": 152
-        },
-        {
-          "id": "GUY",
-          "newPre1950Cells": 150
-        },
-        {
-          "id": "JAM",
-          "newPre1950Cells": 148
-        },
-        {
-          "id": "ARG",
-          "newPre1950Cells": 144
-        },
-        {
-          "id": "CUB",
-          "newPre1950Cells": 130
-        },
-        {
-          "id": "CRI",
-          "newPre1950Cells": 130
-        },
-        {
-          "id": "COL",
-          "newPre1950Cells": 129
-        },
-        {
-          "id": "GTM",
-          "newPre1950Cells": 129
-        },
-        {
-          "id": "TUN",
-          "newPre1950Cells": 127
-        },
-        {
-          "id": "DZA",
-          "newPre1950Cells": 127
-        },
-        {
-          "id": "FIN",
-          "newPre1950Cells": 125
-        },
-        {
-          "id": "SEN",
-          "newPre1950Cells": 124
-        },
-        {
-          "id": "UGA",
-          "newPre1950Cells": 124
-        },
-        {
-          "id": "KEN",
-          "newPre1950Cells": 123
-        },
-        {
-          "id": "DNK",
-          "newPre1950Cells": 115
-        },
-        {
-          "id": "CYP",
-          "newPre1950Cells": 114
-        },
-        {
-          "id": "NER",
-          "newPre1950Cells": 111
-        }
-      ],
-      "countriesImprovedPre1950": 191
-    }
+    "data": "africa-asia-history-data.json"
   }
 }
